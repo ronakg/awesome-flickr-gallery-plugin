@@ -4,7 +4,7 @@ Donate link:
 Tags: gallery, flickr, photo, image, slideshow, lightbox, portfolio
 Requires at least: 3.1.0
 Tested up to: 3.1.2
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website enabling you to customize it the way you like it.
 
@@ -41,6 +41,7 @@ You can see a *live demo* of this plugin on my personal photography page -
 2. Awesome Flickr Gallery with photos of size Small with Title and Description ON
 3. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
 4. Full size photo view with navigation options to next and previous photos in gallery
+5. Awesome Flickr Gallery with Small size photos and black background
 
 
 == Features Planned ==
@@ -57,4 +58,4 @@ Gallery (In no particular order):
 
 == Changelog ==
 
-This is version 1.0.0
+This is initial version.
