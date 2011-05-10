@@ -1,13 +1,16 @@
 <?php
 add_action('admin_menu', 'afg_admin_menu');
-$base_url = get_option('siteurl') . '/wp-content/plugins/awesome-flickr-gallery-plugin';
+define('BASE_URL', get_option('siteurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)));
+define('DEBUG', False);
 
 function afg_admin_menu() {
-    global $base_url;
     add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery',
-        'manage_options', 'afg_plugin_page', 'afg_admin_html_page', "$base_url/images/afg_logo.png");
+        'manage_options', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png");
     add_action('admin_init', 'afg_register_settings');
 }
+
+/* Keep afg_register_settings() and afg_get_all_options() in sync all the time
+ */
 
 function afg_register_settings() {
     register_setting('afg_settings_group', 'afg_api_key');
@@ -19,6 +22,19 @@ function afg_register_settings() {
     register_setting('afg_settings_group', 'afg_columns');
     register_setting('afg_settings_group', 'afg_credit_note');
     register_setting('afg_settings_group', 'afg_bg_color');
+}
+
+function afg_get_all_options() {
+    return array(
+        'afg_api_key' => get_option('afg_api_key'),
+        'afg_user_id' => get_option('afg_user_id'),
+        'afg_photo_size' => get_option('afg_photo_size'),
+        'afg_captions' => get_option('afg_captions'),
+        'afg_descr' => get_option('afg_descr'),
+        'afg_columns' => get_option('afg_columns'),
+        'afg_credit_note' => get_option('afg_credit_note'),
+        'afg_bg_color' => get_option('afg_bg_color'),
+    );
 }
 
 function afg_admin_html_page() {
@@ -78,10 +94,10 @@ function afg_admin_html_page() {
         'White' => 'White',
         'Transparent' => 'Transparent',
     );
-    function generate_options($params, $variable) {
+    function generate_options($params, $variable, $default) {
         $str = '';
         foreach($params as $key => $value) {
-            if (get_option($variable) == $key) {
+            if (get_option($variable, $default) == $key) {
                 $str .= "<option value=" . $key . " selected='selected'>" . $value . "</option>";
             }
             else {
@@ -93,8 +109,7 @@ function afg_admin_html_page() {
 ?>
 <div class='wrap'>
 <h2><a href='http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
-$base_url = get_option('siteurl') . '/wp-content/plugins/awesome-flickr-gallery-plugin';
-echo ($base_url . '/images/logo_big.png'); ?>" align='center'/></a>Awesome Flickr Gallery Settings</h2>
+echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Awesome Flickr Gallery Settings</h2>
 
 <?php
 if ($_POST) {
@@ -135,16 +150,16 @@ $url=$_SERVER['REQUEST_URI']; ?>
         </tr>
 
         <tr valign='top'>
-        <th scope='row'>Maximum photos to display in the gallery</th>
+        <th scope='row'>Maximum photos to display per page in the gallery</th>
         <td><select name='afg_per_page'>
-            <?php echo generate_options($afg_per_page_map, 'afg_per_page'); ?>
+            <?php echo generate_options($afg_per_page_map, 'afg_per_page', '10'); ?>
         </select></td>
         </tr>
 
         <tr valign='top'>
         <th scope='row'>Size of the photos</th>
         <td><select name='afg_photo_size'>
-            <?php echo generate_options($afg_photo_size_map, 'afg_photo_size'); ?>
+            <?php echo generate_options($afg_photo_size_map, 'afg_photo_size', '_m'); ?>
         </select></td>
         </tr>
 
@@ -159,7 +174,7 @@ $url=$_SERVER['REQUEST_URI']; ?>
         <tr valign='top'>
         <th scope='row'>Photo Descriptions</th>
         <td><select name='afg_descr'>
-            <?php echo generate_options($afg_descr_map, 'afg_descr'); ?>
+            <?php echo generate_options($afg_descr_map, 'afg_descr', '0'); ?>
         </select></td>
         <td><font size='2'>Photo Description setting applies only to Small and Medium size photos. <font color='red'>WARNING:</font> Enabling descriptions for photos can significantly slow down loading of the gallery and hence is not recommended.</font></td>
         </tr>
@@ -167,14 +182,14 @@ $url=$_SERVER['REQUEST_URI']; ?>
         <tr valign='top'>
         <th scope='row'>No of columns</th>
         <td><select name='afg_columns'>
-            <?php echo generate_options($afg_columns_map, 'afg_columns'); ?>
+            <?php echo generate_options($afg_columns_map, 'afg_columns', '2'); ?>
         </select></td>
         </tr>
 
         <tr valign='top'>
         <th scope='row'>Background Color</th>
         <td><select name='afg_bg_color'>
-            <?php echo generate_options($afg_bg_color_map, 'afg_bg_color'); ?>
+            <?php echo generate_options($afg_bg_color_map, 'afg_bg_color', 'Transparent'); ?>
         </select></td>
         </tr>
 
@@ -186,33 +201,42 @@ $url=$_SERVER['REQUEST_URI']; ?>
         <th scope='row'>Add a small credit note about this plugin at the bottom?</th>
         <td style='vertical-align:middle'><input type='checkbox' name='afg_credit_note' value='Yes'
              <?php
-                if (get_option('afg_credit_note') == 'Yes') {
+                if (get_option('afg_credit_note', 'Yes') == 'Yes') {
                     echo 'checked=\'\'';
                 }
              ?>/></td>
         <td><font size='2'>Credit Note will appear as - </font>
             Powered by
             <a href="http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin"/>
-            Awesome Flickr Gallery</a></td>
+            AFG</a></td>
         </tr>
     </table>
 
 <p class="submit">
 <input type="submit" name="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
 <?php if ($_POST) { ?>
-<p bgcolor='cyan'><font size='3'>Settings updated successfully.</font></p>
-<?php } ?>
+<div class="updated"><p><strong><?php echo 'Settings updated successfully' ?></strong></p></div>
+<?php
+if (DEBUG) {
+    $all_options = afg_get_all_options();
+    foreach($all_options as $key => $value) {
+        echo $key . ' => ' . $value . '<br />';
+    }
+}
+
+}
+?>
 </p>
+
+<p><h3>Usage Instructions:</h3><hr />
+Just use code [AFG_gallery] in any of the posts or page to display your Flickr gallery.</p>
 
 </form>
 <br />
 <br />
-<br />
-<?php
-$base_url = get_option('siteurl') . '/wp-content/plugins/awesome-flickr-gallery-plugin';
-?>
+<h3>Support this plugin</h3><hr />
 It takes time and effort to keep releasing new versions of this plugin.  If you like it, consider donating a few bucks to keep receiving new features.
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post"><div class="paypal-donations"><input type="hidden" name="cmd" value="_donations" /><input type="hidden" name="business" value="2P32M6V34HDCQ" /><input type="hidden" name="currency_code" value="USD" /><input type="image" src="<?php echo $base_url . "/images/donate_small.png"; ?>" name="submit" alt="PayPal - The safer, easier way to pay online." /><img alt="" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" /></div></form>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post"><div class="paypal-donations"><input type="hidden" name="cmd" value="_donations" /><input type="hidden" name="business" value="2P32M6V34HDCQ" /><input type="hidden" name="currency_code" value="USD" /><input type="image" src="<?php echo BASE_URL . "/images/donate_small.png"; ?>" name="submit" alt="PayPal - The safer, easier way to pay online." /><img alt="" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" /></div></form>
 
 </div>
 <?php

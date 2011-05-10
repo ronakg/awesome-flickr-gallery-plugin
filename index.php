@@ -3,7 +3,7 @@
 Plugin Name: Awesome Flickr Gallery
 Plugin URI: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Description: A fully customizable Flickr Gallery plug-in for WordPress.
-Version: 1.0.1
+Version: 1.1.0
 Author: Ronak Gandhi
 Author URI: http://www.ronakg.in
 License: GPL2
@@ -27,7 +27,8 @@ if ( is_admin() ) {
     include('admin_settings.php');
 }
 
-$base_url = get_option('siteurl') . '/wp-content/plugins/awesome-flickr-gallery-plugin';
+define('BASE_URL', get_option('siteurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)));
+define('DEBUG', False);
 
 /* Short code to load Awesome Flickr Gallery plugin.  Detects the word
  * [AFG_gallery] in posts or pages and loads the gallery.
@@ -51,18 +52,64 @@ $bg_color_map = array(
 );
 
 function afg_add_lightbox_headers() {
-    global $base_url;
-    echo "<script type=\"text/javascript\" src=\"$base_url/js/prototype.js\"></script>";
-    echo "<script type=\"text/javascript\" src=\"$base_url/js/scriptaculous.js?load=effects,builder\"></script>";
-    echo "<script type=\"text/javascript\" src=\"$base_url/js/lightbox.js\"></script>";
-    echo "<link rel=\"stylesheet\" href=\"$base_url/css/lightbox.css\" type=\"text/css\" media=\"screen\" />";
+    echo "<script type=\"text/javascript\" src=\"" . BASE_URL . "/js/prototype.js\"></script>";
+    echo "<script type=\"text/javascript\" src=\"" . BASE_URL . "/js/scriptaculous.js?load=effects,builder\"></script>";
+    echo "<script type=\"text/javascript\" src=\"" . BASE_URL . "/js/lightbox.js\"></script>";
+    echo "<link rel=\"stylesheet\" href=\"" . BASE_URL . "/css/lightbox.css\" type=\"text/css\" media=\"screen\" />";
+}
+
+/* Encode the params array to make them URL safe.
+ * Example params are api_key, api, user_id etc.
+ */
+function get_encoded_params($params) {
+    $encoded_params = array();
+
+    foreach ($params as $k => $v) {
+        $encoded_params[] = urlencode($k).'='.urlencode($v);
+    }
+    return $encoded_params;
+}
+
+function construct_url($encoded_params) {
+    $url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
+    return $url;
+}
+
+function get_photo_url($farm, $server, $pid, $secret, $size) {
+    if ($size == 'NULL') {
+        $size = '';
+    }
+    return "http://farm$farm.static.flickr.com/$server/{$pid}_$secret$size.jpg";
+}
+
+function get_photo_page_url($user_id, $pid) {
+    return "http://www.flickr.com/photos/$user_id/$pid";
+}
+
+function get_flickr_data($params) {
+    $encoded_params = get_encoded_params($params);
+    $url = construct_url($encoded_params);
+    $rsp = file_get_contents($url);
+    return unserialize($rsp);
+}
+
+function return_error_code($rsp) {
+    return $rsp['message'];
 }
 
 /* Main function that loads the gallery. */
 function afg_display_gallery() {
     global $size_heading_map, $bg_color_map;
 
-    $debug_mode = False;
+    $cur_page = 1;
+    $cur_page_url = (!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] : "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+
+    preg_match('/\?afg_page_id=(?P<page_id>\d+)/', $cur_page_url, $matches);
+    if ($matches) {
+        $cur_page = ($matches['page_id']);
+        $match_pos = strpos($cur_page_url, "?afg_page_id=$cur_page");
+        $cur_page_url = substr($cur_page_url, 0, $match_pos);
+    }
 
     $api_key = get_option('afg_api_key');
     $user_id = get_option('afg_user_id');
@@ -76,7 +123,7 @@ function afg_display_gallery() {
 
     $disp_gallery = '';
 
-    if ($debug_mode) {
+    if (DEBUG) {
         $disp_gallery .= 'API Key - ' . $api_key . '<br />';
         $disp_gallery .= 'User ID - ' . $user_id . '<br />';
         $disp_gallery .= 'Per Page - ' . $per_page . '<br />';
@@ -88,45 +135,6 @@ function afg_display_gallery() {
         $disp_gallery .= 'Background Color - ' . $bg_color . '<br />';
     }
 
-    /* Encode the params array to make them URL safe.
-     * Example params are api_key, api, user_id etc.
-     */
-    function get_encoded_params($params) {
-        $encoded_params = array();
-
-        foreach ($params as $k => $v) {
-            $encoded_params[] = urlencode($k).'='.urlencode($v);
-        }
-        return $encoded_params;
-    }
-
-    function construct_url($encoded_params) {
-        $url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
-        return $url;
-    }
-
-    function get_photo_url($farm, $server, $pid, $secret, $size) {
-        if ($size == 'NULL') {
-            $size = '';
-        }
-        return "http://farm$farm.static.flickr.com/$server/{$pid}_$secret$size.jpg";
-    }
-
-    function get_photo_page_url($user_id, $pid) {
-        return "http://www.flickr.com/photos/$user_id/$pid";
-    }
-
-    function get_flickr_data($params) {
-        $encoded_params = get_encoded_params($params);
-        $url = construct_url($encoded_params);
-        $rsp = file_get_contents($url);
-        return unserialize($rsp);
-    }
-
-    function return_error_code($rsp) {
-        return $rsp['message'];
-    }
-
     /* Parameters to get public photos of the user.  Format we are requesting
      * from Flickr is php_serial.
      */
@@ -136,6 +144,7 @@ function afg_display_gallery() {
         'format' => 'php_serial',
         'user_id' => $user_id,
         'per_page' => $per_page,
+        'page' => $cur_page,
     );
 
     $rsp_obj = get_flickr_data($params);
@@ -144,6 +153,7 @@ function afg_display_gallery() {
         return "<h3>" . return_error_code($rsp_obj) . "</h3>";
     }
 
+    $total_pages = $rsp_obj['photos']['pages'];
     $cur_col = 0;
 
     $disp_gallery .= "<table colspan=" . $columns . " align='center'
@@ -214,12 +224,52 @@ function afg_display_gallery() {
             $disp_gallery .= '</td>';
         }
     }
+    $disp_gallery .= "<tr><td style=\"text-align:center; color:$text_color;
+        vertical-align:top; background-color:{$bg_color}; font-size:110%;
+        border-color:{$bg_color}\" colspan=\"$columns\"><br /><br />";
+    if ($cur_page == 1) {
+        $disp_gallery .="<<b> &#160; 1</b> ";
+    }
+    else {
+        $prev_page = $cur_page - 1;
+        $disp_gallery .= "<a href=\"{$cur_page_url}?afg_page_id=$prev_page\" title=\"Prev Page\"><</a> &#160;";
+        $disp_gallery .= "<a href=\"{$cur_page_url}?afg_page_id=1\" title=\"Page 1\">1</a>  &#160;";
+    }
+    if ($cur_page - 2 > 2) {
+        $start_page = $cur_page - 2;
+        $end_page = $cur_page + 2;
+        $disp_gallery .= " ... ";
+    }
+    else {
+        $start_page = 2;
+        $end_page = 6;
+    }
+    for ($count = $start_page; $count <= $end_page; $count += 1) {
+        if ($count > $total_pages) break;
+        if ($cur_page == $count) {
+            $disp_gallery .= " <b>{$count}</b> ";
+        }
+        else {
+            $disp_gallery .= "&#160;  <a href=\"{$cur_page_url}?afg_page_id={$count}\" title=\"Page {$count}\">{$count}</a>  &#160;";
+        }
+    }
+
+    if ($count < $total_pages) $disp_gallery .= " ... ";
+    if ($count <= $total_pages) {
+        $disp_gallery .= "&#160;  <a href=\"{$cur_page_url}?afg_page_id={$total_pages}\" title=\"Page {$total_pages}\">{$total_pages}</a>";
+    }
+    if ($cur_page == $total_pages) $disp_gallery .= "&#160; >";
+    else {
+        $next_page = $cur_page + 1;
+        $disp_gallery .= " &#160;<a href=\"{$cur_page_url}?afg_page_id=$next_page\" title=\"Next Page\">></a>";
+    }
+
+    $disp_gallery .= "</td></tr>";
     $disp_gallery .= '</table>';
     if ($credit_note) {
         $wp_plugins_url = get_option('siteurl') . '/wp-content/plugins/';
         $disp_gallery .= "<br /><p style='text-align:right'>Powered by <a
-            href=\"http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin\"/>Awesome 
-            Flickr Gallery</p></a>";
+            href=\"http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin\"/>AFG</p></a>";
     }
     return $disp_gallery;
 }
