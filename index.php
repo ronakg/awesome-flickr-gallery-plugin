@@ -3,7 +3,7 @@
 Plugin Name: Awesome Flickr Gallery
 Plugin URI: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Description: A fully customizable Flickr Gallery plug-in for WordPress.
-Version: 1.1.0
+Version: 1.1.5
 Author: Ronak Gandhi
 Author URI: http://www.ronakg.in
 License: GPL2
@@ -56,6 +56,9 @@ function afg_add_lightbox_headers() {
     echo "<script type=\"text/javascript\" src=\"" . BASE_URL . "/js/scriptaculous.js?load=effects,builder\"></script>";
     echo "<script type=\"text/javascript\" src=\"" . BASE_URL . "/js/lightbox.js\"></script>";
     echo "<link rel=\"stylesheet\" href=\"" . BASE_URL . "/css/lightbox.css\" type=\"text/css\" media=\"screen\" />";
+    echo "<style type=\"text/css\">
+          a.afg_page:hover {background:royalblue;text-decoration:underline;color:white;}
+          a.afg_page:visited, a.afg_page:link {text-decoration:none;border:1px solid gray;}</style>";
 }
 
 /* Encode the params array to make them URL safe.
@@ -228,12 +231,13 @@ function afg_display_gallery() {
         vertical-align:top; background-color:{$bg_color}; font-size:110%;
         border-color:{$bg_color}\" colspan=\"$columns\"><br /><br />";
     if ($cur_page == 1) {
-        $disp_gallery .="<<b> &#160; 1</b> ";
+        $disp_gallery .="<font style=\"border:1px solid gray;\">&nbsp< prev&nbsp</font>&nbsp";
+        $disp_gallery .="<font style=\"border:1px solid gray;background:gray;color:white\"> 1 </font>&nbsp";
     }
     else {
         $prev_page = $cur_page - 1;
-        $disp_gallery .= "<a href=\"{$cur_page_url}?afg_page_id=$prev_page\" title=\"Prev Page\"><</a> &#160;";
-        $disp_gallery .= "<a href=\"{$cur_page_url}?afg_page_id=1\" title=\"Page 1\">1</a>  &#160;";
+        $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}?afg_page_id=$prev_page\" title=\"Prev Page\">&nbsp< prev </a>&nbsp";
+        $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}?afg_page_id=1\" title=\"Page 1\"> 1 </a>&nbsp";
     }
     if ($cur_page - 2 > 2) {
         $start_page = $cur_page - 2;
@@ -247,24 +251,24 @@ function afg_display_gallery() {
     for ($count = $start_page; $count <= $end_page; $count += 1) {
         if ($count > $total_pages) break;
         if ($cur_page == $count) {
-            $disp_gallery .= " <b>{$count}</b> ";
+            $disp_gallery .= "<font style=\"border:1px solid gray;background:gray;color:white\">&nbsp{$count}&nbsp</font>&nbsp";
         }
         else {
-            $disp_gallery .= "&#160;  <a href=\"{$cur_page_url}?afg_page_id={$count}\" title=\"Page {$count}\">{$count}</a>  &#160;";
+            $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}?afg_page_id={$count}\" title=\"Page {$count}\">&nbsp{$count} </a>&nbsp";
         }
     }
 
     if ($count < $total_pages) $disp_gallery .= " ... ";
     if ($count <= $total_pages) {
-        $disp_gallery .= "&#160;  <a href=\"{$cur_page_url}?afg_page_id={$total_pages}\" title=\"Page {$total_pages}\">{$total_pages}</a>";
+        $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}?afg_page_id={$total_pages}\" title=\"Page {$total_pages}\">&nbsp{$total_pages} </a>&nbsp";
     }
-    if ($cur_page == $total_pages) $disp_gallery .= "&#160; >";
+    if ($cur_page == $total_pages) $disp_gallery .= "<font style=\"border:1px solid gray\">&nbspnext >&nbsp</font>";
     else {
         $next_page = $cur_page + 1;
-        $disp_gallery .= " &#160;<a href=\"{$cur_page_url}?afg_page_id=$next_page\" title=\"Next Page\">></a>";
+        $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}?afg_page_id=$next_page\" title=\"Next Page\"> next > </a>&nbsp";
     }
 
-    $disp_gallery .= "</td></tr>";
+    $disp_gallery .= "<br />({$rsp_obj['photos']['total']} photos)</td></tr>";
     $disp_gallery .= '</table>';
     if ($credit_note) {
         $wp_plugins_url = get_option('siteurl') . '/wp-content/plugins/';
