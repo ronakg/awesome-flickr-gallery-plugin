@@ -43,6 +43,11 @@ Make sure your Flickr API key and Flickr User ID are correct.
 Make sure you add the shortcode [AFG_gallery] to your post or page where you
 want to load the gallery.  This code is case-sensitive.
 
+== Upgrade Notice ==
+
+= 1.1.0 =
+Added page navigation feature in this release.  Now there is a page navigation links at the bottom of the gallery, so that users can go through all your photos.
+
 == Screenshots ==
 
 1. Awesome Flickr Gallery Settings page
@@ -51,7 +56,6 @@ want to load the gallery.  This code is case-sensitive.
 4. Full size photo view with navigation options to next and previous photos in gallery
 5. Awesome Flickr Gallery with Small size photos and black background
 6. Page navigation feature added in version 1.1.0
-
 
 == Features Planned ==
 
