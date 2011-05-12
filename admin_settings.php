@@ -2,6 +2,7 @@
 add_action('admin_menu', 'afg_admin_menu');
 define('BASE_URL', get_option('siteurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)));
 define('DEBUG', False);
+define('VERSION', '1.1.7');
 
 function afg_admin_menu() {
     add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery',
@@ -127,6 +128,16 @@ $url=$_SERVER['REQUEST_URI']; ?>
 <form method='post' action='<?php echo $url ?>'>
     <?php settings_fields('afg_settings_group'); ?>
     <?php do_settings_sections('afg_plugin_page'); ?>
+
+    <h4 align="right">
+        &nbsp;&nbsp;&nbsp;Version: <b><?php echo VERSION; ?></b> |
+         <a href="http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/faq/">FAQ</a> |
+         <a href="http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/">Rate this plugin</a> |
+         <a href="http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/">Support</a> |
+         <a href="http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/changelog/">Changelog</a> |
+         <a href="http://www.ronakg.in/photography/">Live Demo</a> |
+         <a href="http://www.ronakg.in/about/">Contact Ronak Gandhi</a>
+    </h4>
 
     <table class='form-table'>
         <tr valign='top'>

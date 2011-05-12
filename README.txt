@@ -4,7 +4,7 @@ Donate link: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plug
 Tags: gallery, flickr, photo, image, slideshow, lightbox, portfolio
 Requires at least: 3.0
 Tested up to: 3.1.2
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -58,6 +58,9 @@ plugins that uses Lightbox.
 
 == Upgrade Notice ==
 
+= 1.1.7 =
+* [Bug Fix] Moved to a better API to fetch data from Flickr.
+
 = 1.1.6 =
 * [Bug Fix] Compatibility issue with some browsers.
 
@@ -91,6 +94,9 @@ Gallery (In no particular order):
 * Comment on the photos from your website itself
 
 == Changelog ==
+
+= 1.1.7 =
+* [Bug Fix] Moved to a better API to fetch data from Flickr.
 
 = 1.1.6 =
 * [Bug Fix] Compatibility issue with some browsers.

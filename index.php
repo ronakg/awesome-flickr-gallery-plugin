@@ -3,7 +3,7 @@
 Plugin Name: Awesome Flickr Gallery
 Plugin URI: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Description: A fully customizable Flickr Gallery plug-in for WordPress.
-Version: 1.1.6
+Version: 1.1.7
 Author: Ronak Gandhi
 Author URI: http://www.ronakg.in
 License: GPL2
@@ -64,7 +64,7 @@ function afg_add_lightbox_headers() {
 /* Encode the params array to make them URL safe.
  * Example params are api_key, api, user_id etc.
  */
-function get_encoded_params($params) {
+function afg_get_encoded_params($params) {
     $encoded_params = array();
 
     foreach ($params as $k => $v) {
@@ -73,30 +73,36 @@ function get_encoded_params($params) {
     return $encoded_params;
 }
 
-function construct_url($encoded_params) {
+function afg_construct_url($encoded_params) {
     $url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
     return $url;
 }
 
-function get_photo_url($farm, $server, $pid, $secret, $size) {
+function afg_get_photo_url($farm, $server, $pid, $secret, $size) {
     if ($size == 'NULL') {
         $size = '';
     }
     return "http://farm$farm.static.flickr.com/$server/{$pid}_$secret$size.jpg";
 }
 
-function get_photo_page_url($user_id, $pid) {
+function afg_get_photo_page_url($user_id, $pid) {
     return "http://www.flickr.com/photos/$user_id/$pid";
 }
 
-function get_flickr_data($params) {
-    $encoded_params = get_encoded_params($params);
-    $url = construct_url($encoded_params);
-    $rsp = file_get_contents($url);
+function afg_get_flickr_data($params) {
+    $encoded_params = afg_get_encoded_params($params);
+    $url = afg_construct_url($encoded_params);
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_HEADER, 0);  // ignore any headers
+    ob_start();  // use output buffering so the contents don't get sent directly to the browser
+    curl_exec($curl);  // get the file
+    curl_close($curl);
+    $rsp = ob_get_contents();  // save the contents of the file into $file
+    ob_end_clean();  // turn output buffering back off
     return unserialize($rsp);
 }
 
-function return_error_code($rsp) {
+function afg_return_error_code($rsp) {
     return $rsp['message'];
 }
 
@@ -150,21 +156,21 @@ function afg_display_gallery() {
         'page' => $cur_page,
     );
 
-    $rsp_obj = get_flickr_data($params);
+    $rsp_obj = afg_get_flickr_data($params);
 
     if ($rsp_obj['stat'] == 'fail') {
-        return "<h3>" . return_error_code($rsp_obj) . "</h3>";
+        return "<h3>" . afg_return_error_code($rsp_obj) . "</h3>";
     }
 
     $total_pages = $rsp_obj['photos']['pages'];
     $cur_col = 0;
 
-    $disp_gallery .= "<table colspan=" . $columns . " align='center'
+    $disp_gallery .= "<table align='center'
         style=\"background-color:{$bg_color}; border-color:{$bg_color}\"
         width='100%'>";
 
     foreach($rsp_obj['photos']['photo'] as $photo) {
-        $photo_url = get_photo_url($photo['farm'], $photo['server'],
+        $photo_url = afg_get_photo_url($photo['farm'], $photo['server'],
             $photo['id'], $photo['secret'], $photo_size);
 
         $text_color = $bg_color_map[$bg_color];
@@ -185,13 +191,13 @@ function afg_display_gallery() {
                 border-color:{$bg_color}\">";
         }
 
-        $photo_page_url = get_photo_url($photo['farm'], $photo['server'],
+        $photo_page_url = afg_get_photo_url($photo['farm'], $photo['server'],
             $photo['id'], $photo['secret'], '_z');
         $pid_len = strlen($photo['id']);
 
         $disp_gallery .= "<a href=\"$photo_page_url\"
             rel=\"lightbox[afg_gallery]\" title=\"{$photo['title']}\"><img
-            src='$photo_url'/></a>";
+            src=\"$photo_url\" alt=\"{$photo['title']}\"/></a>";
         if($size_heading_map[$photo_size] && $captions) {
             $disp_gallery .= "<br /><b><font
                 size=\"$size_heading_map[$photo_size]\">{$photo['title']}</font></b>";
@@ -207,9 +213,9 @@ function afg_display_gallery() {
                 'format' => 'php_serial',
                 'photo_id' => $photo['id'],
             );
-            $photo_info = get_flickr_data($params);
+            $photo_info = afg_get_flickr_data($params);
             if ($photo_info['stat'] != 'ok') {
-                return "<h2>" . return_error_code($photo_info) . "</h2>";
+                return "<h2>" . afg_return_error_code($photo_info) . "</h2>";
             }
             $date_taken = $photo_info['photo']['dates']['taken'];
             $date_taken_format = date("F j, Y", strtotime($date_taken));
@@ -228,7 +234,7 @@ function afg_display_gallery() {
         }
     }
     $disp_gallery .= "<tr><td style=\"text-align:center; color:$text_color;
-        vertical-align:top; background-color:{$bg_color}; font-size:110%;
+        vertical-align:top; background-color:{$bg_color}; font-size:90%;
         border-color:{$bg_color}\" colspan=\"$columns\"><br /><br />";
     if ($cur_page == 1) {
         $disp_gallery .="<font style=\"border:1px solid gray;\">&nbsp;< prev&nbsp;</font>&nbsp;";
