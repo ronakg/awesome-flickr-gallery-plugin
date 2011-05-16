@@ -3,7 +3,7 @@
 Plugin Name: Awesome Flickr Gallery
 Plugin URI: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Description: A fully customizable Flickr Gallery plug-in for WordPress.
-Version: 1.1.7
+Version: 1.3.0
 Author: Ronak Gandhi
 Author URI: http://www.ronakg.in
 License: GPL2
@@ -52,13 +52,14 @@ $bg_color_map = array(
 );
 
 function afg_add_lightbox_headers() {
-    echo "<script type=\"text/javascript\" src=\"" . BASE_URL . "/js/prototype.js\"></script>";
-    echo "<script type=\"text/javascript\" src=\"" . BASE_URL . "/js/scriptaculous.js?load=effects,builder\"></script>";
-    echo "<script type=\"text/javascript\" src=\"" . BASE_URL . "/js/lightbox.js\"></script>";
-    echo "<link rel=\"stylesheet\" href=\"" . BASE_URL . "/css/lightbox.css\" type=\"text/css\" media=\"screen\" />";
+    echo "<link href=\"" . BASE_URL . "/colorbox/colorbox.css\" rel=\"stylesheet\" media=\"screen\">";
+    echo "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js\"></script>";
+    echo "<script src=\"" . BASE_URL . "/colorbox/jquery.colorbox.js\"></script>";
+    echo "<script src=\"" . BASE_URL . "/colorbox/mycolorbox.js\"></script>";
     echo "<style type=\"text/css\">
           a.afg_page:hover {background:royalblue;text-decoration:underline;color:white;}
-          a.afg_page:visited, a.afg_page:link {text-decoration:none;border:1px solid gray;}</style>";
+          a.afg_page:visited, a.afg_page:link {text-decoration:none;border:1px solid gray;}
+          </style>";
 }
 
 /* Encode the params array to make them URL safe.
@@ -127,8 +128,8 @@ function afg_display_gallery() {
     $captions = get_option('afg_captions');
     $descr = get_option('afg_descr');
     $columns = get_option('afg_columns');
-    $credit_note = get_option('afg_credit_note');
     $bg_color = get_option('afg_bg_color');
+    $credit_note = get_option('afg_credit_note');
 
     $disp_gallery = '';
 
@@ -155,21 +156,59 @@ function afg_display_gallery() {
         'per_page' => $per_page,
         'page' => $cur_page,
     );
+    /*
+    if ($photoset_id) {
+        $flickr_api = 'photoset';
+        $params = array(
+            'api_key' => $api_key,
+            'method' => 'flickr.photosets.getPhotos',
+            'photoset_id' => $photoset_id,
+            'format' => 'php_serial',
+            'user_id' => $user_id,
+            'per_page' => $per_page,
+            'page' => $cur_page,
+        );
+    }
+    else if ($gallery_id) {
+        $flickr_api = 'photos';
+        $params = array(
+            'api_key' => $api_key,
+            'method' => 'flickr.galleries.getPhotos',
+            'gallery_id' => $gallery_id,
+            'format' => 'php_serial',
+            'user_id' => $user_id,
+            'per_page' => $per_page,
+            'page' => $cur_page,
+        );
+    }
+    else {
+        $flickr_api = 'photos';
+        $params = array(
+            'api_key' => $api_key,
+            'method' => 'flickr.people.getPublicPhotos',
+            'format' => 'php_serial',
+            'user_id' => $user_id,
+            'per_page' => $per_page,
+            'page' => $cur_page,
+        );
+    }
+     */
 
     $rsp_obj = afg_get_flickr_data($params);
 
     if ($rsp_obj['stat'] == 'fail') {
         return "<h3>" . afg_return_error_code($rsp_obj) . "</h3>";
     }
+    $flickr_api = 'photos';
 
-    $total_pages = $rsp_obj['photos']['pages'];
+    $total_pages = $rsp_obj[$flickr_api]['pages'];
     $cur_col = 0;
 
     $disp_gallery .= "<table align='center'
         style=\"background-color:{$bg_color}; border-color:{$bg_color}\"
         width='100%'>";
 
-    foreach($rsp_obj['photos']['photo'] as $photo) {
+    foreach($rsp_obj[$flickr_api]['photo'] as $photo) {
         $photo_url = afg_get_photo_url($photo['farm'], $photo['server'],
             $photo['id'], $photo['secret'], $photo_size);
 
@@ -196,7 +235,7 @@ function afg_display_gallery() {
         $pid_len = strlen($photo['id']);
 
         $disp_gallery .= "<a href=\"$photo_page_url\"
-            rel=\"lightbox[afg_gallery]\" title=\"{$photo['title']}\"><img
+            class=\"cboxElement\" rel=\"example4\" title=\"{$photo['title']}\"><img
             src=\"$photo_url\" alt=\"{$photo['title']}\"/></a>";
         if($size_heading_map[$photo_size] && $captions) {
             $disp_gallery .= "<br /><b><font
@@ -274,13 +313,13 @@ function afg_display_gallery() {
         $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}?afg_page_id=$next_page\" title=\"Next Page\"> next > </a>&nbsp;";
     }
 
-    $disp_gallery .= "<br />({$rsp_obj['photos']['total']} photos)</td></tr>";
-    $disp_gallery .= '</table>';
+    $disp_gallery .= "<br />({$rsp_obj[$flickr_api]['total']} photos)<br /><br />";
     if ($credit_note) {
         $wp_plugins_url = get_option('siteurl') . '/wp-content/plugins/';
         $disp_gallery .= "<br /><p style='text-align:right'>Powered by <a
-            href=\"http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin\"/>AFG</p></a>";
+            href=\"http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin\"/>AFG</p></a></td></tr>";
     }
+    $disp_gallery .= '</table>';
     return $disp_gallery;
 }
 ?>

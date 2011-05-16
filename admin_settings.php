@@ -2,11 +2,15 @@
 add_action('admin_menu', 'afg_admin_menu');
 define('BASE_URL', get_option('siteurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)));
 define('DEBUG', False);
-define('VERSION', '1.1.7');
+define('VERSION', '1.3.0');
 
 function afg_admin_menu() {
-    add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery',
-        'manage_options', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png");
+    add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery', 'manage_options', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png");
+    /*
+    add_submenu_page('afg_plugin_page', 'Awesome Flickr Gallery | Settings', 'Settings', 'manage_options', 'afg_plugin_page', 'afg_admin_html_page');
+    add_submenu_page('afg_plugin_page', 'Awesome Flickr Gallery | Edit Galleries', 'Edit Galleries', 'manage_options', 'afg_edit_galleries_page', 'afg_edit_galleries_page');
+    add_submenu_page('afg_plugin_page', 'Awesome Flickr Gallery | Add Gallery', 'Add Gallery', 'manage_options', 'afg_add_gallery_page', 'afg_add_gallery_page');
+     */
     add_action('admin_init', 'afg_register_settings');
 }
 
@@ -23,6 +27,9 @@ function afg_register_settings() {
     register_setting('afg_settings_group', 'afg_columns');
     register_setting('afg_settings_group', 'afg_credit_note');
     register_setting('afg_settings_group', 'afg_bg_color');
+    register_setting('afg_settings_group', 'afg_galleries');
+    register_setting('afg_settings_group', 'afg_gallery_count');
+
 }
 
 function afg_get_all_options() {
@@ -30,13 +37,51 @@ function afg_get_all_options() {
         'afg_api_key' => get_option('afg_api_key'),
         'afg_user_id' => get_option('afg_user_id'),
         'afg_photo_size' => get_option('afg_photo_size'),
+        'afg_per_page' => get_option('afg_per_page'),
         'afg_captions' => get_option('afg_captions'),
         'afg_descr' => get_option('afg_descr'),
         'afg_columns' => get_option('afg_columns'),
         'afg_credit_note' => get_option('afg_credit_note'),
         'afg_bg_color' => get_option('afg_bg_color'),
+        'afg_galleries' => get_option('afg_galleries'),
+        'afg_gallery_count' => get_option('afg_gallery_count'),
     );
 }
+
+/*
+function afg_edit_galleries_page() {
+?>
+<div class='wrap'>
+<h2><a href='http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
+echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Manage Galleries</h2>
+</div>
+<?php
+    $galleries = get_option('afg_galleries');
+    if ($galleries) {
+
+    }
+    else {
+        echo 'No Galleries Found';
+    }
+}
+
+function afg_add_gallery_page() {
+$url=$_SERVER['REQUEST_URI']; ?>
+<div class='wrap'>
+<h2><a href='http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
+echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Add New Gallery</h2>
+<form method='post' action='<?php echo $url ?>'>
+    <table class='form-table'>
+        <tr valign='top'>
+        <th scope='row'>Gallery Name:</td>
+        <td><input type='text' name='afg_gallery_name' /></td>
+        </tr>
+    </table>
+</form>
+</div>
+<?php
+}
+ */
 
 function afg_admin_html_page() {
     $afg_per_page_map = array(
