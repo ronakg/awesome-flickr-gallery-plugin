@@ -1,10 +1,10 @@
 === Awesome Flickr Gallery ===
 Contributors: ronakg
 Donate link: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
-Tags: gallery, flickr, photo, image, slideshow, lightbox, portfolio
+Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio
 Requires at least: 3.0
 Tested up to: 3.1.2
-Stable tag: 1.1.7
+Stable tag: 1.3.0
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -19,6 +19,7 @@ providing a simple yet customizable way to create stunning Flickr gallery.
 
 * Fast and light
 * View full size photos very quickly with easy navigation
+* View full size photos with slideshow
 * Fits automatically according to the width of the theme
 * Select number of photos to display per page in the gallery
 * Turn on/off photo titles
@@ -58,6 +59,10 @@ plugins that uses Lightbox.
 
 == Upgrade Notice ==
 
+= 1.3.0 =
+* Added SlideShow option when viewing full size photos
+* Moved to colorbox from lightbox for displaying full size photos
+
 = 1.1.7 =
 * [Bug Fix] Moved to a better API to fetch data from Flickr.
 
@@ -77,7 +82,7 @@ plugins that uses Lightbox.
 1. Awesome Flickr Gallery Settings page
 2. Awesome Flickr Gallery with photos of size Small with Title and Description ON
 3. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
-4. Full size photo view with navigation options to next and previous photos in gallery
+4. Full size photo view with SlideShow and navigation options to next and previous photos in gallery
 5. Awesome Flickr Gallery with Small size photos and black background
 6. Page navigation feature added in version 1.1.5
 
@@ -86,7 +91,6 @@ plugins that uses Lightbox.
 Here's a list of planned features in upcoming releases of Awesome Flickr
 Gallery (In no particular order):
 
-* Slideshow
 * View EXIF data of the images
 * Display images from specific photosets only
 * Exclude photos with specific tags
@@ -94,6 +98,10 @@ Gallery (In no particular order):
 * Comment on the photos from your website itself
 
 == Changelog ==
+
+= 1.3.0 =
+* Added SlideShow option when viewing full size photos
+* Moved to colorbox from lightbox for displaying full size photos
 
 = 1.1.7 =
 * [Bug Fix] Moved to a better API to fetch data from Flickr.
