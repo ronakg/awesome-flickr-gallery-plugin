@@ -33,7 +33,8 @@ providing a simple yet customizable way to create stunning Flickr gallery.
 You can see a *live demo* of this plugin on my personal photography page -
 [Photography | RonakG.in](http://www.ronakg.in/photography/)
 
-More Examples -
+** More Examples -**
+
 * [Demo Page 1](http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-1/)
 * [Demo Page 2](http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-2/)
 * [Demo Page 3](http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-3/)
@@ -72,8 +73,6 @@ colorbox etc.  If your theme has such an option, turn it off.
 == Upgrade Notice ==
 
 = 2.5.0 =
-
-#### MAJOR RELEASE ####
 
 - Now create multiple instances of your gallery with different settings.
 - Select photo source from your Flickr photostream, photoset or galleries.
