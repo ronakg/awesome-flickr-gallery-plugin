@@ -57,8 +57,8 @@
 	},
 	
 	// Abstracting the HTML and event identifiers for easy rebranding
-	colorbox = 'colorbox',
-	prefix = 'cbox',
+	colorbox = 'afgcolorbox',
+	prefix = 'afgcbox',
 	
 	// Events	
 	event_open = prefix + '_open',

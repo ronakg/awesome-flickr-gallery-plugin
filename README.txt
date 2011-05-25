@@ -4,7 +4,7 @@ Donate link: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plug
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio
 Requires at least: 3.0
 Tested up to: 3.1.2
-Stable tag: 1.3.0
+Stable tag: 2.5.0
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -18,6 +18,8 @@ providing a simple yet customizable way to create stunning Flickr gallery.
 **Features:**
 
 * Fast and light
+* Create multiple galleries with different parameters
+* Select Photos from your Flickr Photostream, a Photoset or a Gallery
 * View full size photos very quickly with easy navigation
 * View full size photos with slideshow
 * Fits automatically according to the width of the theme
@@ -26,9 +28,15 @@ providing a simple yet customizable way to create stunning Flickr gallery.
 * Turn on/off photo descriptions and photo taken date
 * Select number of columns to organize photos
 * Select background color between White, Black or Transparent based on your theme
+* Intuitive menu pages with easy navigation and photo previews
 
 You can see a *live demo* of this plugin on my personal photography page -
 [Photography | RonakG.in](http://www.ronakg.in/photography/)
+
+More Examples -
+[Demo Page 1](http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-1/)
+[Demo Page 2](http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-2/)
+[Demo Page 3](http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-3/)
 
 == Installation ==
 
@@ -37,7 +45,8 @@ directory or install the plugin from your WordPress dashboard -> plugins -> add
 new menu
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Configure plugin using Awesome Flickr Gallery settings page
-1. Place [AFG_gallery] in your posts and/or pages to show the gallery
+1. Place [AFG_gallery] in your posts and/or pages to show the default gallery
+or create new galleries with different settings and insert the generated code
 
 == Frequently Asked Questions ==
 
@@ -52,39 +61,53 @@ want to load the gallery.  This code is case-sensitive.
 
 = When I click the photo, it doesn't open full size photo. =
 
-Awesome Flickr Gallery uses *Lightbox* to display full size photos.  Most likey
-you have another plugin enabled, which also uses the lightbox and is overriding
+Awesome Flickr Gallery uses *Colorbox* to display full size photos.  Most likey
+you have another plugin enabled, which also uses the colorbox and is overriding
 the Awesome Flickr Gallery settings.  It is recommended to deactivate any other
-plugins that uses Lightbox.
+plugins that uses colorbox.
+
+Also, some themes have built-in settings to display images using lightbox or
+colorbox etc.  If your theme has such an option, turn it off.
 
 == Upgrade Notice ==
 
+= 2.5.0 =
+
+#### MAJOR RELEASE ####
+
+- Now create multiple instances of your gallery with different settings.
+- Select photo source from your Flickr photostream, photoset or galleries.
+- New improved admin panel with slick menus and photo previews.
+
 = 1.3.0 =
-* Added SlideShow option when viewing full size photos
-* Moved to colorbox from lightbox for displaying full size photos
+- Added SlideShow option when viewing full size photos
+- Moved to colorbox from lightbox for displaying full size photos
 
 = 1.1.7 =
-* [Bug Fix] Moved to a better API to fetch data from Flickr.
+- [Bug Fix] Moved to a better API to fetch data from Flickr.
 
 = 1.1.6 =
-* [Bug Fix] Compatibility issue with some browsers.
+- [Bug Fix] Compatibility issue with some browsers.
 
 = 1.1.5 =
-* Much better looking page navigation.  Check out the screenshot.
+- Much better looking page navigation.  Check out the screenshot.
 
 = 1.1.0 =
-* Added page navigation feature in this release.  Now there is a page
+- Added page navigation feature in this release.  Now there is a page
   navigation links at the bottom of the gallery, so that users can go through
   all your photos.
 
 == Screenshots ==
 
-1. Awesome Flickr Gallery Settings page
-2. Awesome Flickr Gallery with photos of size Small with Title and Description ON
-3. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
-4. Full size photo view with SlideShow and navigation options to next and previous photos in gallery
-5. Awesome Flickr Gallery with Small size photos and black background
-6. Page navigation feature added in version 1.1.5
+1. Default Settings Page
+2. Add Gallery Page
+3. Edit Galleries Page
+4. Saved Galleries Page
+5. Awesome Flickr Gallery with photos of size Small with Title and Description ON
+6. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
+7. Full size photo view with SlideShow and navigation options to next and previous photos in gallery
+8. Awesome Flickr Gallery with Small size photos and black background
+9. Page navigation feature added in version 1.1.5
 
 == Features Planned ==
 
@@ -92,12 +115,18 @@ Here's a list of planned features in upcoming releases of Awesome Flickr
 Gallery (In no particular order):
 
 * View EXIF data of the images
-* Display images from specific photosets only
 * Exclude photos with specific tags
 * View photo comments
 * Comment on the photos from your website itself
 
 == Changelog ==
+
+= 2.5.0 =
+
+* Create multiple instances of your gallery with different settings
+* Select photo source from your Flickr photostream, photoset or galleries
+* New improved admin panel with slick menus and photo previews
+* Bug fixes
 
 = 1.3.0 =
 * Added SlideShow option when viewing full size photos
