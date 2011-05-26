@@ -41,13 +41,10 @@ You can see a *live demo* of this plugin on my personal photography page -
 
 == Installation ==
 
-1. Extract the contents of the zip archive to the `/wp-content/plugins/`
-directory or install the plugin from your WordPress dashboard -> plugins -> add
-new menu
+1. Extract the contents of the zip archive to the `/wp-content/plugins/` directory or install the plugin from your WordPress dashboard -> plugins -> add new menu
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Configure plugin using Awesome Flickr Gallery settings page
-1. Place [AFG_gallery] in your posts and/or pages to show the default gallery
-or create new galleries with different settings and insert the generated code
+1. Place [AFG_gallery] in your posts and/or pages to show the default gallery or create new galleries with different settings and insert the generated code
 
 == Frequently Asked Questions ==
 
