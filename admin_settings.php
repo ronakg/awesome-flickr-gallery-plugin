@@ -178,7 +178,7 @@ $url=$_SERVER['REQUEST_URI']; ?>
                  ?>/></td>
             <td><font size='2'>Credit Note will appear at the bottom of the gallery as - </font>
                 Powered by
-                <a href="http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin"/>
+                <a href="http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin" title="Awesome Flickr Gallery by Ronak Gandhi"/>
                 AFG</a></td>
             </tr>
         </table>

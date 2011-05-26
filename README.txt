@@ -3,8 +3,8 @@ Contributors: ronakg
 Donate link: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio
 Requires at least: 3.0
-Tested up to: 3.1.2
-Stable tag: 2.5.0
+Tested up to: 3.1.3
+Stable tag: 2.5.1
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -72,8 +72,11 @@ colorbox etc.  If your theme has such an option, turn it off.
 
 == Upgrade Notice ==
 
-= 2.5.0 =
+= 2.5.1 =
+- [Bug Fix] Extra line breaks were added by some themes.
+- [Bug Fix] Do not show pagination bar if there is only one page.
 
+= 2.5.0 =
 - Now create multiple instances of your gallery with different settings.
 - Select photo source from your Flickr photostream, photoset or galleries.
 - New improved admin panel with slick menus and photo previews.
@@ -119,6 +122,11 @@ Gallery (In no particular order):
 * Comment on the photos from your website itself
 
 == Changelog ==
+
+= 2.5.1 =
+
+* [Bug Fix] Extra line breaks were added by some themes.
+* [Bug Fix] Do not show pagination bar if there is only one page.
 
 = 2.5.0 =
 

@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', False);
-define('VERSION', '2.5.0');
+define('VERSION', '2.5.1');
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(
@@ -277,6 +277,11 @@ function afg_usage_box($code) {
         </table>
         </div></div>
         ";
+}
+
+function get_afg_option($gallery, $var) {
+    if ($gallery[$var]) return $gallery[$var];
+    else return get_option('afg_' . $var);
 }
 
 function afg_donate_box() {
