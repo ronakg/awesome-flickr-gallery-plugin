@@ -3,6 +3,7 @@ include_once('afg_libs.php');
 $default_gallery_id = 0;
 
 if ($_POST && $_POST['afg_edit_gallery_name']) {
+    global $default_gallery_id;
     $gallery = array(
         'name' => $_POST['afg_edit_gallery_name'],
         'gallery_descr' => $_POST['afg_edit_gallery_descr'],
@@ -58,7 +59,11 @@ function afg_edit_galleries() {
 
     $cur_page_url = (!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] : "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     preg_match('/\&gallery_id=(?P<gallery_id>\d+)/', $cur_page_url, $matches);
-    if ($matches) $default_gallery_id = $matches['gallery_id'];
+    if ($matches && !$default_gallery_id) {
+        $default_gallery_id = $matches['gallery_id'];
+        $match_pos = strpos($cur_page_url, "&gallery_id=$default_gallery_id");
+        $cur_page_url = substr($cur_page_url, 0, $match_pos);
+    }
 
     $params = array(
         'api_key' => get_option('afg_api_key'),

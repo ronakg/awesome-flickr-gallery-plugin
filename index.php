@@ -267,12 +267,15 @@ function afg_display_gallery($atts) {
             $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}?afg_page_id=$next_page\" title=\"Next Page\"> next > </a>&nbsp;";
         }
 
-        $disp_gallery .= "<br />({$rsp_obj[$flickr_api]['total']} photos)<br /><br />";
+        $disp_gallery .= "<br />({$rsp_obj[$flickr_api]['total']} photos)<br /><br /></td></tr>";
     }
     if ($credit_note == 'on') {
+        $disp_gallery .= "<tr><td style=\"text-align:center; color:{$text_color};" .
+            "vertical-align:top; background-color:{$bg_color}; font-size:90%;" .
+            "border-color:{$bg_color}\" colspan=\"$columns\">";
         $disp_gallery .= "<br /><p style='text-align:right'>Powered by " .
             "<a href=\"http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin\"" .
-            "title=\"Awesome Flickr Gallery by Ronak Gandhi\"/>AFG</p></a></td></tr>";
+            "title=\"Awesome Flickr Gallery by Ronak Gandhi\"/>AFG</p></a>";
     }
     $disp_gallery .= '</table>';
     return $disp_gallery;
