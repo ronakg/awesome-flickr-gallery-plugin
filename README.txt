@@ -39,6 +39,11 @@ You can see a *live demo* of this plugin on my personal photography page -
 * [Demo Page 2](http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-2/)
 * [Demo Page 3](http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-3/)
 
+**Support:**
+
+Can't get the plugin working?  Head to the discussion forum for solution -
+[Discussions | RonakG.in](http://www.ronakg.in/discussions/#/categories/awesome-flickr-gallery)
+
 == Installation ==
 
 1. Extract the contents of the zip archive to the `/wp-content/plugins/` directory or install the plugin from your WordPress dashboard -> plugins -> add new menu
@@ -66,6 +71,10 @@ plugins that uses colorbox.
 
 Also, some themes have built-in settings to display images using lightbox or
 colorbox etc.  If your theme has such an option, turn it off.
+
+
+Still can't get the plugin working?  Head to the discussion forum for solution -
+[Discussions | RonakG.in](http://www.ronakg.in/discussions/#/categories/awesome-flickr-gallery)
 
 == Upgrade Notice ==
 
