@@ -26,6 +26,7 @@ function afg_setup_options() {
     if (get_option('afg_credit_note') == '1' || get_option('afg_credit_note') == 'Yes') update_option('afg_credit_note', 'on');
     if (get_option('afg_credit_note') == '0') update_option('afg_credit_note', 'off');
 //    update_option('afg_galleries', '');
+    if (!get_option('afg_pagination')) update_option('afg_pagination', 'on');
 
     $galleries = get_option('afg_galleries');
     if (!$galleries) {

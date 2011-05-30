@@ -3,7 +3,7 @@
 Plugin Name: Awesome Flickr Gallery
 Plugin URI: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Description: A fully customizable Flickr Gallery plug-in for WordPress.
-Version: 2.6.0
+Version: 2.6.1
 Author: Ronak Gandhi
 Author URI: http://www.ronakg.in
 License: GPL2
@@ -59,6 +59,8 @@ function afg_return_error_code($rsp) {
 /* Main function that loads the gallery. */
 function afg_display_gallery($atts) {
     global $size_heading_map, $afg_text_color_map;
+
+    if (!get_option('afg_pagination')) update_option('afg_pagination', 'on');
 
     extract( shortcode_atts( array(
         'id' => '0',

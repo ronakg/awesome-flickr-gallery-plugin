@@ -111,10 +111,10 @@ function loadGallerySettings() {
 
     if (source_element.value == 'photoset') {
         photosets_box.value = active_gallery.photoset_id;
-        galleries_box.value = NULL;
+        galleries_box.value = '';
     }
     if (source_element.value == 'gallery') {
         galleries_box.value = active_gallery.gallery_id;
-        photosets_box.value = NULL;
+        photosets_box.value = '';
     }
 }
