@@ -3,7 +3,7 @@ $(document).ready(function(){
 $("a[rel='example1']").colorbox();
 $("a[rel='example2']").colorbox({transition:"fade"});
 $("a[rel='example3']").colorbox({transition:"none", width:"75%", height:"75%"});
-$("a[rel='example4']").colorbox({slideshow:true, slideshowSpeed:3500});
+$("a[rel='example4']").colorbox({slideshow:true, slideshowAuto:false, slideshowSpeed:3500});
 $(".example5").colorbox();
 $(".example6").colorbox({iframe:true, innerWidth:425, innerHeight:344});
 $(".example7").colorbox({width:"80%", height:"80%", iframe:true});

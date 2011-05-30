@@ -4,7 +4,7 @@ Donate link: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plug
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio
 Requires at least: 3.0
 Tested up to: 3.1.3
-Stable tag: 2.5.3
+Stable tag: 2.6.0
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -20,9 +20,10 @@ providing a simple yet customizable way to create stunning Flickr gallery.
 * Fast and light
 * Create multiple galleries with different parameters
 * Select Photos from your Flickr Photostream, a Photoset or a Gallery
+* Fits into a sidebar widget too
 * View full size photos very quickly with easy navigation
 * View full size photos with slideshow
-* Fits automatically according to the width of the theme
+* Fits automatically according to the width of the theme or you can select the width of the gallery yourself
 * Select number of photos to display per page in the gallery
 * Turn on/off photo titles
 * Turn on/off photo descriptions and photo taken date
@@ -32,6 +33,8 @@ providing a simple yet customizable way to create stunning Flickr gallery.
 
 You can see a *live demo* of this plugin on my personal photography page -
 [Photography | RonakG.in](http://www.ronakg.in/photography/)
+
+Check out my home page to see a demo of how the Gallery fits into a sidebar widget - [RonakG.in | Live life to the fullest...](http://www.ronakg.in/)
 
 **More Examples:**
 
@@ -77,6 +80,10 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 [Discussions | RonakG.in](http://www.ronakg.in/discussions/#/categories/awesome-flickr-gallery)
 
 == Upgrade Notice ==
+
+= 2.6.0 =
+- Added a configuration option to control width of the gallery for better flexibility.
+- Added a configuration option to enale/disable pagination.  This helps if you want to insert the gallery into a sidebar widget.
 
 = 2.5.3 =
 - [Bug Fix] When changes are submitted on Edit Galleries page, selected gallery would go back to default instead of last edited gallery.
@@ -133,6 +140,11 @@ Gallery (In no particular order):
 * Comment on the photos from your website itself
 
 == Changelog ==
+
+= 2.6.0 =
+* Added a configuration option to control width of the gallery for better flexibility.
+* Added a configuration option to enale/disable pagination.  This helps if you want to insert the gallery into a sidebar widget.
+* Change slideshow behavior based on feedback.  Now it doesn't start automatically.
 
 = 2.5.3 =
 * [Bug Fix] When changes are submitted on Edit Galleries page, selected gallery would go back to default instead of last edited gallery.

@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', False);
-define('VERSION', '2.5.3');
+define('VERSION', '2.6.0');
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(
@@ -17,6 +17,20 @@ $afg_photo_source_map = array(
     'photostream' => 'Photostream',
     'gallery' => 'Gallery',
     'photoset' => 'Photoset',
+);
+
+$afg_width_map = array(
+    'default' => 'Use Default',
+    'auto' => 'Automatic',
+    '10' => '10 %',
+    '20' => '20 %',
+    '30' => '30 %',
+    '40' => '40 %',
+    '50' => '50 %',
+    '60' => '60 %',
+    '70' => '70 %',
+    '80' => '80 %',
+    '90' => '90 %',
 );
 
 $afg_per_page_map = array(
@@ -55,6 +69,12 @@ $afg_photo_size_map = array(
 $afg_on_off_map = array(
     'off' => 'Off  ',
     'on' => 'On  ',
+    'default' => 'Use Default',
+);
+
+$afg_yes_no_map = array(
+    'off' => 'Yes  ',
+    'on' => 'No  ',
     'default' => 'Use Default',
 );
 
@@ -165,7 +185,7 @@ function afg_generate_flickr_settings_table($photosets, $galleries, $default_pho
 }
 
 function afg_generate_gallery_settings_table() {
-    global $afg_per_page_map, $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, $afg_columns_map, $afg_bg_color_map, $afg_photo_source_map;
+    global $afg_per_page_map, $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, $afg_columns_map, $afg_bg_color_map, $afg_photo_source_map, $afg_width_map, $afg_yes_no_map;
     return "
     <div id=\"poststuff\">
         <div class=\"postbox\">
@@ -215,6 +235,23 @@ function afg_generate_gallery_settings_table() {
             " . afg_generate_options($afg_bg_color_map, 'default', True) . "
         </select></td>
         </tr>
+
+        <tr valign='top'>
+        <th scope='row'>Gallery Width</th>
+        <td><select name='afg_width' id='afg_width'>
+        " . afg_generate_options($afg_width_map, 'default', True) . "
+        </select></td>
+        <td><font size='2'>Width of the Gallery is relative to the width of the page where Gallery is being generated.  <i>Automatic</i> is 100% of page width.</font></td>
+        </tr>
+
+        <tr valign='top'>
+        <th scope='row'>Disable Pagination?</th>
+        <td><select name='afg_pagination' id='afg_pagination'>
+        " . afg_generate_options($afg_yes_no_map, 'default', True) . "
+        </select></td>
+        <td><font size='2'>Useful when displaying gallery in a sidebar widget where you want only few recent photos.</td>
+        </tr>
+
         <tr valign='top'>
         <th scope='row'>Add a Small Credit Note?</th>
         <td><select name='afg_credit_note' id='afg_credit_note'>
@@ -290,7 +327,7 @@ function afg_donate_box() {
         <div class=\"postbox\">
         <h3>Support this plugin</h3>
         <table class='form-table'>
-        <td>It takes time and effort to keep releasing new versions of this plugin.  If you like it, consider donating a few bucks to keep receiving new features.
+        <td>It takes time and effort to keep releasing new versions of this plugin.  If you like it, consider donating a few bucks (especially if you are using this plugin on a commercial website) to keep receiving new features.
         </form><form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\"><div style=\"text-align:center\" class=\"paypal-donations\"><input type=\"hidden\" name=\"cmd\" value=\"_donations\" /><input type=\"hidden\" name=\"business\" value=\"2P32M6V34HDCQ\" /><input type=\"hidden\" name=\"currency_code\" value=\"USD\" /><input type=\"image\" src=\"" . BASE_URL . "/images/donate_small.png\" name=\"submit\" alt=\"PayPal - The safer, easier way to pay online.\" /><img alt=\"PayPal Donate\" src=\"https://www.paypal.com/en_US/i/scr/pixel.gif\" width=\"1\" height=\"1\" /><br />All major credit cards are accepted too.</div></form>
         </td>
         </table>

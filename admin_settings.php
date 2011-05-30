@@ -55,6 +55,8 @@ function afg_admin_init() {
     register_setting('afg_settings_group', 'afg_bg_color');
     register_setting('afg_settings_group', 'afg_version');
     register_setting('afg_settings_group', 'afg_galleries');
+    register_setting('afg_settings_group', 'afg_page_width');
+    register_setting('afg_settings_group', 'afg_pagination');
 
     // Register javascripts
     wp_register_script('edit-galleries-script', BASE_URL . '/js/edit_galleries.js');
@@ -72,11 +74,13 @@ function afg_get_all_options() {
         'afg_columns' => get_option('afg_columns'),
         'afg_credit_note' => get_option('afg_credit_note'),
         'afg_bg_color' => get_option('afg_bg_color'),
+        'afg_width' => get_option('afg_width'),
+        'afg_pagination' => get_option('afg_pagination'),
     );
 }
 
 function afg_admin_html_page() {
-    global $afg_per_page_map, $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, $afg_columns_map, $afg_bg_color_map;
+    global $afg_per_page_map, $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, $afg_columns_map, $afg_bg_color_map, $afg_width_map;
 ?>
 <div class='wrap'>
 <h2><a href='http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
@@ -91,9 +95,14 @@ if ($_POST) {
     update_option('afg_captions', $_POST['afg_captions']);
     update_option('afg_descr', $_POST['afg_descr']);
     update_option('afg_columns', $_POST['afg_columns']);
+    update_option('afg_width', $_POST['afg_width']);
+    update_option('afg_bg_color', $_POST['afg_bg_color']);
+
     if ($_POST['afg_credit_note']) update_option('afg_credit_note', 'on');
     else update_option('afg_credit_note', 'off');
-    update_option('afg_bg_color', $_POST['afg_bg_color']);
+
+    if ($_POST['afg_pagination']) update_option('afg_pagination', 'off');
+    else update_option('afg_pagination', 'on');
 }
 $url=$_SERVER['REQUEST_URI']; ?>
 <form method='post' action='<?php echo $url ?>'>
@@ -126,7 +135,7 @@ $url=$_SERVER['REQUEST_URI']; ?>
         <table class='form-table'>
 
             <tr valign='top'>
-            <th scope='row'>Max photos Per Page</th>
+            <th scope='row'>Max Photos Per Page</th>
             <td><select name='afg_per_page'>
                 <?php echo afg_generate_options($afg_per_page_map, get_option('afg_per_page', '10')); ?>
             </select></td>
@@ -168,6 +177,26 @@ $url=$_SERVER['REQUEST_URI']; ?>
                 <?php echo afg_generate_options($afg_bg_color_map, get_option('afg_bg_color', 'Transparent')); ?>
             </select></td>
             </tr>
+
+            <tr valign='top'>
+            <th scope='row'>Gallery Width</th>
+            <td><select name='afg_width'>
+                <?php echo afg_generate_options($afg_width_map, get_option('afg_width', 'auto')); ?>
+            </select></td>
+            <td><font size='2'>Width of the Gallery is relative to the width of the page where Gallery is being generated.  <i>Automatic</i> is 100% of page width.</font></td>
+            </tr>
+
+            <tr valign='top'>
+            <th scope='row'>Disable Pagination?</th>
+            <td><input type='checkbox' name='afg_pagination' value='off'
+                 <?php
+                    if (get_option('afg_pagination', 'off') == 'off') {
+                        echo 'checked=\'\'';
+                    }
+                ?>/></td>
+            <td><font size='2'>Useful when displaying gallery in a sidebar widget where you want only few recent photos.</td>
+            </tr>
+
             <tr valign='top'>
             <th scope='row'>Add a Small Credit Note?</th>
             <td><input type='checkbox' name='afg_credit_note' value='Yes'

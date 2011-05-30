@@ -3,7 +3,7 @@
 Plugin Name: Awesome Flickr Gallery
 Plugin URI: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Description: A fully customizable Flickr Gallery plug-in for WordPress.
-Version: 2.5.3
+Version: 2.6.0
 Author: Ronak Gandhi
 Author URI: http://www.ronakg.in
 License: GPL2
@@ -89,6 +89,8 @@ function afg_display_gallery($atts) {
     $bg_color = get_afg_option($gallery, 'bg_color');
     $columns = get_afg_option($gallery, 'columns');
     $credit_note = get_afg_option($gallery, 'credit_note');
+    $gallery_width = get_afg_option($gallery, 'width');
+    $pagination = get_afg_option($gallery, 'pagination');
 
     if ($gallery['photo_source'] == 'photoset') $photoset_id = $gallery['photoset_id'];
     else if ($gallery['photo_source'] == 'gallery') $gallery_id = $gallery['gallery_id'];
@@ -105,6 +107,8 @@ function afg_display_gallery($atts) {
         $disp_gallery .= 'Columns - ' . $columns . '<br />';
         $disp_gallery .= 'Credit Note - ' . $credit_note . '<br />';
         $disp_gallery .= 'Background Color - ' . $bg_color . '<br />';
+        $disp_gallery .= 'Width - ' . $gallery_width . '<br />';
+        $disp_gallery .= 'Pagination - ' . $pagination . '<br />';
     }
 
     /* Parameters to get public photos of the user.  Format we are requesting
@@ -156,9 +160,11 @@ function afg_display_gallery($atts) {
     $total_pages = $rsp_obj[$flickr_api]['pages'];
     $cur_col = 0;
 
-    $disp_gallery .= "<table align='center'" .
+    if ($gallery_width == 'auto') $gallery_width = 100;
+
+    $disp_gallery .= "<table " .
         "style=\"background-color:{$bg_color}; border-color:{$bg_color};\"" .
-        "width='100%'>";
+        "width='$gallery_width%'>";
 
     foreach($rsp_obj[$flickr_api]['photo'] as $photo) {
         $photo_url = afg_get_photo_url($photo['farm'], $photo['server'],
@@ -225,7 +231,7 @@ function afg_display_gallery($atts) {
         }
     }
 
-    if ($total_pages > 1) {
+    if ($pagination == 'on' && $total_pages > 1) {
         $disp_gallery .= "<tr><td style=\"text-align:center; color:{$text_color};" .
             "vertical-align:top; background-color:{$bg_color}; font-size:90%;" .
             "border-color:{$bg_color}\" colspan=\"$columns\"><br /><br />";

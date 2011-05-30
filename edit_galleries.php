@@ -14,6 +14,8 @@ if ($_POST && $_POST['afg_edit_gallery_name']) {
         'descr' => filter($_POST['afg_descr']),
         'columns' => filter($_POST['afg_columns']),
         'credit_note' => filter($_POST['afg_credit_note']),
+        'width' => filter($_POST['afg_width']),
+        'pagination' => filter($_POST['afg_pagination']),
         'bg_color' => filter($_POST['afg_bg_color']),
     );
 

@@ -60,6 +60,8 @@ echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Add Gallery | 
             'columns' => filter($_POST['afg_columns']),
             'credit_note' => filter($_POST['afg_credit_note']),
             'bg_color' => filter($_POST['afg_bg_color']),
+            'width' => filter($_POST['afg_width']),
+            'pagination' => filter($_POST['afg_pagination']),
         );
 
         if ($_POST['afg_photo_source_type'] == 'photoset') {
@@ -76,8 +78,8 @@ echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Add Gallery | 
         $id = key($galleries);
         ?>
         <div class="updated"><p><strong>
-        <?php echo "Gallery \"{$_POST['afg_add_gallery_name']}\" created successfully.  Shortcode for this gallery is [AFG_gallery id='$id']" ?>
-        </strong></p></div>
+        <?php echo "Gallery \"{$_POST['afg_add_gallery_name']}\" created successfully.  Shortcode for this gallery is </strong>[AFG_gallery id='$id']" ?>
+        </p></div>
 
     <?php
     }
