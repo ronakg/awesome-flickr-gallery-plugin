@@ -2,8 +2,8 @@
 /*
 Plugin Name: Awesome Flickr Gallery
 Plugin URI: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
-Description: A fully customizable Flickr Gallery plug-in for WordPress.
-Version: 2.6.1
+Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
+Version: 2.6.2
 Author: Ronak Gandhi
 Author URI: http://www.ronakg.in
 License: GPL2
@@ -32,6 +32,9 @@ include_once('afg_libs.php');
 /* Short code to load Awesome Flickr Gallery plugin.  Detects the word
  * [AFG_gallery] in posts or pages and loads the gallery.
  */
+if (!is_admin())
+    add_filter('widget_text', 'do_shortcode', SHORTCODE_PRIORITY);
+
 add_shortcode('AFG_gallery', 'afg_display_gallery');
 
 /* Load Lightbox plugin in <head> section of the theme. */
@@ -67,7 +70,7 @@ function afg_display_gallery($atts) {
     ), $atts ) );
 
     $cur_page = 1;
-    $cur_page_url = (!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] : "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    $cur_page_url = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] : "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 
     preg_match('/\?afg_page_id=(?P<page_id>\d+)/', $cur_page_url, $matches);
     if ($matches) {
@@ -176,10 +179,12 @@ function afg_display_gallery($atts) {
 
         if ($cur_col % $columns == 0) {
             /* Add an extra blank row for right margins */
-            $disp_gallery .= "<tr><td style=\"text-align:left;" .
-                "color:{$text_color}; vertical-align:top;" .
-                "background-color:{$bg_color};" .
-                "border-color:{$bg_color}\">&nbsp;</td></tr>";
+            if ($photo_size != '_s') {
+                $disp_gallery .= "<tr><td style=\"text-align:left;" .
+                    "color:{$text_color}; vertical-align:top;" .
+                    "background-color:{$bg_color};" .
+                    "border-color:{$bg_color}\">&nbsp;</td></tr>";
+            }
             $disp_gallery .= "<tr><td style=\"text-align:left; margin-top:100;" .
                 "color:{$text_color}; vertical-align:top;" .
                 "background-color:{$bg_color}; border-color:{$bg_color}\">";

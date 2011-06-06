@@ -146,16 +146,15 @@ function afg_get_flickr_data($params) {
 }
 
 function afg_generate_version_line() {
-    return "
-    <h4 align=\"right\" style=\"margin-right:0.5%\">
-        &nbsp;Version: <b>" . VERSION . "</b> |
-         <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/faq/\">FAQ</a> |
-         <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/\">Rate this plugin</a> |
-         <a href=\"http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/\">Support</a> |
-         <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/changelog/\">Changelog</a> |
-         <a href=\"http://www.ronakg.in/photography/\">Live Demo</a> |
-         <a href=\"http://www.ronakg.in/about/\">Contact Ronak Gandhi</a>
-    </h4>";
+    return "" .
+    " <h4 align=\"right\" style=\"margin-right:0.5%\">" .
+       " &nbsp;Version: <b>" . VERSION . "</b> |" .
+        " <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/faq/\">FAQ</a> |" .
+        " <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/\">Rate this plugin</a> |" .
+        " <a href=\"http://www.ronakg.in/discussions/\">Support Forums</a> |" .
+        " <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/changelog/\">Changelog</a> |" .
+        " <a href=\"http://www.ronakg.in/photography/\">Live Demo</a>" .
+    " </h4>";
 }
 
 function afg_generate_flickr_settings_table($photosets, $galleries, $default_photoset='', $default_gallery='') {
@@ -327,10 +326,29 @@ function afg_donate_box() {
         <div class=\"postbox\">
         <h3>Support this plugin</h3>
         <table class='form-table'>
-        <td>It takes time and effort to keep releasing new versions of this plugin.  If you like it, consider donating a few bucks (especially if you are using this plugin on a commercial website) to keep receiving new features.
-        </form><form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\"><div style=\"text-align:center\" class=\"paypal-donations\"><input type=\"hidden\" name=\"cmd\" value=\"_donations\" /><input type=\"hidden\" name=\"business\" value=\"2P32M6V34HDCQ\" /><input type=\"hidden\" name=\"currency_code\" value=\"USD\" /><input type=\"image\" src=\"" . BASE_URL . "/images/donate_small.png\" name=\"submit\" alt=\"PayPal - The safer, easier way to pay online.\" /><img alt=\"PayPal Donate\" src=\"https://www.paypal.com/en_US/i/scr/pixel.gif\" width=\"1\" height=\"1\" /><br />All major credit cards are accepted too.</div></form>
+        <td>It takes time and effort to keep releasing new versions of this plugin.  If you like it, consider donating a few bucks <b>(especially if you are using this plugin on a commercial website)</b> to keep receiving new features.
+        </form><form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\"><div style=\"text-align:center\" class=\"paypal-donations\"><input type=\"hidden\" name=\"cmd\" value=\"_donations\" /><input type=\"hidden\" name=\"business\" value=\"2P32M6V34HDCQ\" /><input type=\"hidden\" name=\"currency_code\" value=\"USD\" /><input type=\"image\" src=\"" . BASE_URL . "/images/donate_small.png\" name=\"submit\" alt=\"PayPal - The safer, easier way to pay online.\" /><img alt=\"PayPal Donate\" src=\"https://www.paypal.com/en_US/i/scr/pixel.gif\" width=\"1\" height=\"1\" /><br /><b>All major credit cards are accepted too.</b></div></form>
         </td>
         </table>
         </div></div>";
 }
+
+function afg_reference_box() {
+    $message = "Max Photos Per Page - <b>" . get_option('afg_per_page') . "</b>";
+    $size = get_option('afg_photo_size');
+    if ($size == '_s') $size = 'Square';
+    else if ($size == '_t') $size = 'Thumbnail';
+    else if ($size == '_m') $size = 'Small';
+    else if ($size == 'NULL') $size = 'Medium';
+    $message .= "<br />Size of Photos - <b>" . $size . "</b>";
+    $message .= "<br />Photo Titles - <b>" . get_option('afg_captions') . "</b>";
+    $message .= "<br />Photo Descriptions - <b>" . get_option('afg_descr') . "</b>";
+    $message .= "<br />No of Columns - <b>" . get_option('afg_columns') . "</b>";
+    $message .= "<br />Background Color - <b>" . get_option('afg_bg_color') . "</b>";
+    $message .= "<br />Gallery Width - <b>" . ((get_option('afg_width') == 'auto')?"Automatic":get_option('afg_width') . "%") . "</b>";
+    $message .= "<br />Pagination - <b>" . get_option('afg_pagination') . "</b>";
+    $message .= "<br />Credit Note - <b>" . get_option('afg_credit_note') . "</b>";
+    return afg_box('Default Settings for Reference', $message);
+}
+
 ?>

@@ -59,7 +59,7 @@ function afg_edit_galleries() {
         $afg_descr_map, $afg_columns_map, $afg_bg_color_map,
         $afg_photo_source_map, $default_gallery_id;
 
-    $cur_page_url = (!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] : "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    $cur_page_url = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] : "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     preg_match('/\&gallery_id=(?P<gallery_id>\d+)/', $cur_page_url, $matches);
     if ($matches && !$default_gallery_id) {
         $default_gallery_id = $matches['gallery_id'];
@@ -166,21 +166,10 @@ echo afg_generate_version_line();
 </div>
 <div class="postbox-container" style="width: 29%;">
 <?php
-    $message = "Max Photos Per Page - <b>" . get_option('afg_per_page') . "</b>";
-    $size = get_option('afg_photo_size');
-    if ($size == '_s') $size = 'Square';
-    else if ($size == '_t') $size = 'Thumbnail';
-    else if ($size == '_m') $size = 'Small';
-    else if ($size == 'NULL') $size = 'Medium';
-    $message .= "<br />Size of Photos - <b>" . $size . "</b>";
-    $message .= "<br />Photo Titles - <b>" . get_option('afg_captions') . "</b>";
-    $message .= "<br />Photo Descriptions - <b>" . get_option('afg_descr') . "</b>";
-    $message .= "<br />No of Columns - <b>" . get_option('afg_columns') . "</b>";
-    $message .= "<br />Background Color - <b>" . get_option('afg_bg_color') . "</b>";
-    $message .= "<br />Credit Note - <b>" . get_option('afg_credit_note') . "</b>";
- echo afg_box('Default Settings for Reference', $message) ?>
-<?php echo afg_box('Usage Instructions', 'Insert the Gallery Code in any of your posts of pages to display your Flickr Gallery.') ?>
-<?php echo afg_donate_box() ?>
+echo afg_reference_box();
+echo afg_box('Usage Instructions', 'Insert the Gallery Code in any of your posts of pages to display your Flickr Gallery.');
+echo afg_donate_box();
+ ?>
 </div>
 </form>
 <?php

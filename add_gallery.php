@@ -42,6 +42,25 @@ else {
     }
 }
 
+/*
+$params = array(
+    'api_key' => get_option('afg_api_key'),
+    'method' => 'flickr.people.getPublicGroups',
+    'format' => 'php_serial',
+    'user_id' => get_option('afg_user_id'),
+);
+
+$rsp_obj = afg_get_flickr_data($params);
+if ($rsp_obj['stat'] == 'fail') {
+    echo $rsp_obj['message'];
+}
+else {
+    $groups_map = array();
+    foreach($rsp_obj['groups']['group'] as $group) {
+        $groups_map[$group['nsid']] = $group['name']['_content'];
+    }
+}
+ */
 ?>
 <div class='wrap'>
 <h2><a href='http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
@@ -124,21 +143,9 @@ value="Add Gallery" />
                 the setting for this specific gallery will also change.
         ";
     echo afg_box('Help', $message);
-    $message = "Max Photos Per Page - <b>" . get_option('afg_per_page') . "</b>";
-    $size = get_option('afg_photo_size');
-    if ($size == '_s') $size = 'Square';
-    else if ($size == '_t') $size = 'Thumbnail';
-    else if ($size == '_m') $size = 'Small';
-    else if ($size == 'NULL') $size = 'Medium';
-    $message .= "<br />Size of Photos - <b>" . $size . "</b>";
-    $message .= "<br />Photo Titles - <b>" . get_option('afg_captions') . "</b>";
-    $message .= "<br />Photo Descriptions - <b>" . get_option('afg_descr') . "</b>";
-    $message .= "<br />No of Columns - <b>" . get_option('afg_columns') . "</b>";
-    $message .= "<br />Background Color - <b>" . get_option('afg_bg_color') . "</b>";
-    $message .= "<br />Credit Note - <b>" . get_option('afg_credit_note') . "</b>";
- echo afg_box('Default Settings for Reference', $message) ?>
-
-<?php echo afg_donate_box() ?>
+    echo afg_reference_box();
+    echo afg_donate_box();
+?>
 </div>
 </form>
 <?php
