@@ -45,7 +45,7 @@ Check out my home page to see a demo of how the Gallery fits into a sidebar widg
 **Support:**
 
 Can't get the plugin working?  Head to the discussion forum for solution -
-[Discussions | RonakG.in](http://www.ronakg.in/discussions/#/categories/awesome-flickr-gallery)
+[Discussions | RonakG.in](http://www.ronakg.in/discussions/)
 
 == Installation ==
 
@@ -77,7 +77,7 @@ colorbox etc.  If your theme has such an option, turn it off.
 
 
 Still can't get the plugin working?  Head to the discussion forum for solution -
-[Discussions | RonakG.in](http://www.ronakg.in/discussions/#/categories/awesome-flickr-gallery)
+[Discussions | RonakG.in](http://www.ronakg.in/discussions/)
 
 == Upgrade Notice ==
 
