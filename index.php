@@ -3,7 +3,7 @@
 Plugin Name: Awesome Flickr Gallery
 Plugin URI: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-Version: 2.6.2
+Version: 2.6.5
 Author: Ronak Gandhi
 Author URI: http://www.ronakg.in
 License: GPL2
@@ -42,13 +42,20 @@ add_action('wp_head', 'afg_add_lightbox_headers');
 
 function afg_add_lightbox_headers() {
     echo "<link href=\"" . BASE_URL . "/colorbox/colorbox.css\" rel=\"stylesheet\" media=\"screen\">";
-    echo "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js\"></script>";
+    echo "<script>" .
+        "if(typeof(jQuery)=='undefined'){" .
+        "var loadjQuery = document.createElement(\"script\");" .
+        "loadjQuery.setAttribute(\"type\",\"text/javascript\");" .
+        "loadjQuery.setAttribute(\"src\",\"http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js\");" .
+        "document.getElementsByTagName(\"head\")[0].appendChild(loadjQuery);" .
+    "}</script>";
     echo "<script src=\"" . BASE_URL . "/colorbox/jquery.colorbox-min.js\"></script>";
     echo "<script src=\"" . BASE_URL . "/colorbox/mycolorbox.js\"></script>";
-    echo "<style type=\"text/css\">
-          a.afg_page:hover {background:royalblue;text-decoration:underline;color:white;}
-          a.afg_page:visited, a.afg_page:link {text-decoration:none;border:1px solid gray;}
-          </style>";
+    echo "<style type=\"text/css\">" .
+         " a.afg_page:hover {background:royalblue;text-decoration:underline;color:white;}" .
+         " a.afg_page:visited, a.afg_page:link {text-decoration:none;border:1px solid gray;}" .
+         " </style>" .
+         "";
 }
 
 function afg_get_photo_page_url($user_id, $pid) {
@@ -178,14 +185,7 @@ function afg_display_gallery($atts) {
         $text_color = $afg_text_color_map[$bg_color];
 
         if ($cur_col % $columns == 0) {
-            /* Add an extra blank row for right margins */
-            if ($photo_size != '_s') {
-                $disp_gallery .= "<tr><td style=\"text-align:left;" .
-                    "color:{$text_color}; vertical-align:top;" .
-                    "background-color:{$bg_color};" .
-                    "border-color:{$bg_color}\">&nbsp;</td></tr>";
-            }
-            $disp_gallery .= "<tr><td style=\"text-align:left; margin-top:100;" .
+            $disp_gallery .= "<tr><td style=\"text-align:left;" .
                 "color:{$text_color}; vertical-align:top;" .
                 "background-color:{$bg_color}; border-color:{$bg_color}\">";
         }
@@ -228,6 +228,9 @@ function afg_display_gallery($atts) {
                 $disp_gallery .= "<br />" .
                     $photo_info['photo']['description']['_content'];
             }
+        }
+        if ($photo_size != '_s' && $photo_size != '_t') {
+            $disp_gallery .= "<br />&nbsp;";
         }
         $cur_col += 1;
         if ($cur_col % $columns == 0) {
