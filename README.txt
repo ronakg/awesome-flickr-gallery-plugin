@@ -22,15 +22,12 @@ providing a simple yet customizable way to create stunning Flickr gallery.
 * Select Photos from your Flickr Photostream, a Photoset or a Gallery
 * Fits into a sidebar widget too
 * Insert multiple galleries on same page with independent slideshow and pagination
-* View full size photos very quickly with easy navigation
-* View full size photos with slideshow
+* View full size photos very quickly using slideshow and easy navigation
 * Fits automatically according to the width of the theme or you can select the width of the gallery yourself
-* Select number of photos to display per page in the gallery
 * Turn on/off photo titles
-* Turn on/off photo descriptions and photo taken date
-* Select number of columns to organize photos
+* Turn on/off photo descriptions
 * Select background color between White, Black or Transparent based on your theme
-* Intuitive menu pages with easy navigation and photo previews
+* Intuitive menu pages with easy configuration options and photo previews
 
 You can see a *live demo* of this plugin on my personal photography page -
 [Photography | RonakG.in](http://www.ronakg.in/photography/)
