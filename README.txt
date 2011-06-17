@@ -3,8 +3,8 @@ Contributors: ronakg
 Donate link: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio
 Requires at least: 2.5
-Tested up to: 3.2-beta2
-Stable tag: 2.6.5
+Tested up to: 3.2-RC1
+Stable tag: 2.7.0
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -21,6 +21,7 @@ providing a simple yet customizable way to create stunning Flickr gallery.
 * Create multiple galleries with different parameters
 * Select Photos from your Flickr Photostream, a Photoset or a Gallery
 * Fits into a sidebar widget too
+* Insert multiple galleries on same page with independent slideshow and pagination
 * View full size photos very quickly with easy navigation
 * View full size photos with slideshow
 * Fits automatically according to the width of the theme or you can select the width of the gallery yourself
@@ -81,6 +82,9 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 
 == Upgrade Notice ==
 
+= 2.7.0 =
+Now slideshow displays all the pages in the gallery so that users can navigate through without having to visit all pages.  Support for multiple galleries with independent slideshows and pagination.
+MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 = 2.6.5 =
 - [Bug Fix] Awesome Flickr Gallery conflicts with other slider plugins
 - Minor improvements in UI
@@ -144,14 +148,18 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 Here's a list of planned features in upcoming releases of Awesome Flickr
 Gallery (In no particular order):
 
-* View EXIF data of the images
 * View photos from Flickr Groups
 * Add multiple User accounts to generate Galleries
-* Exclude photos with specific tags
+* Flickr like slideshow option
+* Generate a master gallery page with all your galleries linking to individual gallery pages
 * View photo comments
-* Comment on the photos from your website itself
 
 == Changelog ==
+
+= 2.7.0 =
+* Now slideshow displays all the pages in the gallery so that users can navigate through without having to visit all pages.
+* Support for multiple galleries with independent slideshows and pagination.
+* MUST UPGRADE for all who are facing conflict issue with other plugin or themes. Everyone should be happy now.
 
 = 2.6.5 =
 * [Bug Fix] Awesome Flickr Gallery conflicts with other slider plugins
