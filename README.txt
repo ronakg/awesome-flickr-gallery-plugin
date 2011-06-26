@@ -82,10 +82,12 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 = 2.7.2 =
 [Bug Fix] Can't see photos when there are more than 500 photos
 [Enhancement] View full size photos in slideshow
+[Enhancement] Minimum number of photos in gallery reduced to 4
 
 = 2.7.0 =
 Now slideshow displays all the pages in the gallery so that users can navigate through without having to visit all pages.  Support for multiple galleries with independent slideshows and pagination.
 MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
+
 = 2.6.5 =
 - [Bug Fix] Awesome Flickr Gallery conflicts with other slider plugins
 - Minor improvements in UI
@@ -160,6 +162,7 @@ Gallery (In no particular order):
 = 2.7.2 =
 * [Bug Fix] Can't see photos when there are more than 500 photos
 * [Enhancement] View full size photos in slideshow
+* [Enhancement] Minimum number of photos in gallery reduced to 4
 
 = 2.7.0 =
 * Now slideshow displays all the pages in the gallery so that users can navigate through without having to visit all pages.
