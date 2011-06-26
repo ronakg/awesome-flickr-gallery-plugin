@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '2.7.1');
+define('VERSION', '2.7.2');
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(
@@ -151,9 +151,11 @@ function afg_get_flickr_data($params) {
     $url = afg_construct_url($encoded_params);
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_HEADER, 0);
-    curl_setopt($curl, CURLOPT_POST, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     $rsp = curl_exec($curl);  // get the file
+    if(curl_errno($curl)) {
+        echo 'Curl error: ' . curl_error($curl);
+    }
     curl_close($curl);
     return unserialize($rsp);
 }
