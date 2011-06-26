@@ -2,8 +2,8 @@
 
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
-define('DEBUG', False);
-define('VERSION', '2.7.0');
+define('DEBUG', false);
+define('VERSION', '2.7.1');
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(
@@ -35,6 +35,7 @@ $afg_width_map = array(
 
 $afg_per_page_map = array(
     'default' => 'Use Default',
+    '4' => '4  ',
     '5' => '5  ',
     '6' => '6  ',
     '7' => '7  ',
@@ -132,16 +133,28 @@ function afg_construct_url($encoded_params) {
     return $url;
 }
 
+function create_cache($content, $cache_file) {
+    $fp = fopen($cache_file, 'w');
+    fwrite($fp, $content);
+    fclose($fp);
+}
+
+function get_cached_content($cache_file) {
+    if (file_exists($cache_file)) {
+        return file_get_contents($cache_file);
+    }
+    return false;
+}
+
 function afg_get_flickr_data($params) {
     $encoded_params = afg_get_encoded_params($params);
     $url = afg_construct_url($encoded_params);
     $curl = curl_init($url);
-    curl_setopt($curl, CURLOPT_HEADER, 0);  // ignore any headers
-    ob_start();  // use output buffering so the contents don't get sent directly to the browser
-    curl_exec($curl);  // get the file
+    curl_setopt($curl, CURLOPT_HEADER, 0);
+    curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    $rsp = curl_exec($curl);  // get the file
     curl_close($curl);
-    $rsp = ob_get_contents();  // save the contents of the file into $file
-    ob_end_clean();  // turn output buffering back off
     return unserialize($rsp);
 }
 

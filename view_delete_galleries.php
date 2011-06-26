@@ -42,7 +42,7 @@ echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Saved Gallerie
     <table class='form-table' style='margin-top:0'>
     <tr style='border:1px solid Gainsboro' valign='top'>
     <th cope='row'><input type='checkbox' name='delete_all_galleries' id='delete_all_galleries'
-        onclick="CheckAllDeleteGalleries(document.getElementById('delete_gallery'))"/></th>
+        onclick="CheckAllDeleteGalleries()"/></th>
     <th scope='row'><strong>ID</strong></th>
     <th scope='row'><strong>Name</strong></th>
     <th scope='row'><strong>Short Code</strong></th>

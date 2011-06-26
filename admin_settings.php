@@ -4,17 +4,20 @@ add_action('admin_menu', 'afg_admin_menu');
 include_once('afg_libs.php');
 include_once('edit_galleries.php');
 include_once('add_gallery.php');
+include_once('add_users.php');
 include_once('view_delete_galleries.php');
 
 function afg_admin_menu() {
     add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery', 'manage_options', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png");
     add_submenu_page('afg_plugin_page', 'Default Settings | Awesome Flickr Gallery', 'Default Settings', 'manage_options', 'afg_plugin_page', 'afg_admin_html_page');
     $page2 = add_submenu_page('afg_plugin_page', 'Add Gallery | Awesome Flickr Gallery', 'Add Gallery', 'manage_options', 'afg_add_gallery_page', 'afg_add_gallery');
-    $page1 = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'manage_options', 'afg_edit_galleries_page', 'afg_edit_galleries');
     $page3 = add_submenu_page('afg_plugin_page', 'Saved Galleries | Awesome Flickr Gallery', 'Saved Galleries', 'manage_options', 'afg_view_edit_galleries_page', 'afg_view_delete_galleries');
+    $page1 = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'manage_options', 'afg_edit_galleries_page', 'afg_edit_galleries');
+//    $page4 = add_submenu_page('afg_plugin_page', 'Add Users | Awesome Flickr Gallery', 'Add Users', 'manage_options', 'afg_add_users_page', 'afg_add_users');
     add_action('admin_print_styles-' . $page1, 'afg_edit_galleries_header');
     add_action('admin_print_styles-' . $page2, 'afg_edit_galleries_header');
     add_action('admin_print_styles-' . $page3, 'afg_view_delete_galleries_header');
+    add_action('admin_print_styles-' . $page4, 'afg_delete_users_header');
     afg_setup_options();
 }
 
@@ -58,10 +61,12 @@ function afg_admin_init() {
     register_setting('afg_settings_group', 'afg_galleries');
     register_setting('afg_settings_group', 'afg_page_width');
     register_setting('afg_settings_group', 'afg_pagination');
+    register_setting('afg_settings_group', 'afg_users');
 
     // Register javascripts
     wp_register_script('edit-galleries-script', BASE_URL . '/js/edit_galleries.js');
     wp_register_script('view-delete-galleries-script', BASE_URL . '/js/view_delete_galleries.js');
+    wp_register_script('delete-users-script', BASE_URL . '/js/delete_users.js');
 }
 
 function afg_get_all_options() {
@@ -104,6 +109,8 @@ if ($_POST) {
 
     if ($_POST['afg_pagination']) update_option('afg_pagination', 'off');
     else update_option('afg_pagination', 'on');
+
+    echo "<div class='updated'><p><strong>Settings updated successfully</strong></p></div>";
 }
 $url=$_SERVER['REQUEST_URI']; ?>
 <form method='post' action='<?php echo $url ?>'>
@@ -249,15 +256,13 @@ or page to actually see the Gallery.
 </td>
     </table>
 </div></div>
-<?php if ($_POST) { ?>
-<div class="updated"><p><strong><?php echo 'Settings updated successfully' ?></strong></p></div>
 <?php
 if (DEBUG) {
     $all_options = afg_get_all_options();
     foreach($all_options as $key => $value) {
         echo $key . ' => ' . $value . '<br />';
     }
-}}
+}
 ?>
 </div>
 <div class="postbox-container" style="width: 29%;">

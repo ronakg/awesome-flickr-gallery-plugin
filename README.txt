@@ -2,9 +2,9 @@
 Contributors: ronakg
 Donate link: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio
-Requires at least: WordPress 2.5
+Requires at least: 2.5
 Tested up to: 3.2-RC1
-Stable tag: 2.7.0
+Stable tag: 2.7.1
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -79,6 +79,10 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 
 == Upgrade Notice ==
 
+= 2.7.1 =
+[Bug Fix] Can't see photos when there are more than 500 photos
+[Enhancement] View full size photos in slideshow
+
 = 2.7.0 =
 Now slideshow displays all the pages in the gallery so that users can navigate through without having to visit all pages.  Support for multiple galleries with independent slideshows and pagination.
 MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
@@ -152,6 +156,10 @@ Gallery (In no particular order):
 * View photo comments
 
 == Changelog ==
+
+= 2.7.1 =
+* [Bug Fix] Can't see photos when there are more than 500 photos
+* [Enhancement] View full size photos in slideshow
 
 = 2.7.0 =
 * Now slideshow displays all the pages in the gallery so that users can navigate through without having to visit all pages.

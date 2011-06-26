@@ -6,41 +6,41 @@ function afg_add_gallery() {
         $afg_descr_map, $afg_columns_map, $afg_bg_color_map,
         $afg_photo_source_map;
 
-$params = array(
-    'api_key' => get_option('afg_api_key'),
-    'method' => 'flickr.photosets.getList',
-    'format' => 'php_serial',
-    'user_id' => get_option('afg_user_id'),
-);
+    $params = array(
+        'api_key' => get_option('afg_api_key'),
+        'method' => 'flickr.photosets.getList',
+        'format' => 'php_serial',
+        'user_id' => get_option('afg_user_id'),
+    );
 
-$rsp_obj = afg_get_flickr_data($params);
-if ($rsp_obj['stat'] == 'fail') {
-    echo $rsp_obj['message'];
-}
-else {
-    $photosets_map = array();
-    foreach($rsp_obj['photosets']['photoset'] as $photoset) {
-        $photosets_map[$photoset['id']] = $photoset['title']['_content'];
+    $rsp_obj = afg_get_flickr_data($params);
+    if ($rsp_obj['stat'] == 'fail') {
+        echo $rsp_obj['message'];
     }
-}
-
-$params = array(
-    'api_key' => get_option('afg_api_key'),
-    'method' => 'flickr.galleries.getList',
-    'format' => 'php_serial',
-    'user_id' => get_option('afg_user_id'),
-);
-
-$rsp_obj = afg_get_flickr_data($params);
-if ($rsp_obj['stat'] == 'fail') {
-    echo $rsp_obj['message'];
-}
-else {
-    $galleries_map = array();
-    foreach($rsp_obj['galleries']['gallery'] as $gallery) {
-        $galleries_map[$gallery['id']] = $gallery['title']['_content'];
+    else {
+        $photosets_map = array();
+        foreach($rsp_obj['photosets']['photoset'] as $photoset) {
+            $photosets_map[$photoset['id']] = $photoset['title']['_content'];
+        }
     }
-}
+
+    $params = array(
+        'api_key' => get_option('afg_api_key'),
+        'method' => 'flickr.galleries.getList',
+        'format' => 'php_serial',
+        'user_id' => get_option('afg_user_id'),
+    );
+
+    $rsp_obj = afg_get_flickr_data($params);
+    if ($rsp_obj['stat'] == 'fail') {
+        echo $rsp_obj['message'];
+    }
+    else {
+        $galleries_map = array();
+        foreach($rsp_obj['galleries']['gallery'] as $gallery) {
+            $galleries_map[$gallery['id']] = $gallery['title']['_content'];
+        }
+    }
 
 /*
 $params = array(

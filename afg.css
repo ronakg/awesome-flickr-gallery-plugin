@@ -1,0 +1,20 @@
+a.afg_page:hover {
+    background: royalblue;
+    text-decoration: underline;
+    color:white;
+}
+
+a.afg_page:visited, a.afg_page:link {
+    text-decoration: none;
+    border:1px solid gray;
+}
+
+table.afg_gallery {
+    margin:auto;
+    border:0px;
+}
+
+td.afg_gallery {
+    text-align: left;
+    vertical-align: top;
+}
