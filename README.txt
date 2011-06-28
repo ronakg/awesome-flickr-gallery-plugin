@@ -17,7 +17,7 @@ providing a simple yet customizable way to create stunning Flickr gallery.
 
 **Features:**
 
-* Fast and light
+* Fast and light - uses caching to load galleries instantly
 * Create multiple galleries with different parameters
 * Select Photos from your Flickr Photostream, a Photoset or a Gallery
 * Fits into a sidebar widget too
