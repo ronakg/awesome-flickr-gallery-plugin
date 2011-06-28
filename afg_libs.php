@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '2.7.2');
+define('VERSION', '2.7.5');
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(
@@ -126,6 +126,10 @@ function afg_get_photo_url($farm, $server, $pid, $secret, $size) {
         $size = '';
     }
     return "http://farm$farm.static.flickr.com/$server/{$pid}_$secret$size.jpg";
+}
+
+function afg_get_photo_page_url($pid, $uid) {
+    return "http://www.flickr.com/photos/$uid/$pid";
 }
 
 function afg_construct_url($encoded_params) {

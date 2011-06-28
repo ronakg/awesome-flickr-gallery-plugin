@@ -3,7 +3,7 @@
 Plugin Name: Awesome Flickr Gallery
 Plugin URI: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-Version: 2.7.2
+Version: 2.7.5
 Author: Ronak Gandhi
 Author URI: http://www.ronakg.in
 License: GPL2
@@ -50,10 +50,6 @@ function enqueue_my_styles() {
     wp_enqueue_style('afg_css', BASE_URL . "/afg.css");
 }
 
-function afg_get_photo_page_url($user_id, $pid) {
-    return "http://www.flickr.com/photos/$user_id/$pid";
-}
-
 function afg_return_error_code($rsp) {
     return $rsp['message'];
 }
@@ -97,8 +93,6 @@ function afg_display_gallery($atts) {
     if ($gallery['photo_source'] == 'photoset') $photoset_id = $gallery['photoset_id'];
     else if ($gallery['photo_source'] == 'gallery') $gallery_id = $gallery['gallery_id'];
 
-
-
     $disp_gallery = "<!-- Awesome Flickr Gallery Start" .
         "User ID - " . $user_id .
         "Per Page - " . $per_page .
@@ -115,7 +109,6 @@ function afg_display_gallery($atts) {
      * from Flickr is php_serial.
      */
 
-    /*
     if ($photoset_id) {
         $params = array(
             'api_key' => $api_key,
@@ -129,7 +122,7 @@ function afg_display_gallery($atts) {
         $params = array(
             'api_key' => $api_key,
             'method' => 'flickr.galleries.getInfo',
-            'photoset_id' => $gallery_id,
+            'gallery_id' => $gallery_id,
             'format' => 'php_serial',
             'user_id' => $user_id,
         );
@@ -142,43 +135,6 @@ function afg_display_gallery($atts) {
             'user_id' => $user_id,
         );
     }
-     */
-
-    if ($photoset_id) {
-        $flickr_api = 'photoset';
-        $params = array(
-            'api_key' => $api_key,
-            'method' => 'flickr.photosets.getPhotos',
-            'photoset_id' => $photoset_id,
-            'format' => 'php_serial',
-            'user_id' => $user_id,
-            'per_page' => $per_page,
-            'page' => $cur_page,
-        );
-    }
-    else if ($gallery_id) {
-        $flickr_api = 'photos';
-        $params = array(
-            'api_key' => $api_key,
-            'method' => 'flickr.galleries.getPhotos',
-            'gallery_id' => $gallery_id,
-            'format' => 'php_serial',
-            'user_id' => $user_id,
-            'per_page' => $per_page,
-            'page' => $cur_page,
-        );
-    }
-    else {
-        $flickr_api = 'photos';
-        $params = array(
-            'api_key' => $api_key,
-            'method' => 'flickr.people.getPublicPhotos',
-            'format' => 'php_serial',
-            'user_id' => $user_id,
-            'per_page' => $per_page,
-            'page' => $cur_page,
-        );
-    }
 
     $rsp_obj = afg_get_flickr_data($params);
 
@@ -186,19 +142,58 @@ function afg_display_gallery($atts) {
         return "<h3>" . afg_return_error_code($rsp_obj) . "</h3>";
     }
 
-    $total_pages = $rsp_obj[$flickr_api]['pages'];
-    $total_photos = $rsp_obj[$flickr_api]['total'];
-    $photos = array();
+    if ($photoset_id) $total_photos = $rsp_obj['photoset']['photos'];
+    else if ($gallery_id) $total_photos = $rsp_obj['gallery']['count_photos']['_content'];
+    else $total_photos = $rsp_obj['person']['photos']['count']['_content'];
 
-    for($i=1; $i<=($total_photos/500)+1; $i++) {
-        $params['per_page'] = 500;
-        $params['page'] = $i;
+    if (($total_photos % $per_page) == 0) $total_pages = (int)($total_photos / $per_page);
+    else $total_pages = (int)($total_photos / $per_page) + 1;
 
-        $rsp_obj_total = afg_get_flickr_data($params);
-        if ($rsp_obj_total['stat'] == 'fail') {
-            return "<h3>" . afg_return_error_code($rsp_obj_total) . "</h3>";
+    $photos = get_transient('afg_id_' . $id);
+
+    if ($photos == false || $total_photos != count($photos)) {
+        if ($photoset_id) {
+            $flickr_api = 'photoset';
+            $params = array(
+                'api_key' => $api_key,
+                'method' => 'flickr.photosets.getPhotos',
+                'photoset_id' => $photoset_id,
+                'format' => 'php_serial',
+                'user_id' => $user_id,
+            );
         }
-        $photos = array_merge($photos, $rsp_obj_total[$flickr_api]['photo']);
+        else if ($gallery_id) {
+            $flickr_api = 'photos';
+            $params = array(
+                'api_key' => $api_key,
+                'method' => 'flickr.galleries.getPhotos',
+                'gallery_id' => $gallery_id,
+                'format' => 'php_serial',
+                'user_id' => $user_id,
+            );
+        }
+        else {
+            $flickr_api = 'photos';
+            $params = array(
+                'api_key' => $api_key,
+                'method' => 'flickr.people.getPublicPhotos',
+                'format' => 'php_serial',
+                'user_id' => $user_id,
+            );
+        }
+
+        $photos = array();
+        for($i=1; $i<=($total_photos/500)+1; $i++) {
+            $params['per_page'] = 500;
+            $params['page'] = $i;
+
+            $rsp_obj_total = afg_get_flickr_data($params);
+            if ($rsp_obj_total['stat'] == 'fail') {
+                return "<h3>" . afg_return_error_code($rsp_obj_total) . "</h3>";
+            }
+            $photos = array_merge($photos, $rsp_obj_total[$flickr_api]['photo']);
+        }
+        set_transient('afg_id_' . $id, $photos, 60 * 60 * 24 * 3);
     }
 
     if ($gallery_width == 'auto') $gallery_width = 100;

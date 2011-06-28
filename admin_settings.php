@@ -94,23 +94,32 @@ echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Awesome Flickr
 
 <?php
 if ($_POST) {
-    update_option('afg_api_key', $_POST['afg_api_key']);
-    update_option('afg_user_id', $_POST['afg_user_id']);
-    update_option('afg_per_page', $_POST['afg_per_page']);
-    update_option('afg_photo_size', $_POST['afg_photo_size']);
-    update_option('afg_captions', $_POST['afg_captions']);
-    update_option('afg_descr', $_POST['afg_descr']);
-    update_option('afg_columns', $_POST['afg_columns']);
-    update_option('afg_width', $_POST['afg_width']);
-    update_option('afg_bg_color', $_POST['afg_bg_color']);
+    if ($_POST['submit'] == 'Delete Cached Galleries') {
+        $galleries = get_option('afg_galleries');
+        foreach($galleries as $id => $ginfo) {
+            delete_transient('afg_id_'. $id);
+        }
+        echo "<div class='updated'><p><strong>Cached data deleted successfully.</strong></p></div>";
+    }
+    else {
+        update_option('afg_api_key', $_POST['afg_api_key']);
+        update_option('afg_user_id', $_POST['afg_user_id']);
+        update_option('afg_per_page', $_POST['afg_per_page']);
+        update_option('afg_photo_size', $_POST['afg_photo_size']);
+        update_option('afg_captions', $_POST['afg_captions']);
+        update_option('afg_descr', $_POST['afg_descr']);
+        update_option('afg_columns', $_POST['afg_columns']);
+        update_option('afg_width', $_POST['afg_width']);
+        update_option('afg_bg_color', $_POST['afg_bg_color']);
 
-    if ($_POST['afg_credit_note']) update_option('afg_credit_note', 'on');
-    else update_option('afg_credit_note', 'off');
+        if ($_POST['afg_credit_note']) update_option('afg_credit_note', 'on');
+        else update_option('afg_credit_note', 'off');
 
-    if ($_POST['afg_pagination']) update_option('afg_pagination', 'off');
-    else update_option('afg_pagination', 'on');
+        if ($_POST['afg_pagination']) update_option('afg_pagination', 'off');
+        else update_option('afg_pagination', 'on');
 
-    echo "<div class='updated'><p><strong>Settings updated successfully</strong></p></div>";
+        echo "<div class='updated'><p><strong>Settings updated successfully</strong></p></div>";
+    }
 }
 $url=$_SERVER['REQUEST_URI']; ?>
 <form method='post' action='<?php echo $url ?>'>
@@ -220,7 +229,7 @@ $url=$_SERVER['REQUEST_URI']; ?>
             </tr>
         </table>
     </div></div>
-<input type="submit" name="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+<input type="submit" name="submit" class="button-primary" value="Save Changes" />
 <br /><br />
 <div id="poststuff">
 <div class="postbox">
@@ -254,8 +263,9 @@ Note:  This preview is based on the Flickr Settings only.  Gallery Settings
 have no effect on this preview.  You will need to insert gallery code to a post 
 or page to actually see the Gallery.
 </td>
-    </table>
-</div></div>
+    </table></div>
+<input type="submit" name="submit" class="button" value="Delete Cached Galleries" />
+</div>
 <?php
 if (DEBUG) {
     $all_options = afg_get_all_options();
