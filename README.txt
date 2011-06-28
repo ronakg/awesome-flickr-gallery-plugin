@@ -30,7 +30,7 @@ providing a simple yet customizable way to create stunning Flickr gallery.
 * Intuitive menu pages with easy configuration options and photo previews
 
 You can see a *live demo* of this plugin on my personal photography page -
-[Photography | RonakG.in](http://www.ronakg.in/photography/)
+[Photos | RonakG.in](http://www.ronakg.in/photos/)
 
 Check out my home page to see a demo of how the Gallery fits into a sidebar widget - [RonakG.in | Live life to the fullest...](http://www.ronakg.in/)
 
