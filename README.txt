@@ -3,7 +3,7 @@ Contributors: ronakg
 Donate link: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio
 Requires at least: 2.5
-Tested up to: 3.2-RC3
+Tested up to: 3.2-RC4
 Stable tag: 2.7.6
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
@@ -200,16 +200,6 @@ Gallery (In no particular order):
 * Support for multiple galleries with independent slideshows and pagination.
 * MUST UPGRADE for all who are facing conflict issue with other plugin or themes. Everyone should be happy now.
 
-= 2.6.5 =
-* [Bug Fix] Awesome Flickr Gallery conflicts with other slider plugins
-* Minor improvements in UI
-
-= 2.6.2 =
-* [Bug Fix] Pagination broken on multisite wordpress deployment
-* [Bug Fix] Gallery doesn't load inside sidebar widget on some themes
-* [Bug Fix] Pagination and Gallery Width options doesn't appear in "Default Settings for References" box on admin pages
-* [Enhancement] Minor UI improvement for galleries displayed with Square and Thumbnail size photos
-
 = 2.6.1 =
 * Added a configuration option to control width of the gallery for better flexibility.
 * Added a configuration option to enale/disable pagination.  This helps if you want to insert the gallery into a sidebar widget.
@@ -219,11 +209,6 @@ Gallery (In no particular order):
 * [Bug Fix] When changes are submitted on Edit Galleries page, selected gallery would go back to default instead of last edited gallery.
 * [Bug Fix] Credit Note would appear above the gallery if gallery has only 1 page
 * [Bug Fix] Donate button link was broken, fixed it.  Now shower all the donations :).
-
-= 2.5.1 =
-
-* [Bug Fix] Extra line breaks were added by some themes.
-* [Bug Fix] Do not show pagination bar if there is only one page.
 
 = 2.5.0 =
 
