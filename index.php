@@ -3,7 +3,7 @@
 Plugin Name: Awesome Flickr Gallery
 Plugin URI: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-Version: 2.7.5
+Version: 2.7.6
 Author: Ronak Gandhi
 Author URI: http://www.ronakg.in
 License: GPL2
@@ -26,18 +26,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 if ( is_admin() ) {
     include_once('admin_settings.php');
 }
+else {
+    add_filter('widget_text', 'do_shortcode', SHORTCODE_PRIORITY);
+
+    /* Short code to load Awesome Flickr Gallery plugin.  Detects the word
+     * [AFG_gallery] in posts or pages and loads the gallery.
+     */
+    add_shortcode('AFG_gallery', 'afg_display_gallery');
+    add_action('wp_print_scripts', 'enqueue_my_scripts');
+    add_action('wp_print_styles', 'enqueue_my_styles');
+}
 
 include_once('afg_libs.php');
 
-/* Short code to load Awesome Flickr Gallery plugin.  Detects the word
- * [AFG_gallery] in posts or pages and loads the gallery.
- */
-if (!is_admin())
-    add_filter('widget_text', 'do_shortcode', SHORTCODE_PRIORITY);
-
-add_shortcode('AFG_gallery', 'afg_display_gallery');
-add_action('wp_print_scripts', 'enqueue_my_scripts');
-add_action('wp_print_styles', 'enqueue_my_styles');
 
 function enqueue_my_scripts() {
     wp_enqueue_script('jquery');
@@ -150,6 +151,8 @@ function afg_display_gallery($atts) {
     else $total_pages = (int)($total_photos / $per_page) + 1;
 
     $photos = get_transient('afg_id_' . $id);
+    $extras = 'url_l, ';
+    if ($photo_descr == 'on') $extras .= 'description,';
 
     if ($photos == false || $total_photos != count($photos)) {
         if ($photoset_id) {
@@ -160,6 +163,7 @@ function afg_display_gallery($atts) {
                 'photoset_id' => $photoset_id,
                 'format' => 'php_serial',
                 'user_id' => $user_id,
+                'extras' => $extras,
             );
         }
         else if ($gallery_id) {
@@ -170,6 +174,7 @@ function afg_display_gallery($atts) {
                 'gallery_id' => $gallery_id,
                 'format' => 'php_serial',
                 'user_id' => $user_id,
+                'extras' => $extras,
             );
         }
         else {
@@ -179,6 +184,7 @@ function afg_display_gallery($atts) {
                 'method' => 'flickr.people.getPublicPhotos',
                 'format' => 'php_serial',
                 'user_id' => $user_id,
+                'extras' => $extras,
             );
         }
 
@@ -206,8 +212,13 @@ function afg_display_gallery($atts) {
     $column_width = (int)($gallery_width/$columns);
 
     foreach($photos as $pid => $photo) {
-        $photo_page_url = afg_get_photo_url($photo['farm'], $photo['server'],
-            $photo['id'], $photo['secret'], '_b');
+        if ($photo['url_l']) {
+            $photo_page_url = $photo['url_l'];
+        }
+        else {
+            $photo_page_url = afg_get_photo_url($photo['farm'], $photo['server'],
+                $photo['id'], $photo['secret'], '_z');
+        }
         if ( ($photo_count <= $per_page * $cur_page) && ($photo_count > $per_page * ($cur_page - 1)) ) {
             $photo_url = afg_get_photo_url($photo['farm'], $photo['server'],
                 $photo['id'], $photo['secret'], $photo_size);
@@ -228,19 +239,6 @@ function afg_display_gallery($atts) {
             /* If photo descriptions are ON and size is not Square and Thumbnail,
              * get photo descriptions
              */
-
-            if($photo_descr == 'on' && $photo_size != '_s' && $photo_size != '_t') {
-                $params = array(
-                    'api_key' => $api_key,
-                    'method' => 'flickr.photos.getInfo',
-                    'format' => 'php_serial',
-                    'photo_id' => $photo['id'],
-                );
-                $photo_info = afg_get_flickr_data($params);
-                if ($photo_info['stat'] != 'ok') {
-                    return "<h2>" . afg_return_error_code($photo_info) . "</h2>";
-                }
-            }
             $disp_gallery .= "<a class=\"afgcolorbox\" rel=\"example4$id\" href=\"$photo_page_url\"" .
                 " title=\"{$photo['title']}\">" .
                 "<img src=\"$photo_url\" alt=\"{$photo['title']}\"/></a>";
@@ -250,9 +248,9 @@ function afg_display_gallery($atts) {
             }
 
             if($photo_descr == 'on' && $photo_size != '_s' && $photo_size != '_t') {
-                if($photo_info['photo']['description']['_content']) {
+                if($photo['description']['_content']) {
                     $disp_gallery .= "<p>" .
-                        $photo_info['photo']['description']['_content'] . "</p>";
+                        $photo['description']['_content'] . "</p>";
                 }
             }
 

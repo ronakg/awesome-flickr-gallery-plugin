@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '2.7.5');
+define('VERSION', '2.7.6');
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(
@@ -121,6 +121,12 @@ function afg_get_encoded_params($params) {
     return $encoded_params;
 }
 
+function delete_all_caches() {
+    $galleries = get_option('afg_galleries');
+    foreach($galleries as $id => $ginfo) {
+        delete_transient('afg_id_'. $id);
+    }
+}
 function afg_get_photo_url($farm, $server, $pid, $secret, $size) {
     if ($size == 'NULL') {
         $size = '';

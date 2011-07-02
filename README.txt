@@ -4,7 +4,7 @@ Donate link: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plug
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio
 Requires at least: 2.5
 Tested up to: 3.2-RC2
-Stable tag: 2.7.5
+Stable tag: 2.7.6
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -87,10 +87,6 @@ instead.
 
 Also, some themes have built-in settings to display images using lightbox or colorbox etc. If your theme has such an option, turn it off.
 
-= When I click a photo, the slideshow gives an error "This photo is not available on Flickr". =
-
-Awesome Flickr Gallery uses the large version of the photo for slideshow.  Some of your old photos won't have large version on Flickr as the uploaded photos were not big enough to generate large version.  However, this won't happen for any of the photos uploaded after May 25, 2010 as Flickr generates a large version of all the photos irrespective of size of the uploaded photos.
-
 = I made changes to my Flickr account but they don't reflect on my website. =
 
 Awesome Flickr Gallery uses caching to avoid expensive calls to Flickr servers.  It intelligently figures out if cache needs to be updated or not.  However, sometimes it may not work as expected.  You should go to Default Settings and delete all cached data.
@@ -99,6 +95,10 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 [Discussions | RonakG.in](http://www.ronakg.in/discussions/)
 
 == Upgrade Notice ==
+
+= 2.7.6 =
+[ENHANCEMENT] Improved caching mechanism extended to descriptions too.  Now switching ON descriptions is NOT expensive.
+[Bug Fix] This photo is not available on Flickr error fixed.  Intelligently identify low resolution photos and show a smaller version for slideshow.
 
 = 2.7.5 =
 Added caching mechanism to avoid expensive calls to Flickr servers.  This should improve page loading times a lot, especially for those with 500+ photos.
@@ -182,6 +182,10 @@ Gallery (In no particular order):
 * View photo comments
 
 == Changelog ==
+
+= 2.7.6 =
+* [ENHANCEMENT] Improved caching mechanism extended to descriptions too.  Now switching ON descriptions is NOT expensive.
+* [Bug Fix] This photo is not available on Flickr error fixed.  Intelligently identify low resolution photos and show a smaller version for slideshow.
 
 = 2.7.5 =
 * Added caching mechanism to avoid expensive calls to Flickr servers.  This should improve page loading times a lot, especially for those with 500+ photos.

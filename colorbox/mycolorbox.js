@@ -6,6 +6,5 @@ jQuery("a[rel^='example4']").colorbox({
     slideshowSpeed: 3500,
     maxWidth: "100%",
     maxHeight: "100%",
-    opacity: 1,
     });
 });

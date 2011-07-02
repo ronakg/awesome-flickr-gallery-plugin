@@ -95,10 +95,7 @@ echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Awesome Flickr
 <?php
 if ($_POST) {
     if ($_POST['submit'] == 'Delete Cached Galleries') {
-        $galleries = get_option('afg_galleries');
-        foreach($galleries as $id => $ginfo) {
-            delete_transient('afg_id_'. $id);
-        }
+        delete_all_caches();
         echo "<div class='updated'><p><strong>Cached data deleted successfully.</strong></p></div>";
     }
     else {
@@ -178,7 +175,7 @@ $url=$_SERVER['REQUEST_URI']; ?>
             <td><select name='afg_descr'>
                 <?php echo afg_generate_options($afg_descr_map, get_option('afg_descr', 'off')); ?>
             </select></td>
-            <td><font size='2'>Photo Description setting applies only to Small and Medium size photos. <font color='red'>WARNING:</font> Enabling descriptions for photos can significantly slow down loading of the gallery and hence is not recommended.</font></td>
+            <td><font size='2'>Photo Description setting applies only to Small and Medium size photos.</td>
             </tr>
 
             <tr valign='top'>
