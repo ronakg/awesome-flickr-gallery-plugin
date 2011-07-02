@@ -4,7 +4,7 @@ Donate link: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plug
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio
 Requires at least: 2.5
 Tested up to: 3.2-RC4
-Stable tag: 2.7.6
+Stable tag: 2.7.7
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -96,7 +96,7 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 
 == Upgrade Notice ==
 
-= 2.7.6 =
+= 2.7.7 =
 [ENHANCEMENT] Improved caching mechanism extended to descriptions too.  Now switching ON descriptions is NOT expensive.
 [Bug Fix] This photo is not available on Flickr error fixed.  Intelligently identify low resolution photos and show a smaller version for slideshow.
 
@@ -183,7 +183,7 @@ Gallery (In no particular order):
 
 == Changelog ==
 
-= 2.7.6 =
+= 2.7.7 =
 * [ENHANCEMENT] Improved caching mechanism extended to descriptions too.  Now switching ON descriptions is NOT expensive.
 * [Bug Fix] This photo is not available on Flickr error fixed.  Intelligently identify low resolution photos and show a smaller version for slideshow.
 
