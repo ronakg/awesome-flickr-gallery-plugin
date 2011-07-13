@@ -3,7 +3,7 @@ Contributors: ronakg
 Donate link: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio
 Requires at least: 2.5
-Tested up to: 3.2-RC4
+Tested up to: 3.2.1
 Stable tag: 2.7.7
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
