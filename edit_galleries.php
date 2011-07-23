@@ -1,9 +1,20 @@
 <?php
 include_once('afg_libs.php');
 $default_gallery_id = 0;
+$warning = false;
 
 if ($_POST && $_POST['afg_edit_gallery_name']) {
     global $default_gallery_id;
+    global $warning;
+
+    if ($_POST['afg_per_page_check']) $_POST['afg_per_page'] = '';
+    else {
+        if (!(ctype_digit($_POST['afg_per_page']) && (int)$_POST['afg_per_page'])) {
+            $_POST['afg_per_page'] = '';
+            $warning = true;
+        }
+    }
+
     $gallery = array(
         'name' => $_POST['afg_edit_gallery_name'],
         'gallery_descr' => $_POST['afg_edit_gallery_descr'],
@@ -21,6 +32,7 @@ if ($_POST && $_POST['afg_edit_gallery_name']) {
 
     if ($_POST['afg_photo_source_type'] == 'photoset') $gallery['photoset_id'] = $_POST['afg_photosets_box'];
     else if ($_POST['afg_photo_source_type'] == 'gallery') $gallery['gallery_id'] = $_POST['afg_galleries_box'];
+    else if ($_POST['afg_photo_source_type'] == 'group') $gallery['group_id'] = $_POST['afg_groups_box'];
 
     $id = $_POST['afg_photo_gallery'];
 
@@ -34,6 +46,7 @@ function afg_edit_galleries_header() {
     $params = array(
         'api_key' => get_option('afg_api_key'),
         'user_id' => get_option('afg_user_id'),
+        'default_per_page' => get_option('afg_per_page'),
         'galleries' => json_encode(get_option('afg_galleries')),
     );
     wp_enqueue_script('edit-galleries-script');
@@ -102,17 +115,39 @@ function afg_edit_galleries() {
             $galleries_map[$gallery['id']] = $gallery['title']['_content'];
         }
     }
+
+    $params = array(
+        'api_key' => get_option('afg_api_key'),
+        'method' => 'flickr.people.getPublicGroups',
+        'format' => 'php_serial',
+        'user_id' => get_option('afg_user_id'),
+    );
+
+    $rsp_obj = afg_get_flickr_data($params);
+    if ($rsp_obj['stat'] == 'fail') {
+        echo $rsp_obj['message'];
+    }
+    else {
+        $groups_map = array();
+        foreach($rsp_obj['groups']['group'] as $group) {
+            $groups_map[$group['nsid']] = $group['name'];
+        }
+    }
+
 ?>
 <div class='wrap'>
-<h2><a href='http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
+<h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
 echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Edit Galleries | Awesome Flickr Gallery</h2>
-<?php if ($_POST) {
-?>
-    <div class="updated"><p><strong>
-       Gallery updated successfully.
-        </strong></p></div>
-<?php   }
 
+<?php
+    if ($_POST && $_POST['afg_edit_gallery_name']) {
+        global $warning;
+        if ($warning) {
+        echo "<div class='updated'><p><strong>You entered invalid value for Per Page option.  It has been set to Default.</strong></p></div>";
+        $warning = false;
+        }
+    echo "<div class='updated'><p><strong>Gallery updated successfully.</strong></p></div>";
+    }
 echo afg_generate_version_line();
     $url=$_SERVER['REQUEST_URI'];
 ?>
@@ -141,7 +176,7 @@ echo afg_generate_version_line();
 </div></div>
 
 <?php
-    echo afg_generate_flickr_settings_table($photosets_map, $galleries_map);
+    echo afg_generate_flickr_settings_table($photosets_map, $galleries_map, $groups_map);
     echo afg_generate_gallery_settings_table();
     $gals = get_option('afg_galleries');
     if (sizeof($gals) == 1) $disable_submit = True;
@@ -166,7 +201,6 @@ echo afg_generate_version_line();
 </div>
 <div class="postbox-container" style="width: 29%;">
 <?php
-echo afg_reference_box();
 echo afg_box('Usage Instructions', 'Insert the Gallery Code in any of your posts of pages to display your Flickr Gallery.');
 echo afg_donate_box();
  ?>

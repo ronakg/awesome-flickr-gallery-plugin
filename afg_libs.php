@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '2.7.7');
+define('VERSION', '2.7.10');
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(
@@ -17,10 +17,11 @@ $afg_photo_source_map = array(
     'photostream' => 'Photostream',
     'gallery' => 'Gallery',
     'photoset' => 'Photoset',
+    'group' => 'Group',
 );
 
 $afg_width_map = array(
-    'default' => 'Use Default',
+    'default' => 'Default',
     'auto' => 'Automatic',
     '10' => '10 %',
     '20' => '20 %',
@@ -34,7 +35,8 @@ $afg_width_map = array(
 );
 
 $afg_per_page_map = array(
-    'default' => 'Use Default',
+    'default' => 'Default',
+    '1' => '1  ',
     '4' => '4  ',
     '5' => '5  ',
     '6' => '6  ',
@@ -60,7 +62,7 @@ $afg_per_page_map = array(
 );
 
 $afg_photo_size_map = array(
-    'default' => 'Use Default',
+    'default' => 'Default',
     '_s' => 'Square (Max 75px)',
     '_t' => 'Thumbnail (Max 100px)',
     '_m' => 'Small (Max 240px - Recommended)',
@@ -70,23 +72,23 @@ $afg_photo_size_map = array(
 $afg_on_off_map = array(
     'off' => 'Off  ',
     'on' => 'On  ',
-    'default' => 'Use Default',
+    'default' => 'Default',
 );
 
 $afg_yes_no_map = array(
     'off' => 'Yes  ',
     'on' => 'No  ',
-    'default' => 'Use Default',
+    'default' => 'Default',
 );
 
 $afg_descr_map = array(
     'off' => 'Off',
     'on' => 'On',
-    'default' => 'Use Default',
+    'default' => 'Default',
 );
 
 $afg_columns_map = array(
-    'default' => 'Use Default',
+    'default' => 'Default',
     '1' => '1  ',
     '2' => '2  ',
     '3' => '3  ',
@@ -95,10 +97,14 @@ $afg_columns_map = array(
     '6' => '6  ',
     '7' => '7  ',
     '8' => '8  ',
+    '9' => '9  ',
+    '10' => '10 ',
+    '11' => '11 ',
+    '12' => '12 ',
 );
 
 $afg_bg_color_map = array(
-    'default' => 'Use Default',
+    'default' => 'Default',
     'Black' => 'Black',
     'White' => 'White',
     'Transparent' => 'Transparent',
@@ -176,16 +182,17 @@ function afg_generate_version_line() {
        " &nbsp;Version: <b>" . VERSION . "</b> |" .
         " <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/faq/\">FAQ</a> |" .
         " <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/\">Rate this plugin</a> |" .
-        " <a href=\"http://www.ronakg.in/discussions/\">Support Forums</a> |" .
+        " <a href=\"http://www.ronakg.com/discussions/\">Support Forums</a> |" .
         " <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/changelog/\">Changelog</a> |" .
-        " <a href=\"http://www.ronakg.in/photography/\">Live Demo</a>" .
+        " <a href=\"http://www.ronakg.com/photos/\">Live Demo</a>" .
     " </h4>";
 }
 
-function afg_generate_flickr_settings_table($photosets, $galleries, $default_photoset='', $default_gallery='') {
+function afg_generate_flickr_settings_table($photosets, $galleries, $groups) {
     global $afg_photo_source_map;
     $photosets = afg_generate_options($photosets, '', False);
     $galleries = afg_generate_options($galleries, '', False);
+    $groups = afg_generate_options($groups, '', False);
     return "
     <div id=\"poststuff\">
 <div class=\"postbox\">
@@ -201,6 +208,8 @@ function afg_generate_flickr_settings_table($photosets, $galleries, $default_pho
         <td><select style='display:none' name='afg_photosets_box' id='afg_photosets_box'>$photosets
         </select>
         <select style='display:none' name='afg_galleries_box' id='afg_galleries_box'>$galleries
+        </select>
+        <select style='display:none' name='afg_groups_box' id='afg_groups_box'>$groups
         </select></td>
         </tr>
     </table>
@@ -218,22 +227,21 @@ function afg_generate_gallery_settings_table() {
 
         <tr valign='top'>
         <th scope='row'>Max Photos Per Page</th>
-        <td><select name='afg_per_page' id='afg_per_page'>
-            " . afg_generate_options($afg_per_page_map, 'default', True) . "
-        </select></td>
+        <td><input type='checkbox' name='afg_per_page_check' id='afg_per_page_check' onclick='showHidePerPage()' value='default' checked=''> Default </input><input name='afg_per_page' disabled='true' id='afg_per_page' type='text' size='3' maxlength='3' onblur='verifyBlank()' value='10'/> 
+        </td>
         </tr>
 
         <tr valign='top'>
         <th scope='row'>Size of Photos</th>
         <td><select name='afg_photo_size' id='afg_photo_size'>
-            " . afg_generate_options($afg_photo_size_map, 'default', True) . "
+            " . afg_generate_options($afg_photo_size_map, 'default', True, $afg_photo_size_map[get_option('afg_photo_size')]) . "
         </select></td>
         </tr>
 
         <tr valign='top'>
         <th scope='row'>Photo Titles</th>
         <td><select name='afg_captions' id='afg_captions'>
-            " . afg_generate_options($afg_on_off_map, 'default', True) . "
+            " . afg_generate_options($afg_on_off_map, 'default', True, $afg_on_off_map[get_option('afg_captions')]) . "
         </select></td>
         <td><font size='2'>Photo title setting applies only to Thumbnail (and above) size photos.</font></td>
         </tr>
@@ -241,7 +249,7 @@ function afg_generate_gallery_settings_table() {
         <tr valign='top'>
         <th scope='row'>Photo Descriptions</th>
         <td><select name='afg_descr' id='afg_descr'>
-            " . afg_generate_options($afg_descr_map, 'default', True) . "
+            " . afg_generate_options($afg_descr_map, 'default', True, $afg_descr_map[get_option('afg_descr')]) . "
         </select></td>
         <td><font size='2'>Photo Description setting applies only to Small and Medium size photos.</td>
         </tr>
@@ -249,21 +257,21 @@ function afg_generate_gallery_settings_table() {
         <tr valign='top'>
         <th scope='row'>No of Columns</th>
         <td><select name='afg_columns' id='afg_columns'>
-            " . afg_generate_options($afg_columns_map, 'default', True) . "
+            " . afg_generate_options($afg_columns_map, 'default', True, $afg_columns_map[get_option('afg_columns')]) . "
         </select></td>
         </tr>
 
         <tr valign='top'>
         <th scope='row'>Background Color</th>
         <td><select name='afg_bg_color' id='afg_bg_color'>
-            " . afg_generate_options($afg_bg_color_map, 'default', True) . "
+            " . afg_generate_options($afg_bg_color_map, 'default', True, $afg_bg_color_map[get_option('afg_bg_color')]) . "
         </select></td>
         </tr>
 
         <tr valign='top'>
         <th scope='row'>Gallery Width</th>
         <td><select name='afg_width' id='afg_width'>
-        " . afg_generate_options($afg_width_map, 'default', True) . "
+        " . afg_generate_options($afg_width_map, 'default', True, $afg_width_map[get_option('afg_width')]) . "
         </select></td>
         <td><font size='2'>Width of the Gallery is relative to the width of the page where Gallery is being generated.  <i>Automatic</i> is 100% of page width.</font></td>
         </tr>
@@ -271,7 +279,7 @@ function afg_generate_gallery_settings_table() {
         <tr valign='top'>
         <th scope='row'>Disable Pagination?</th>
         <td><select name='afg_pagination' id='afg_pagination'>
-        " . afg_generate_options($afg_yes_no_map, 'default', True) . "
+        " . afg_generate_options($afg_yes_no_map, 'default', True, $afg_yes_no_map[get_option('afg_pagination')]) . "
         </select></td>
         <td><font size='2'>Useful when displaying gallery in a sidebar widget where you want only few recent photos.</td>
         </tr>
@@ -279,41 +287,36 @@ function afg_generate_gallery_settings_table() {
         <tr valign='top'>
         <th scope='row'>Add a Small Credit Note?</th>
         <td><select name='afg_credit_note' id='afg_credit_note'>
-             " . afg_generate_options($afg_on_off_map, 'default', True) . "
+             " . afg_generate_options($afg_on_off_map, 'default', True, $afg_on_off_map[get_option('afg_credit_note')]) . "
              </select></td>
         <td><font size='2'>Credit Note will appear at the bottom of the gallery as - </font>
             Powered by
-            <a href=\"http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin\"/>
+            <a href=\"http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin\"/>
             AFG</a></td>
         </tr>
     </table>
 </div></div>";
 }
 
-function afg_generate_options($params, $selection, $show_default=False) {
+function afg_generate_options($params, $selection, $show_default=False, $default_value=0) {
     $str = '';
     foreach($params as $key => $value) {
-        if ($key == 'default' && !$show_default) {
+        if ($key == 'default' && !$show_default)
             continue;
-        }
 
         if ($selection == $key) {
+            if ($selection == 'default') $value .= ' - ' . $default_value;
             $str .= "<option value=" . $key . " selected='selected'>" . $value . "</option>";
         }
-        else {
+        else
             $str .= "<option value=" . $key . ">" . $value . "</option>";
-        }
     }
     return $str;
 }
 
 function filter($param) {
-    if ($param == 'default') {
-        return "";
-    }
-    else {
-        return $param;
-    }
+    if ($param == 'default') return "";
+    else return $param;
 }
 
 function afg_box($title, $message) {

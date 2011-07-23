@@ -1,14 +1,14 @@
 <?php
 /*
 Plugin Name: Awesome Flickr Gallery
-Plugin URI: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
+Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
 Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-Version: 2.7.7
+Version: 2.7.10
 Author: Ronak Gandhi
-Author URI: http://www.ronakg.in
+Author URI: http://www.ronakg.com
 License: GPL2
 
-Copyright 2011 Ronak Gandhi (email : ronak.gandhi@ronakg.in)
+Copyright 2011 Ronak Gandhi (email : ronak.gandhi@ronakg.com)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License, version 2, as
@@ -42,12 +42,15 @@ include_once('afg_libs.php');
 
 function enqueue_my_scripts() {
     wp_enqueue_script('jquery');
-    wp_enqueue_script('afg_colorbox_script', BASE_URL . "/colorbox/jquery.colorbox-min.js" , array('jquery'));
-    wp_enqueue_script('afg_colorbox_js', BASE_URL . "/colorbox/mycolorbox.js" , array('jquery'));
+    if(!get_option('afg_disable_slideshow')) {
+        wp_enqueue_script('afg_colorbox_script', BASE_URL . "/colorbox/jquery.colorbox-min.js" , array('jquery'));
+        wp_enqueue_script('afg_colorbox_js', BASE_URL . "/colorbox/mycolorbox.js" , array('jquery'));
+    }
 }
 
 function enqueue_my_styles() {
-    wp_enqueue_style('afg_colorbox_css', BASE_URL . "/colorbox/colorbox.css");
+    if(!get_option('afg_disable_slideshow'))
+        wp_enqueue_style('afg_colorbox_css', BASE_URL . "/colorbox/colorbox.css");
     wp_enqueue_style('afg_css', BASE_URL . "/afg.css");
 }
 
@@ -93,9 +96,14 @@ function afg_display_gallery($atts) {
 
     if ($gallery['photo_source'] == 'photoset') $photoset_id = $gallery['photoset_id'];
     else if ($gallery['photo_source'] == 'gallery') $gallery_id = $gallery['gallery_id'];
+    else if ($gallery['photo_source'] == 'group') $group_id = $gallery['group_id'];
 
     $disp_gallery = "<!-- Awesome Flickr Gallery Start" .
+        "Version - " . VERSION .
         "User ID - " . $user_id .
+        "Photoset ID - " . $photoset_id .
+        "Gallery ID - " . $gallery_id .
+        "Group ID - " . $group_id .
         "Per Page - " . $per_page .
         "Photo Size - " . $photo_size .
         "Captions - " . $photo_title .
@@ -104,7 +112,8 @@ function afg_display_gallery($atts) {
         "Credit Note - " . $credit_note .
         "Background Color - " . $bg_color .
         "Width - " . $gallery_width .
-        "Pagination - " . $pagination . "-->";
+        "Pagination - " . $pagination .
+        "-->";
 
     /* Parameters to get public photos of the user.  Format we are requesting
      * from Flickr is php_serial.
@@ -128,6 +137,15 @@ function afg_display_gallery($atts) {
             'user_id' => $user_id,
         );
     }
+    else if ($group_id) {
+        $params = array(
+            'api_key' => $api_key,
+            'format' => 'php_serial',
+            'method' => 'flickr.groups.pools.getPhotos',
+            'group_id' => $group_id,
+            'per_page' => 1,
+        );
+    }
     else {
         $params = array(
             'api_key' => $api_key,
@@ -145,6 +163,7 @@ function afg_display_gallery($atts) {
 
     if ($photoset_id) $total_photos = $rsp_obj['photoset']['photos'];
     else if ($gallery_id) $total_photos = $rsp_obj['gallery']['count_photos']['_content'];
+    else if ($group_id) $total_photos = $rsp_obj['photos']['total']['_content'];
     else $total_photos = $rsp_obj['person']['photos']['count']['_content'];
 
     if (($total_photos % $per_page) == 0) $total_pages = (int)($total_photos / $per_page);
@@ -174,6 +193,16 @@ function afg_display_gallery($atts) {
                 'gallery_id' => $gallery_id,
                 'format' => 'php_serial',
                 'user_id' => $user_id,
+                'extras' => $extras,
+            );
+        }
+        else if ($group_id) {
+            $flickr_api = 'photos';
+            $params = array(
+                'api_key' => $api_key,
+                'method' => 'flickr.groups.pools.getPhotos',
+                'group_id' => $group_id,
+                'format' => 'php_serial',
                 'extras' => $extras,
             );
         }
@@ -239,7 +268,15 @@ function afg_display_gallery($atts) {
             /* If photo descriptions are ON and size is not Square and Thumbnail,
              * get photo descriptions
              */
-            $disp_gallery .= "<a class=\"afgcolorbox\" rel=\"example4$id\" href=\"$photo_page_url\"" .
+            if (get_option('afg_disable_slideshow')) {
+                $class = '';
+                $rel = '';
+            }
+            else {
+                $class = "class='afgcolorbox'";
+                $rel = "rel='example4'$id";
+            }
+            $disp_gallery .= "<a $class $rel href=\"$photo_page_url\"" .
                 " title=\"{$photo['title']}\">" .
                 "<img src=\"$photo_url\" alt=\"{$photo['title']}\"/></a>";
             if($size_heading_map[$photo_size] && $photo_title == 'on') {
@@ -267,9 +304,9 @@ function afg_display_gallery($atts) {
             }
         }
         else {
-            if ($pagination == 'on') {
+            if ($pagination) {
                 $disp_gallery .= "<tr style=\"display:none\"><td>";
-                $disp_gallery .= "<a class=\"afgcolorbox\" rel=\"example4$id\" href=\"$photo_page_url\"" .
+                $disp_gallery .= "<a class=\"$class\" rel=\"$rel\" href=\"$photo_page_url\"" .
                     " title=\"{$photo['title']}\">" .
                     " <img alt=\"{$photo['title']}\"></a>";
                 $disp_gallery .= "</td></tr>";
@@ -328,7 +365,7 @@ function afg_display_gallery($atts) {
             "vertical-align:top; background-color:{$bg_color}; font-size:90%;" .
             "border-color:{$bg_color}\" colspan=\"$columns\">";
         $disp_gallery .= "<br /><p style='text-align:right'>Powered by " .
-            "<a href=\"http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin\"" .
+            "<a href=\"http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin\"" .
             "title=\"Awesome Flickr Gallery by Ronak Gandhi\"/>AFG</p></a>";
     }
     $disp_gallery .= '</table>';

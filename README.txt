@@ -1,10 +1,10 @@
 === Awesome Flickr Gallery ===
 Contributors: ronakg
-Donate link: http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/
+Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio
-Requires at least: 2.5
+Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 2.7.7
+Stable tag: 2.7.10
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -19,31 +19,32 @@ providing a simple yet customizable way to create stunning Flickr gallery.
 
 * Fast and light - uses intelligent caching to load galleries instantly
 * Create multiple galleries with different parameters
-* Select Photos from your Flickr Photostream, a Photoset or a Gallery
+* Select Photos from your Flickr Photostream, a Photoset, a Gallery or a Group
 * Fits into a sidebar widget too
 * Insert multiple galleries on same page with independent slideshow and pagination
 * View full size photos very quickly using slideshow and easy navigation
 * Fits automatically according to the width of the theme or you can select the width of the gallery yourself
+* Ability to disable built-in slideshow so that you can use a slide show plugin of your choice
 * Turn on/off photo titles
 * Turn on/off photo descriptions
 * Select background color between White, Black or Transparent based on your theme
 * Intuitive menu pages with easy configuration options and photo previews
 
 You can see a *live demo* of this plugin on my personal photography page -
-[Photos | RonakG.in](http://www.ronakg.in/photos/)
+[Photos | RonakG.com](http://www.ronakg.com/photos/)
 
-Check out my home page to see a demo of how the Gallery fits into a sidebar widget - [RonakG.in | Live life to the fullest...](http://www.ronakg.in/)
+Check out my home page to see a demo of how the Gallery fits into a sidebar widget - [RonakG.com | Live life to the fullest...](http://www.ronakg.com/)
 
 **More Examples:**
 
-* [Demo Page 1](http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-1/)
-* [Demo Page 2](http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-2/)
-* [Demo Page 3](http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-3/)
+* [Demo Page 1](http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-1/)
+* [Demo Page 2](http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-2/)
+* [Demo Page 3](http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-3/)
 
 **Support:**
 
 Can't get the plugin working?  Head to the discussion forum for solution -
-[Discussions | RonakG.in](http://www.ronakg.in/discussions/)
+[Discussions | RonakG.com](http://www.ronakg.com/discussions/)
 
 == Installation ==
 
@@ -92,9 +93,16 @@ Also, some themes have built-in settings to display images using lightbox or col
 Awesome Flickr Gallery uses caching to avoid expensive calls to Flickr servers.  It intelligently figures out if cache needs to be updated or not.  However, sometimes it may not work as expected.  You should go to Default Settings and delete all cached data.
 
 Still can't get the plugin working?  Head to the discussion forum for solution -
-[Discussions | RonakG.in](http://www.ronakg.in/discussions/)
+[Discussions | RonakG.com](http://www.ronakg.com/discussions/)
 
 == Upgrade Notice ==
+
+= 2.7.10 =
+[ENHANCEMENT] Ability to create Gallery using any of your plublic Groups on Flickr.
+[ENHANCEMENT] Ability to disable built-in slideshow so that you can use slideshow from any other plugin or theme of your choice
+[ENHANCEMENT] Max photo per page limit extended to 999
+[ENHANCEMENT] Max columns limit extended to 12
+[Bug Fix] Improved stability
 
 = 2.7.7 =
 [ENHANCEMENT] Improved caching mechanism extended to descriptions too.  Now switching ON descriptions is NOT expensive.
@@ -168,20 +176,25 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 6. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
 7. Full size photo view with SlideShow and navigation options to next and previous photos in gallery
 8. Awesome Flickr Gallery with Small size photos and black background
-9. Page navigation feature added in version 1.1.5
 
 == Features Planned ==
 
 Here's a list of planned features in upcoming releases of Awesome Flickr
 Gallery (In no particular order):
 
-* View photos from Flickr Groups
 * Add multiple User accounts to generate Galleries
 * Flickr like slideshow option
 * Generate a master gallery page with all your galleries linking to individual gallery pages
 * View photo comments
 
 == Changelog ==
+
+= 2.7.10 =
+* [Enhancement] Ability to create Gallery using any of your plublic Groups on Flickr.
+* [Enhancement] Ability to disable built-in slideshow so that you can use slideshow from any other plugin or theme of your choice
+* [Enhancement] Max photo per page limit extended to 999
+* [Enhancement] Max columns limit extended to 12
+* [Bug Fix] Improved stability
 
 = 2.7.7 =
 * [ENHANCEMENT] Improved caching mechanism extended to descriptions too.  Now switching ON descriptions is NOT expensive.

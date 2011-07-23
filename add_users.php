@@ -14,7 +14,7 @@ function afg_add_users() {
     $default_user = get_option('afg_user_id');
     ?>
 <div class='wrap'>
-<h2><a href='http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
+<h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
 echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Add Gallery | Awesome Flickr Gallery</h2>
 
 <?php

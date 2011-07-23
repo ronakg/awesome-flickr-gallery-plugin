@@ -6,19 +6,37 @@ include_once('edit_galleries.php');
 include_once('add_gallery.php');
 include_once('add_users.php');
 include_once('view_delete_galleries.php');
+include_once('advanced_settings.php');
 
 function afg_admin_menu() {
-    add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery', 'manage_options', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png");
-    add_submenu_page('afg_plugin_page', 'Default Settings | Awesome Flickr Gallery', 'Default Settings', 'manage_options', 'afg_plugin_page', 'afg_admin_html_page');
-    $page2 = add_submenu_page('afg_plugin_page', 'Add Gallery | Awesome Flickr Gallery', 'Add Gallery', 'manage_options', 'afg_add_gallery_page', 'afg_add_gallery');
-    $page3 = add_submenu_page('afg_plugin_page', 'Saved Galleries | Awesome Flickr Gallery', 'Saved Galleries', 'manage_options', 'afg_view_edit_galleries_page', 'afg_view_delete_galleries');
-    $page1 = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'manage_options', 'afg_edit_galleries_page', 'afg_edit_galleries');
-//    $page4 = add_submenu_page('afg_plugin_page', 'Add Users | Awesome Flickr Gallery', 'Add Users', 'manage_options', 'afg_add_users_page', 'afg_add_users');
-    add_action('admin_print_styles-' . $page1, 'afg_edit_galleries_header');
-    add_action('admin_print_styles-' . $page2, 'afg_edit_galleries_header');
-    add_action('admin_print_styles-' . $page3, 'afg_view_delete_galleries_header');
-    add_action('admin_print_styles-' . $page4, 'afg_delete_users_header');
+    add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery', 'edit_themes', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png", 898);
+    $main_page = add_submenu_page('afg_plugin_page', 'Default Settings | Awesome Flickr Gallery', 'Default Settings', 'edit_themes', 'afg_plugin_page', 'afg_admin_html_page');
+    $add_page = add_submenu_page('afg_plugin_page', 'Add Gallery | Awesome Flickr Gallery', 'Add Gallery', 'edit_themes', 'afg_add_gallery_page', 'afg_add_gallery');
+    $saved_page = add_submenu_page('afg_plugin_page', 'Saved Galleries | Awesome Flickr Gallery', 'Saved Galleries', 'edit_themes', 'afg_view_edit_galleries_page', 'afg_view_delete_galleries');
+    $edit_page = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'edit_themes', 'afg_edit_galleries_page', 'afg_edit_galleries');
+    $advanced_page = add_submenu_page('afg_plugin_page', 'Advanced Settings | Awesome Flickr Gallery', 'Advanced Settings', 'edit_themes', 'afg_advanced_page', 'afg_advanced_settings_page');
+//    $page4 = add_submenu_page('afg_plugin_page', 'Add Users | Awesome Flickr Gallery', 'Add Users', 'edit_themes', 'afg_add_users_page', 'afg_add_users');
+    add_action('admin_print_styles-' . $edit_page, 'afg_edit_galleries_header');
+    add_action('admin_print_styles-' . $add_page, 'afg_edit_galleries_header');
+    add_action('admin_print_styles-' . $saved_page, 'afg_view_delete_galleries_header');
+    add_action('admin_print_styles-' . $main_page, 'afg_admin_settings_header');
+//    add_action('admin_print_styles-' . $page4, 'afg_delete_users_header');
     afg_setup_options();
+}
+
+// adds "Settings" link to the plugin action page
+add_filter( 'plugin_action_links', 'afg_add_settings_links', 10, 2);
+
+function afg_add_settings_links( $links, $file ) {
+    if ( $file == plugin_basename( dirname(__FILE__)) . '/index.php' ) {
+        $settings_link = '<a href="plugins.php?page=afg_plugin_page">' . 'Settings</a>';
+        array_unshift( $links, $settings_link );
+    }
+    return $links;
+}
+
+function afg_admin_settings_header() {
+    wp_enqueue_script('admin-settings-script');
 }
 
 function afg_setup_options() {
@@ -62,9 +80,13 @@ function afg_admin_init() {
     register_setting('afg_settings_group', 'afg_page_width');
     register_setting('afg_settings_group', 'afg_pagination');
     register_setting('afg_settings_group', 'afg_users');
+    register_setting('afg_settings_group', 'afg_include_private');
+    register_setting('afg_settings_group', 'afg_auth_token');
+    register_setting('afg_settings_group', 'afg_disable_slideshow');
 
     // Register javascripts
     wp_register_script('edit-galleries-script', BASE_URL . '/js/edit_galleries.js');
+    wp_register_script('admin-settings-script', BASE_URL . '/js/admin_settings.js');
     wp_register_script('view-delete-galleries-script', BASE_URL . '/js/view_delete_galleries.js');
     wp_register_script('delete-users-script', BASE_URL . '/js/delete_users.js');
 }
@@ -89,7 +111,7 @@ function afg_admin_html_page() {
     global $afg_per_page_map, $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, $afg_columns_map, $afg_bg_color_map, $afg_width_map;
 ?>
 <div class='wrap'>
-<h2><a href='http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
+<h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
 echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Awesome Flickr Gallery Settings</h2>
 
 <?php
@@ -101,7 +123,13 @@ if ($_POST) {
     else {
         update_option('afg_api_key', $_POST['afg_api_key']);
         update_option('afg_user_id', $_POST['afg_user_id']);
-        update_option('afg_per_page', $_POST['afg_per_page']);
+        if (ctype_digit($_POST['afg_per_page']) && (int)$_POST['afg_per_page']) {
+            update_option('afg_per_page', $_POST['afg_per_page']);
+        }
+        else {
+            update_option('afg_per_page', 10);
+            echo "<div class='updated'><p><strong>You entered invalid value for Per Page option.  It has been set to 10.</strong></p></div>";
+        }
         update_option('afg_photo_size', $_POST['afg_photo_size']);
         update_option('afg_captions', $_POST['afg_captions']);
         update_option('afg_descr', $_POST['afg_descr']);
@@ -120,8 +148,6 @@ if ($_POST) {
 }
 $url=$_SERVER['REQUEST_URI']; ?>
 <form method='post' action='<?php echo $url ?>'>
-    <?php settings_fields('afg_settings_group'); ?>
-    <?php do_settings_sections('afg_plugin_page'); ?>
     <?php echo afg_generate_version_line() ?>
 
     <div class="postbox-container" style="width:70%;">
@@ -131,13 +157,13 @@ $url=$_SERVER['REQUEST_URI']; ?>
         <table class='form-table'>
             <tr valign='top'>
             <th scope='row'>Flickr API Key</th>
-            <td><input type='text' name='afg_api_key' value="<?php echo get_option('afg_api_key'); ?>" /> </td>
+            <td style='width:28%'><input type='text' name='afg_api_key' size='32' value="<?php echo get_option('afg_api_key'); ?>" ><font style='color:red; font-weight:bold'>*</font></input> </td>
             <td><font size='2'>Don't have a Flickr API Key?  Get it from <a href="http://www.flickr.com/services/api/keys/" target='blank'>here.</a> Go through the <a href='http://www.flickr.com/services/api/tos/'>Flickr API Terms of Service.</a></font></td>
             </tr>
 
             <tr valign='top'>
             <th scope='row'>Flickr User ID</th>
-            <td><input type='text' name='afg_user_id' value="<?php echo get_option('afg_user_id'); ?>" /> </td>
+            <td><input type='text' name='afg_user_id' size='32' value="<?php echo get_option('afg_user_id'); ?>" /><font style='color:red; font-weight:bold'>*</font> </td>
             <td><font size='2'>Don't know your Flickr Usesr ID?  Get it from <a href="http://idgettr.com/" target='blank'>here.</a></font></td>
             </tr>
         </table>
@@ -150,9 +176,9 @@ $url=$_SERVER['REQUEST_URI']; ?>
 
             <tr valign='top'>
             <th scope='row'>Max Photos Per Page</th>
-            <td><select name='afg_per_page'>
-                <?php echo afg_generate_options($afg_per_page_map, get_option('afg_per_page', '10')); ?>
-            </select></td>
+            <td><input type='text' name='afg_per_page' id='afg_per_page' onblur='verifyPerPageBlank()' size='3' maxlength='3' value="<?php
+                echo get_option('afg_per_page')?get_option('afg_per_page'):10;
+                ?>" /><font style='color:red; font-weight:bold'>*</font></td>
             </tr>
 
             <tr valign='top'>
@@ -216,17 +242,17 @@ $url=$_SERVER['REQUEST_URI']; ?>
             <td><input type='checkbox' name='afg_credit_note' value='Yes'
                  <?php
                     if (get_option('afg_credit_note', 'on') == 'on') {
-                        echo 'checked=\'\'';
+                        echo "checked=''";
                     }
                  ?>/></td>
             <td><font size='2'>Credit Note will appear at the bottom of the gallery as - </font>
                 Powered by
-                <a href="http://www.ronakg.in/projects/awesome-flickr-gallery-wordpress-plugin" title="Awesome Flickr Gallery by Ronak Gandhi"/>
+                <a href="http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin" title="Awesome Flickr Gallery by Ronak Gandhi"/>
                 AFG</a></td>
             </tr>
         </table>
     </div></div>
-<input type="submit" name="submit" class="button-primary" value="Save Changes" />
+<input type="submit" name="submit" id="afg_save_changes" class="button-primary" value="Save Changes" />
 <br /><br />
 <div id="poststuff">
 <div class="postbox">
