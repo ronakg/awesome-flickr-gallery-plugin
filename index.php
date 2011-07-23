@@ -163,11 +163,8 @@ function afg_display_gallery($atts) {
 
     if ($photoset_id) $total_photos = $rsp_obj['photoset']['photos'];
     else if ($gallery_id) $total_photos = $rsp_obj['gallery']['count_photos']['_content'];
-    else if ($group_id) $total_photos = $rsp_obj['photos']['total']['_content'];
+    else if ($group_id) $total_photos = $rsp_obj['photos']['total'];
     else $total_photos = $rsp_obj['person']['photos']['count']['_content'];
-
-    if (($total_photos % $per_page) == 0) $total_pages = (int)($total_photos / $per_page);
-    else $total_pages = (int)($total_photos / $per_page) + 1;
 
     $photos = get_transient('afg_id_' . $id);
     $extras = 'url_l, ';
@@ -205,6 +202,7 @@ function afg_display_gallery($atts) {
                 'format' => 'php_serial',
                 'extras' => $extras,
             );
+            if ($total_photos > 500) $total_photos = 500;
         }
         else {
             $flickr_api = 'photos';
@@ -230,6 +228,9 @@ function afg_display_gallery($atts) {
         }
         set_transient('afg_id_' . $id, $photos, 60 * 60 * 24 * 3);
     }
+
+    if (($total_photos % $per_page) == 0) $total_pages = (int)($total_photos / $per_page);
+    else $total_pages = (int)($total_photos / $per_page) + 1;
 
     if ($gallery_width == 'auto') $gallery_width = 100;
     $disp_gallery .= "<table class=\"afg_gallery\"" .
