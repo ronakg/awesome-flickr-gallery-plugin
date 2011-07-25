@@ -306,7 +306,7 @@ function afg_display_gallery($atts) {
             }
         }
         else {
-            if ($pagination) {
+            if ($pagination == 'on') {
                 $disp_gallery .= "<tr style=\"display:none\"><td>";
                 $disp_gallery .= "<a $class $rel href=\"$photo_page_url\"" .
                     " title=\"{$photo['title']}\">" .
