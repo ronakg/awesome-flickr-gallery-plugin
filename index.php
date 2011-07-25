@@ -202,6 +202,7 @@ function afg_display_gallery($atts) {
                 'format' => 'php_serial',
                 'extras' => $extras,
             );
+            echo 'total photos - ' . $total_photos;
             if ($total_photos > 500) $total_photos = 500;
         }
         else {
@@ -216,7 +217,7 @@ function afg_display_gallery($atts) {
         }
 
         $photos = array();
-        for($i=1; $i<=($total_photos/500)+1; $i++) {
+        for($i=1; $i<($total_photos/500)+1; $i++) {
             $params['per_page'] = 500;
             $params['page'] = $i;
 
@@ -275,7 +276,7 @@ function afg_display_gallery($atts) {
             }
             else {
                 $class = "class='afgcolorbox'";
-                $rel = "rel='example4'$id";
+                $rel = "rel='example4{$id}'";
             }
             $disp_gallery .= "<a $class $rel href=\"$photo_page_url\"" .
                 " title=\"{$photo['title']}\">" .
@@ -307,7 +308,7 @@ function afg_display_gallery($atts) {
         else {
             if ($pagination) {
                 $disp_gallery .= "<tr style=\"display:none\"><td>";
-                $disp_gallery .= "<a class=\"$class\" rel=\"$rel\" href=\"$photo_page_url\"" .
+                $disp_gallery .= "<a $class $rel href=\"$photo_page_url\"" .
                     " title=\"{$photo['title']}\">" .
                     " <img alt=\"{$photo['title']}\"></a>";
                 $disp_gallery .= "</td></tr>";
