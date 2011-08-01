@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '2.9.1');
+define('VERSION', '2.9.2');
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(

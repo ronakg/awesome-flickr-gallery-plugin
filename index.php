@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 2.9.1
+   Version: 2.9.2
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -145,22 +145,22 @@ function afg_display_gallery($atts) {
     else if (isset($gallery['photo_source']) && $gallery['photo_source'] == 'group') $group_id = $gallery['group_id'];
 
     $disp_gallery = "<!-- Awesome Flickr Gallery Start" .
-        "Version - " . VERSION .
-        "User ID - " . $user_id .
-        "Photoset ID - " . (isset($photoset_id)? $photoset_id: '') .
-        "Gallery ID - " . (isset($gallery_id)? $gallery_id: '') .
-        "Group ID - " . (isset($group_id)? $group_id: '') .
-        "Per Page - " . $per_page .
-        "Photo Size - " . $photo_size .
-        "Captions - " . $photo_title .
-        "Description - " . $photo_descr .
-        "Columns - " . $columns .
-        "Credit Note - " . $credit_note .
-        "Background Color - " . $bg_color .
-        "Width - " . $gallery_width .
-        "Pagination - " . $pagination .
-        "Slideshow - " . $slideshow_option .
-        "Disable slideshow? - " . $disable_slideshow .
+        " - Version - " . VERSION .
+        " - User ID - " . $user_id .
+        " - Photoset ID - " . (isset($photoset_id)? $photoset_id: '') .
+        " - Gallery ID - " . (isset($gallery_id)? $gallery_id: '') .
+        " - Group ID - " . (isset($group_id)? $group_id: '') .
+        " - Per Page - " . $per_page .
+        " - Photo Size - " . $photo_size .
+        " - Captions - " . $photo_title .
+        " - Description - " . $photo_descr .
+        " - Columns - " . $columns .
+        " - Credit Note - " . $credit_note .
+        " - Background Color - " . $bg_color .
+        " - Width - " . $gallery_width .
+        " - Pagination - " . $pagination .
+        " - Slideshow - " . $slideshow_option .
+        " - Disable slideshow? - " . $disable_slideshow .
         "-->";
 
     /* Parameters to get public photos of the user.  Format we are requesting
@@ -368,12 +368,11 @@ function afg_display_gallery($atts) {
     if ($slideshow_option == 'highslide') $disp_gallery .= "</div>";
 
     // Pagination
+    $disp_gallery .= "<div style=\"background-color:{$bg_color}; margin:auto; border:0px; width:$gallery_width%\">";
     if ($pagination == 'on' && $total_pages > 1) {
-        $disp_gallery .= "<div style=\"background-color:{$bg_color}; margin:auto; border:0px; width:$gallery_width%\"";
         $disp_gallery .= "<br /><br /><div style=\"text-align:center; color:{$text_color};" .
             "vertical-align:top; font-size:90%;" .
             "border-color:{$bg_color}\">";
-        $disp_gallery .= "<p>";
         if ($cur_page == 1) {
             $disp_gallery .="<font style=\"border:1px solid gray;\">&nbsp;&#171; prev&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;";
             $disp_gallery .="<font style=\"border:1px solid gray; background:gray; color:white\"> 1 </font>&nbsp;";
@@ -412,16 +411,17 @@ function afg_display_gallery($atts) {
             $disp_gallery .= "&nbsp;&nbsp;&nbsp;<a class=\"afg_page\" href=\"{$cur_page_url}?afg{$id}_page_id=$next_page\" title=\"Next Page\"> next &#187; </a>&nbsp;";
         }
 
-        $disp_gallery .= "<br />({$total_photos} Photos)</p></div>";
+        $disp_gallery .= "<div style='text-align:center'>({$total_photos} Photos)</div></div>";
     }
     if ($credit_note == 'on') {
-        $disp_gallery .= "<div style=\"text-align:center; color:{$text_color};" .
-            "vertical-align:top; font-size:90%;" .
+        $disp_gallery .= "<div style=\"color:{$text_color};" .
+            "vertical-align:top; " .
             "border-color:{$bg_color}\">";
-        $disp_gallery .= "<p style='text-align:right'>Powered by " .
+        $disp_gallery .= "<p style='text-align:right; font-size:0.9em;'>Powered by " .
             "<a href=\"http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin\"" .
-            "title=\"Awesome Flickr Gallery by Ronak Gandhi\"/>AFG</p></a></div>";
+            "title=\"Awesome Flickr Gallery by Ronak Gandhi\"/>AFG</a></p></div>";
     }
+    $disp_gallery .= "</div>";
     $disp_gallery .= "<!-- Awesome Flickr Gallery End -->";
     return $disp_gallery;
 }
