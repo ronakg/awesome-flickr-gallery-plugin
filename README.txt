@@ -1,7 +1,7 @@
 === Awesome Flickr Gallery ===
 Contributors: ronakg
 Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
-Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio
+Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide
 Requires at least: 3.0
 Tested up to: 3.2.1
 Stable tag: 2.7.11
@@ -21,14 +21,11 @@ gallery.
 * Fast and light - uses intelligent caching to load galleries instantly
 * Create multiple galleries with different parameters
 * Select Photos from your Flickr Photostream, a Photoset, a Gallery or a Group
+* 2 Powerful slideshow options with thumbnail slider navigation
 * Fits into a sidebar widget too
 * Insert multiple galleries on same page with independent slideshow and pagination
-* View full size photos very quickly using slideshow and easy navigation
 * Fits automatically according to the width of the theme or you can select the width of the gallery yourself
-* Ability to disable built-in slideshow so that you can use a slide show plugin of your choice
-* Turn on/off photo titles
-* Turn on/off photo descriptions
-* Select background color between White, Black or Transparent based on your theme
+* Ability to disable built-in slideshow so that you can use a slideshow plugin of your choice
 * Intuitive menu pages with easy configuration options and photo previews
 
 You can see a *live demo* of this plugin on my personal photography page -
@@ -101,6 +98,9 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 [Discussions | RonakG.com](http://www.ronakg.com/discussions/)
 
 == Upgrade Notice ==
+
+= 2.9.0 =
+****** MUST UPGRADE ******. A NEW slideshow option now available which has a built in thumbnail slider for even easier navigation.
 
 = 2.7.11 =
 [ENHANCEMENT] Ability to create Gallery using any of your plublic Groups on Flickr.
@@ -177,10 +177,11 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 2. Add Gallery Page
 3. Edit Galleries Page
 4. Saved Galleries Page
-5. Awesome Flickr Gallery with photos of size Small with Title and Description ON
-6. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
-7. Full size photo view with SlideShow and navigation options to next and previous photos in gallery
-8. Awesome Flickr Gallery with Small size photos and black background
+5. Advanced Settings Page
+6. Awesome Flickr Gallery with photos of size Small with Title and Description ON
+7. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
+8. Full size photo view with SlideShow along with thumbnail slider at the bottom
+9. Awesome Flickr Gallery with Thumbnail size photos with white background
 
 == Features Planned ==
 
@@ -188,11 +189,14 @@ Here's a list of planned features in upcoming releases of Awesome Flickr
 Gallery (In no particular order):
 
 * Add multiple User accounts to generate Galleries
-* Flickr like slideshow option
 * Generate a master gallery page with all your galleries linking to individual gallery pages
 * View photo comments
 
 == Changelog ==
+
+= 2.9.0 =
+* [Feature] A NEW slideshow option now available which has a built in thumbnail slider for even easier navigation.
+* Minor bug fixes
 
 = 2.7.11 =
 * [Enhancement] Ability to create Gallery using any of your plublic Groups on Flickr.
@@ -208,11 +212,6 @@ Gallery (In no particular order):
 = 2.7.5 =
 * Added caching mechanism to avoid expensive calls to Flickr servers.  This should improve page loading times a lot, especially for those with 500+ photos.
 
-= 2.7.2 =
-* [Bug Fix] Can't see photos when there are more than 500 photos
-* [Enhancement] View full size photos in slideshow
-* [Enhancement] Minimum number of photos in gallery reduced to 4
-
 = 2.7.0 =
 * Now slideshow displays all the pages in the gallery so that users can navigate through without having to visit all pages.
 * Support for multiple galleries with independent slideshows and pagination.
@@ -223,13 +222,7 @@ Gallery (In no particular order):
 * Added a configuration option to enale/disable pagination.  This helps if you want to insert the gallery into a sidebar widget.
 * Change slideshow behavior based on feedback.  Now it doesn't start automatically.
 
-= 2.5.3 =
-* [Bug Fix] When changes are submitted on Edit Galleries page, selected gallery would go back to default instead of last edited gallery.
-* [Bug Fix] Credit Note would appear above the gallery if gallery has only 1 page
-* [Bug Fix] Donate button link was broken, fixed it.  Now shower all the donations :).
-
 = 2.5.0 =
-
 * Create multiple instances of your gallery with different settings
 * Select photo source from your Flickr photostream, photoset or galleries
 * New improved admin panel with slick menus and photo previews
@@ -239,22 +232,10 @@ Gallery (In no particular order):
 * Added SlideShow option when viewing full size photos
 * Moved to colorbox from lightbox for displaying full size photos
 
-= 1.1.7 =
-* [Bug Fix] Moved to a better API to fetch data from Flickr.
-
-= 1.1.6 =
-* [Bug Fix] Compatibility issue with some browsers.
-
-= 1.1.5 =
-* Added much better looking page navigation.
-
 = 1.1.0 =
 * Added page navigation to the gallery.  Now max photos setting refers to max photos per page.
 * Better exception handling
 * Minor bug fixes
-
-= 1.0.1 =
-* [Bug Fix] Clicking the photos wouldn't open full size photo in lightbox.
 
 = 1.0.0 =
 * Release

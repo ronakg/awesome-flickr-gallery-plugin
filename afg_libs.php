@@ -3,14 +3,14 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '2.7.11');
+define('VERSION', '2.9.0');
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(
     '_s' => '',
-    '_t' => '1',
-    '_m' => '2',
-    'NULL' => '3',
+    '_t' => '0.8em',
+    '_m' => '1em',
+    'NULL' => '1.1em',
 );
 
 $afg_photo_source_map = array(
@@ -127,7 +127,7 @@ function afg_get_encoded_params($params) {
     return $encoded_params;
 }
 
-function delete_all_caches() {
+function delete_afg_caches() {
     $galleries = get_option('afg_galleries');
     foreach($galleries as $id => $ginfo) {
         delete_transient('afg_id_'. $id);
@@ -177,7 +177,20 @@ function afg_get_flickr_data($params) {
 }
 
 function afg_generate_version_line() {
-    return "" .
+    if(isset($_POST['afg_dismis_ss_msg']) && $_POST['afg_dismis_ss_msg']) {
+        update_option('afg_dismis_ss_msg', true);
+    }
+    $return_str = "";
+
+    if (get_option('afg_slideshow_option') == 'colorbox' && !get_option('afg_dismis_ss_msg')) {
+        $return_str .= "<p style='background-color:#FFFFE0; line-height:140%; border:1px solid #E6DB55; border-radius:3px; margin:5px 0 15px; padding:6px 10px;'><b>A better slideshow is available for use.  You are using ColorBox," .
+            " which doesn't support thumbnail slider.  Go to <a href='{$_SERVER['PHP_SELF']}?page=afg_advanced_page'>Advanced Settings</a>" .
+            " to change your slideshow to HighSlide.</b>" .
+            " <input type='submit' name='afg_dismis_ss_msg' class='button' value='Dismis Message'/>" .
+            " </p>";
+    }
+
+   $return_str .= "" .
     " <h4 align=\"right\" style=\"margin-right:0.5%\">" .
        " &nbsp;Version: <b>" . VERSION . "</b> |" .
         " <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/faq/\">FAQ</a> |" .
@@ -186,7 +199,10 @@ function afg_generate_version_line() {
         " <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/changelog/\">Changelog</a> |" .
         " <a href=\"http://www.ronakg.com/photos/\">Live Demo</a>" .
     " </h4>";
+    return $return_str;
 }
+
+
 
 function afg_generate_flickr_settings_table($photosets, $galleries, $groups) {
     global $afg_photo_source_map;
@@ -314,7 +330,7 @@ function afg_generate_options($params, $selection, $show_default=False, $default
     return $str;
 }
 
-function filter($param) {
+function afg_filter($param) {
     if ($param == 'default') return "";
     else return $param;
 }
@@ -344,7 +360,7 @@ function afg_usage_box($code) {
 }
 
 function get_afg_option($gallery, $var) {
-    if ($gallery[$var]) return $gallery[$var];
+    if (isset($gallery[$var]) && $gallery[$var]) return $gallery[$var];
     else return get_option('afg_' . $var);
 }
 

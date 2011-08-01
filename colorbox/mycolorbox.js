@@ -4,7 +4,7 @@ jQuery("a[rel^='example4']").colorbox({
     slideshow: true,
     slideshowAuto: false,
     slideshowSpeed: 3500,
-    maxWidth: "100%",
-    maxHeight: "100%",
+    maxWidth: "90%",
+    maxHeight: "90%",
     });
 });
