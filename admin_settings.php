@@ -10,16 +10,16 @@ require_once('advanced_settings.php');
 
 function afg_admin_menu() {
     add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery', 'edit_themes', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png", 898);
-    $main_page = add_submenu_page('afg_plugin_page', 'Default Settings | Awesome Flickr Gallery', 'Default Settings', 'edit_themes', 'afg_plugin_page', 'afg_admin_html_page');
-    $add_page = add_submenu_page('afg_plugin_page', 'Add Gallery | Awesome Flickr Gallery', 'Add Gallery', 'edit_themes', 'afg_add_gallery_page', 'afg_add_gallery');
-    $saved_page = add_submenu_page('afg_plugin_page', 'Saved Galleries | Awesome Flickr Gallery', 'Saved Galleries', 'edit_themes', 'afg_view_edit_galleries_page', 'afg_view_delete_galleries');
-    $edit_page = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'edit_themes', 'afg_edit_galleries_page', 'afg_edit_galleries');
-    $advanced_page = add_submenu_page('afg_plugin_page', 'Advanced Settings | Awesome Flickr Gallery', 'Advanced Settings', 'edit_themes', 'afg_advanced_page', 'afg_advanced_settings_page');
+    $afg_main_page = add_submenu_page('afg_plugin_page', 'Default Settings | Awesome Flickr Gallery', 'Default Settings', 'edit_themes', 'afg_plugin_page', 'afg_admin_html_page');
+    $afg_add_page = add_submenu_page('afg_plugin_page', 'Add Gallery | Awesome Flickr Gallery', 'Add Gallery', 'edit_themes', 'afg_add_gallery_page', 'afg_add_gallery');
+    $afg_saved_page = add_submenu_page('afg_plugin_page', 'Saved Galleries | Awesome Flickr Gallery', 'Saved Galleries', 'edit_themes', 'afg_view_edit_galleries_page', 'afg_view_delete_galleries');
+    $afg_edit_page = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'edit_themes', 'afg_edit_galleries_page', 'afg_edit_galleries');
+    $afg_advanced_page = add_submenu_page('afg_plugin_page', 'Advanced Settings | Awesome Flickr Gallery', 'Advanced Settings', 'edit_themes', 'afg_advanced_page', 'afg_advanced_settings_page');
     //    $page4 = add_submenu_page('afg_plugin_page', 'Add Users | Awesome Flickr Gallery', 'Add Users', 'edit_themes', 'afg_add_users_page', 'afg_add_users');
-    add_action('admin_print_styles-' . $edit_page, 'afg_edit_galleries_header');
-    add_action('admin_print_styles-' . $add_page, 'afg_edit_galleries_header');
-    add_action('admin_print_styles-' . $saved_page, 'afg_view_delete_galleries_header');
-    add_action('admin_print_styles-' . $main_page, 'afg_admin_settings_header');
+    add_action('admin_print_styles-' . $afg_edit_page, 'afg_edit_galleries_header');
+    add_action('admin_print_styles-' . $afg_add_page, 'afg_edit_galleries_header');
+    add_action('admin_print_styles-' . $afg_saved_page, 'afg_view_delete_galleries_header');
+    add_action('admin_print_styles-' . $afg_main_page, 'afg_admin_settings_header');
     //    add_action('admin_print_styles-' . $page4, 'afg_delete_users_header');
     afg_setup_options();
 }
@@ -118,41 +118,40 @@ function afg_admin_html_page() {
     echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Awesome Flickr Gallery Settings</h2>
 
 <?php
-        if ($_POST) {
-            if (isset($_POST['submit']) && $_POST['submit'] == 'Delete Cached Galleries') {
-                delete_afg_caches();
-                echo "<div class='updated'><p><strong>Cached data deleted successfully.</strong></p></div>";
-            }
-            else if (isset($_POST['submit']) && $_POST['submit'] == 'Save Changes') {
-                update_option('afg_api_key', $_POST['afg_api_key']);
-                update_option('afg_user_id', $_POST['afg_user_id']);
-                if (ctype_digit($_POST['afg_per_page']) && (int)$_POST['afg_per_page']) {
-                    update_option('afg_per_page', $_POST['afg_per_page']);
-                }
-                else {
-                    update_option('afg_per_page', 10);
-                    echo "<div class='updated'><p><strong>You entered invalid value for Per Page option.  It has been set to 10.</strong></p></div>";
-                }
-                update_option('afg_photo_size', $_POST['afg_photo_size']);
-                update_option('afg_captions', $_POST['afg_captions']);
-                update_option('afg_descr', $_POST['afg_descr']);
-                update_option('afg_columns', $_POST['afg_columns']);
-                update_option('afg_width', $_POST['afg_width']);
-                update_option('afg_bg_color', $_POST['afg_bg_color']);
-
-                if (isset($_POST['afg_credit_note']) && $_POST['afg_credit_note']) update_option('afg_credit_note', 'on');
-                else update_option('afg_credit_note', 'off');
-
-                if (isset($_POST['afg_pagination']) && $_POST['afg_pagination']) update_option('afg_pagination', 'off');
-                else update_option('afg_pagination', 'on');
-
-                echo "<div class='updated'><p><strong>Settings updated successfully.</strong></p></div>";
-            }
+    if ($_POST) {
+        if (isset($_POST['submit']) && $_POST['submit'] == 'Delete Cached Galleries') {
+            delete_afg_caches();
+            echo "<div class='updated'><p><strong>Cached data deleted successfully.</strong></p></div>";
         }
-    $url=$_SERVER['REQUEST_URI']; ?>
-            <form method='post' action='<?php echo $url ?>'>
-               <?php echo afg_generate_version_line() ?>
+        else if (isset($_POST['submit']) && $_POST['submit'] == 'Save Changes') {
+            update_option('afg_api_key', $_POST['afg_api_key']);
+            update_option('afg_user_id', $_POST['afg_user_id']);
+            if (ctype_digit($_POST['afg_per_page']) && (int)$_POST['afg_per_page']) {
+                update_option('afg_per_page', $_POST['afg_per_page']);
+            }
+            else {
+                update_option('afg_per_page', 10);
+                echo "<div class='updated'><p><strong>You entered invalid value for Per Page option.  It has been set to 10.</strong></p></div>";
+            }
+            update_option('afg_photo_size', $_POST['afg_photo_size']);
+            update_option('afg_captions', $_POST['afg_captions']);
+            update_option('afg_descr', $_POST['afg_descr']);
+            update_option('afg_columns', $_POST['afg_columns']);
+            update_option('afg_width', $_POST['afg_width']);
+            update_option('afg_bg_color', $_POST['afg_bg_color']);
 
+            if (isset($_POST['afg_credit_note']) && $_POST['afg_credit_note']) update_option('afg_credit_note', 'on');
+            else update_option('afg_credit_note', 'off');
+
+            if (isset($_POST['afg_pagination']) && $_POST['afg_pagination']) update_option('afg_pagination', 'off');
+            else update_option('afg_pagination', 'on');
+
+            echo "<div class='updated'><p><strong>Settings updated successfully.</strong></p></div>";
+        }
+    }
+    $url=$_SERVER['REQUEST_URI']; ?>
+    <form method='post' action='<?php echo $url ?>'>
+        <?php echo afg_generate_version_line() ?>
                <div class="postbox-container" style="width:69%; margin-right:1%">
                   <div id="poststuff">
                      <div class="postbox">

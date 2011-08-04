@@ -3,14 +3,14 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '2.9.2');
+define('VERSION', '2.9.3');
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(
     '_s' => '',
-    '_t' => '0.8em',
+    '_t' => '0.9em',
     '_m' => '1em',
-    'NULL' => '1.1em',
+    'NULL' => '1.2em',
 );
 
 $afg_photo_source_map = array(
@@ -65,7 +65,7 @@ $afg_photo_size_map = array(
     'default' => 'Default',
     '_s' => 'Square (Max 75px)',
     '_t' => 'Thumbnail (Max 100px)',
-    '_m' => 'Small (Max 240px - Recommended)',
+    '_m' => 'Small (Max 240px)',
     'NULL' => 'Medium (Max 500px)',
 );
 

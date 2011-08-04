@@ -1,20 +1,33 @@
+/* Hover effect for pagination links */
 a.afg_page:hover {
     background: royalblue;
-    text-decoration: underline;
     color:white;
+    text-decoration: none;
 }
 
+/* Text decoration for pagination links */
 a.afg_page:visited, a.afg_page:link {
     text-decoration: none;
     border:1px solid gray;
 }
 
-table.afg_gallery {
-    margin:auto;
-    border:0px;
-}
-
-td.afg_gallery {
+/* Individual image cell in the gallery */
+.afg-cell {
+    display: table-cell; /* IMPORTANT */
     text-align: left;
     vertical-align: top;
+    margin: auto;
+}
+
+/* Photo title */
+.afg-title {
+    margin-right: 5%;
+    margin-bottom: 5%;
+}
+
+/* Photo Description */
+.afg-description {
+    font-size:85%;
+    margin-right:5%;
+    font-style: italic;
 }

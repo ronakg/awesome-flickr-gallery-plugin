@@ -99,6 +99,11 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 
 == Upgrade Notice ==
 
+= 2.9.3 =
+[ENHANCEMENT] Subtle mouse-over effect for gallery images
+[PERFORMANCE] Large galleries load faster
+[Bug Fix] Sidebar appears at bottom of the page with AFG activated
+
 = 2.9.2 =
 ****** MUST UPGRADE ******. A NEW slideshow option now available which has a built in thumbnail slider for even easier navigation.
 
@@ -193,6 +198,11 @@ Gallery (In no particular order):
 * View photo comments
 
 == Changelog ==
+
+= 2.9.3 =
+* [Enhancement] Subtle mouse-over effect for gallery images
+* [Performance] Large galleries load faster
+* [Bug Fix] Sidebar appears at bottom of the page with AFG activated
 
 = 2.9.2 =
 * [Feature] A NEW slideshow option now available which has a built in thumbnail slider for even easier navigation.
