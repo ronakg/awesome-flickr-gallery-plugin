@@ -4,8 +4,7 @@ Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plu
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag:  2.9.4
-
+Stable tag: 2.9.4
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -15,7 +14,7 @@ enabling you to customize it the way you like it.
 **Awesome Flickr Gallery** is a simple, fast and light plugin to create a
 gallery of your Flickr photos on your WordPress enabled website.  This plugin
 aims at providing a simple yet customizable way to create stunning Flickr
-gallery.
+galleries.
 
 **Features:**
 
