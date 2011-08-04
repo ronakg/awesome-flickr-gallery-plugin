@@ -4,7 +4,7 @@ Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plu
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 2.9.3
+Stable tag: 2.9.4
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -99,7 +99,7 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 
 == Upgrade Notice ==
 
-= 2.9.3 =
+= 2.9.4 =
 [ENHANCEMENT] Subtle mouse-over effect for gallery images
 [PERFORMANCE] Large galleries load faster
 [Bug Fix] Sidebar appears at bottom of the page with AFG activated
@@ -199,7 +199,7 @@ Gallery (In no particular order):
 
 == Changelog ==
 
-= 2.9.3 =
+= 2.9.4 =
 * [Enhancement] Subtle mouse-over effect for gallery images
 * [Performance] Large galleries load faster
 * [Bug Fix] Sidebar appears at bottom of the page with AFG activated
