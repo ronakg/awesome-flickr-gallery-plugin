@@ -53,6 +53,10 @@ Can't get the plugin working?  Head to the discussion forum for solution -
 
 == Frequently Asked Questions ==
 
+= After upgrade to 2.9.4, only one column appears in the gallery. =
+
+This happens when you have a cache plugin (like WP Super Cache or W3 All Cache) installed. Old cached CSS file is loaded instead of the new one. Just delete the cached pages from your cache plugin and refresh the gallery page 2-3 times, it will appear fine.
+
 = I have activated the plugin, but gallery doesn't load. =
 
 Make sure your Flickr API key and Flickr User ID are correct.
