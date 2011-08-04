@@ -74,8 +74,6 @@ function add_afg_headers() {
         hs.dimmingOpacity = 0.85;
         hs.outlineType = 'rounded-white';
         hs.captionEval = 'this.thumb.alt';
-        hs.previousText = 'Ronak';
-        hs.nextText = 'Gandhi';
         hs.fullExpandText = '';
         hs.marginBottom = 115; // make room for the thumbstrip and the controls
         hs.numberPosition = 'caption';
