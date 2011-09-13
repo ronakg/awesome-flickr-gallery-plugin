@@ -190,10 +190,10 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 
 == Screenshots ==
 
-3. Full size photo view with SlideShow along with thumbnail slider at the bottom
-4. Awesome Flickr Gallery with Thumbnail size photos with white background
-2. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
-1. Awesome Flickr Gallery with photos of size Small with Title and Description ON
+1. Full size photo view with SlideShow along with thumbnail slider at the bottom
+2. Awesome Flickr Gallery with Thumbnail size photos with white background
+3. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
+4. Awesome Flickr Gallery with photos of size Small with Title and Description ON
 5. Default Settings Page
 6. Add Gallery Page
 7. Edit Galleries Page
