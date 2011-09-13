@@ -4,62 +4,37 @@ include_once('afg_libs.php');
 function afg_add_gallery() {
     global $afg_per_page_map, $afg_photo_size_map, $afg_on_off_map,
         $afg_descr_map, $afg_columns_map, $afg_bg_color_map,
-        $afg_photo_source_map;
+        $afg_photo_source_map, $pf;
 
-    $params = array(
-        'api_key' => get_option('afg_api_key'),
-        'method' => 'flickr.photosets.getList',
-        'format' => 'php_serial',
-        'user_id' => get_option('afg_user_id'),
-    );
+    $user_id = get_option('afg_user_id');
 
-    $rsp_obj = afg_get_flickr_data($params);
-    if ($rsp_obj['stat'] == 'fail') {
-        echo $rsp_obj['message'];
-    }
-    else {
-        $photosets_map = array();
-        foreach($rsp_obj['photosets']['photoset'] as $photoset) {
-            $photosets_map[$photoset['id']] = $photoset['title']['_content'];
-        }
+    $rsp_obj = $pf->photosets_getList($user_id);
+    $photosets_map = array();
+    foreach($rsp_obj['photoset'] as $photoset) {
+        $photosets_map[$photoset['id']] = $photoset['title'];
     }
 
-    $params = array(
-        'api_key' => get_option('afg_api_key'),
-        'method' => 'flickr.galleries.getList',
-        'format' => 'php_serial',
-        'user_id' => get_option('afg_user_id'),
-    );
-
-    $rsp_obj = afg_get_flickr_data($params);
-    if ($rsp_obj['stat'] == 'fail') {
-        echo $rsp_obj['message'];
-    }
-    else {
-        $galleries_map = array();
-        foreach($rsp_obj['galleries']['gallery'] as $gallery) {
-            $galleries_map[$gallery['id']] = $gallery['title']['_content'];
-        }
+    $rsp_obj = $pf->galleries_getList($user_id);
+    $galleries_map = array();
+    foreach($rsp_obj['galleries']['gallery'] as $gallery) {
+        $galleries_map[$gallery['id']] = $gallery['title'];
     }
 
-    $params = array(
-        'api_key' => get_option('afg_api_key'),
-        'method' => 'flickr.people.getPublicGroups',
-        'format' => 'php_serial',
-        'user_id' => get_option('afg_user_id'),
-    );
-
-    $rsp_obj = afg_get_flickr_data($params);
-    if ($rsp_obj['stat'] == 'fail') {
-        echo $rsp_obj['message'];
-    }
-    else {
-        $groups_map = array();
-        foreach($rsp_obj['groups']['group'] as $group) {
+    $groups_map = array();
+    if (get_option('afg_flickr_token')) {
+        $rsp_obj = $pf->groups_pools_getGroups();
+        foreach($rsp_obj['group'] as $group) {
             $groups_map[$group['nsid']] = $group['name'];
         }
     }
-?>
+    else {
+        $rsp_obj = $pf->people_getPublicGroups($user_id);
+        foreach($rsp_obj as $group) {
+            $groups_map[$group['nsid']] = $group['name'];
+        }
+    }
+
+    ?>
    <div class='wrap'>
    <h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
     echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Add Gallery | Awesome Flickr Gallery</h2>

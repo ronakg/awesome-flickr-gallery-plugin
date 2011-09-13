@@ -70,7 +70,9 @@ function afg_get_galleries($default='') {
 function afg_edit_galleries() {
     global $afg_per_page_map, $afg_photo_size_map, $afg_on_off_map,
         $afg_descr_map, $afg_columns_map, $afg_bg_color_map,
-        $afg_photo_source_map, $default_gallery_id;
+        $afg_photo_source_map, $default_gallery_id, $pf;
+
+    $user_id = get_option('afg_user_id');
 
     $cur_page_url = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] : "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     preg_match('/\&gallery_id=(?P<gallery_id>\d+)/', $cur_page_url, $matches);
@@ -80,57 +82,41 @@ function afg_edit_galleries() {
         $cur_page_url = substr($cur_page_url, 0, $match_pos);
     }
 
-    $params = array(
-        'api_key' => get_option('afg_api_key'),
-        'method' => 'flickr.photosets.getList',
-        'format' => 'php_serial',
-        'user_id' => get_option('afg_user_id'),
-    );
-
-    $rsp_obj = afg_get_flickr_data($params);
-    if ($rsp_obj['stat'] == 'fail') {
-        echo $rsp_obj['message'];
-    }
+    $photosets_map = array();
+    $rsp_obj = $pf->photosets_getList($user_id);
+    if (!$rsp_obj) echo afg_error();
     else {
-        $photosets_map = array();
-        foreach($rsp_obj['photosets']['photoset'] as $photoset) {
-            $photosets_map[$photoset['id']] = $photoset['title']['_content'];
+        foreach($rsp_obj['photoset'] as $photoset) {
+            $photosets_map[$photoset['id']] = $photoset['title'];
         }
     }
 
-    $params = array(
-        'api_key' => get_option('afg_api_key'),
-        'method' => 'flickr.galleries.getList',
-        'format' => 'php_serial',
-        'user_id' => get_option('afg_user_id'),
-    );
-
-    $rsp_obj = afg_get_flickr_data($params);
-    if ($rsp_obj['stat'] == 'fail') {
-        echo $rsp_obj['message'];
-    }
+    $galleries_map = array();
+    $rsp_obj = $pf->galleries_getList($user_id);
+    if (!$rsp_obj) echo afg_error();
     else {
-        $galleries_map = array();
         foreach($rsp_obj['galleries']['gallery'] as $gallery) {
-            $galleries_map[$gallery['id']] = $gallery['title']['_content'];
+            $galleries_map[$gallery['id']] = $gallery['title'];
         }
     }
 
-    $params = array(
-        'api_key' => get_option('afg_api_key'),
-        'method' => 'flickr.people.getPublicGroups',
-        'format' => 'php_serial',
-        'user_id' => get_option('afg_user_id'),
-    );
-
-    $rsp_obj = afg_get_flickr_data($params);
-    if ($rsp_obj['stat'] == 'fail') {
-        echo $rsp_obj['message'];
+    $groups_map = array();
+    if (get_option('afg_flickr_token')) {
+        $rsp_obj = $pf->groups_pools_getGroups();
+        if (!$rsp_obj) echo afg_error();
+        else {
+            foreach($rsp_obj['group'] as $group) {
+                $groups_map[$group['nsid']] = $group['name'];
+            }
+        }
     }
     else {
-        $groups_map = array();
-        foreach($rsp_obj['groups']['group'] as $group) {
-            $groups_map[$group['nsid']] = $group['name'];
+        $rsp_obj = $pf->people_getPublicGroups($user_id);
+        if (!$rsp_obj) echo afg_error();
+        else {
+            foreach($rsp_obj as $group) {
+                $groups_map[$group['nsid']] = $group['name'];
+            }
         }
     }
 

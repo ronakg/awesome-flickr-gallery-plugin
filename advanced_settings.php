@@ -1,11 +1,11 @@
 <?php
-include_once('afg_libs.php');
+require_once('afg_libs.php');
 
 if (is_admin()) {
     wp_enqueue_script('jquery');
     wp_enqueue_script('afg_colorbox_script', BASE_URL . "/colorbox/jquery.colorbox-min.js" , array('jquery'));
     wp_enqueue_script('afg_colorbox_js', BASE_URL . "/colorbox/mycolorbox.js" , array('jquery'));
-    wp_enqueue_script('afg_highslide_js', BASE_URL . "/highslide/highslide-full.js");
+    wp_enqueue_script('afg_highslide_js', BASE_URL . "/highslide/highslide-full.min.js");
     wp_enqueue_style('afg_colorbox_css', BASE_URL . "/colorbox/colorbox.css");
     wp_enqueue_style('afg_highslide_css', BASE_URL . "/highslide/highslide.css");
     add_action('admin_head', 'add_afg_admin_headers');
@@ -44,18 +44,18 @@ thumbstrip: {
    }
 
    function afg_advanced_settings_page() {
-      $url=$_SERVER['REQUEST_URI'];
+       $url=$_SERVER['REQUEST_URI'];
    ?>
    <div class='wrap'>
    <h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
       echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Advanced Settings | Awesome Flickr Gallery</h2>
 
 <?php
-          if (isset($_POST['afg_advanced_save_changes']) && $_POST['afg_advanced_save_changes']) {
-              update_option('afg_disable_slideshow', isset($_POST['afg_disable_slideshow'])? $_POST['afg_disable_slideshow']: '');
-              update_option('afg_slideshow_option', $_POST['afg_slideshow_option']);
-              echo "<div class='updated'><p><strong>Settings updated successfully.</strong></p></div>";
-          }
+      if (isset($_POST['afg_advanced_save_changes']) && $_POST['afg_advanced_save_changes']) {
+          update_option('afg_disable_slideshow', isset($_POST['afg_disable_slideshow'])? $_POST['afg_disable_slideshow']: '');
+          update_option('afg_slideshow_option', $_POST['afg_slideshow_option']);
+          echo "<div class='updated'><p><strong>Settings updated successfully.</strong></p></div>";
+      }
 ?>
          <form method='post' action='<?php echo $url ?>'>
             <?php echo afg_generate_version_line() ?>
@@ -81,12 +81,13 @@ thumbstrip: {
 
                         <tr valign='top'>
                            <th scope='row'>Disable Slideshow</th>
-                           <td><input type='checkbox' name='afg_disable_slideshow' id='afg_disable_slideshow' value='yes' <?php 
-      if (get_option('afg_disable_slideshow')) echo 'checked=\'\'';
-?>
-                           ></td>
-                        <td><font size='2'>Disabling slideshow will remove the slideshow built into the Awesome Flickr Gallery.
-                              Use this option if you want to use a different slideshow (probably from your theme or any other plugin).</font></td></tr>
+                           <td><input type='checkbox' name='afg_disable_slideshow' id='afg_disable_slideshow' value='yes'
+                            <?php if (get_option('afg_disable_slideshow')) echo 'checked=\'\'';?>>
+                           </td>
+                           <td><font size='2'>Disabling slideshow will remove the slideshow built into the Awesome Flickr Gallery.
+                              Use this option if you want to use a different slideshow (probably from your theme or any other plugin).</font>
+                        </td>
+                    </tr>
                   </table>
                </div>
             </div>
@@ -167,3 +168,4 @@ thumbstrip: {
       </div>
 <?php
    }
+?>

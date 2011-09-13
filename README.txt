@@ -4,7 +4,7 @@ Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plu
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 2.9.5
+Stable tag: 3.0.0
 
 Create a photo gallery of your Flickr photos on your WordPress enabled website
 enabling you to customize it the way you like it.
@@ -19,6 +19,7 @@ galleries.
 **Features:**
 
 * Fast and light - uses intelligent caching to load galleries instantly
+* Support for both Public and Private photos
 * Create multiple galleries with different parameters
 * Select Photos from your Flickr Photostream, a Photoset, a Gallery or a Group
 * 2 Powerful slideshow options with thumbnail slider navigation
@@ -53,7 +54,7 @@ Can't get the plugin working?  Head to the discussion forum for solution -
 
 == Frequently Asked Questions ==
 
-= After upgrade to 2.9.4, only one column appears in the gallery. =
+= After upgrade, only one column appears in the gallery. =
 
 This happens when you have a cache plugin (like WP Super Cache or W3 All Cache) installed. Old cached CSS file is loaded instead of the new one. Just delete the cached pages from your cache plugin and refresh the gallery page 2-3 times, it will appear fine.
 
@@ -103,8 +104,12 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 
 == Upgrade Notice ==
 
-= 2.9.5 =
-Minor bug fixes to improve compatibility with some themes
+= 3.0.0 =
+[FEATURE] Now you can include your PRIVATE PHOTOS also in galleries -
+[ENHANCEMENT] Group galleries now show owner of the photo and a link to owner's photostream -
+[STABILITY] Moved to a standard API to talk to Flickr which is more reliable and stable -
+[Bug Fix] Highslide slideshow doesn't work on Advanced Settings page -
+[PERFORMANCE] Performance enhancement for galleries with Square size photos
 
 = 2.9.4 =
 [ENHANCEMENT] Subtle mouse-over effect for gallery images
@@ -185,15 +190,15 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 
 == Screenshots ==
 
-1. Default Settings Page
-2. Add Gallery Page
-3. Edit Galleries Page
-4. Saved Galleries Page
-5. Advanced Settings Page
-6. Awesome Flickr Gallery with photos of size Small with Title and Description ON
-7. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
-8. Full size photo view with SlideShow along with thumbnail slider at the bottom
-9. Awesome Flickr Gallery with Thumbnail size photos with white background
+1. Awesome Flickr Gallery with photos of size Small with Title and Description ON
+2. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
+3. Full size photo view with SlideShow along with thumbnail slider at the bottom
+4. Awesome Flickr Gallery with Thumbnail size photos with white background
+5. Default Settings Page
+6. Add Gallery Page
+7. Edit Galleries Page
+8. Saved Galleries Page
+9. Advanced Settings Page
 
 == Features Planned ==
 
@@ -206,8 +211,12 @@ Gallery (In no particular order):
 
 == Changelog ==
 
-= 2.9.5 =
-* Minor bug fixes to improve compatibility with some themes
+= 3.0.0 =
+* [Feature] Now you can include your PRIVATE PHOTOS also in galleries -
+* [Enhancement] Group galleries now show owner of the photo and a link to owner's photostream -
+* [Stability] Moved to a standard API to talk to Flickr which is more reliable and stable -
+* [Bug Fix] Highslide slideshow doesn't work on Advanced Settings page -
+* [Performance] Performance enhancement for galleries with Square size photos
 
 = 2.9.4 =
 * [Enhancement] Subtle mouse-over effect for gallery images

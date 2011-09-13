@@ -1,12 +1,15 @@
 <?php
+include_once('afg_libs.php');
+include_once('edit_galleries.php');
+include_once('add_gallery.php');
+include_once('view_delete_galleries.php');
+include_once('advanced_settings.php');
+require_once('afgFlickr/afgFlickr.php');
+
 add_action('admin_init', 'afg_admin_init');
+add_action('admin_init', 'afg_auth_read');
 add_action('admin_menu', 'afg_admin_menu');
-require_once('afg_libs.php');
-require_once('edit_galleries.php');
-require_once('add_gallery.php');
-require_once('add_users.php');
-require_once('view_delete_galleries.php');
-require_once('advanced_settings.php');
+add_action('wp_ajax_afg_gallery_auth', 'afg_auth_init');
 
 function afg_admin_menu() {
     add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery', 'edit_themes', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png", 898);
@@ -15,17 +18,18 @@ function afg_admin_menu() {
     $afg_saved_page = add_submenu_page('afg_plugin_page', 'Saved Galleries | Awesome Flickr Gallery', 'Saved Galleries', 'edit_themes', 'afg_view_edit_galleries_page', 'afg_view_delete_galleries');
     $afg_edit_page = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'edit_themes', 'afg_edit_galleries_page', 'afg_edit_galleries');
     $afg_advanced_page = add_submenu_page('afg_plugin_page', 'Advanced Settings | Awesome Flickr Gallery', 'Advanced Settings', 'edit_themes', 'afg_advanced_page', 'afg_advanced_settings_page');
+   
     //    $page4 = add_submenu_page('afg_plugin_page', 'Add Users | Awesome Flickr Gallery', 'Add Users', 'edit_themes', 'afg_add_users_page', 'afg_add_users');
     add_action('admin_print_styles-' . $afg_edit_page, 'afg_edit_galleries_header');
     add_action('admin_print_styles-' . $afg_add_page, 'afg_edit_galleries_header');
     add_action('admin_print_styles-' . $afg_saved_page, 'afg_view_delete_galleries_header');
     add_action('admin_print_styles-' . $afg_main_page, 'afg_admin_settings_header');
-    //    add_action('admin_print_styles-' . $page4, 'afg_delete_users_header');
+    
+    // adds "Settings" link to the plugin action page
+    add_filter( 'plugin_action_links', 'afg_add_settings_links', 10, 2);
+
     afg_setup_options();
 }
-
-// adds "Settings" link to the plugin action page
-add_filter( 'plugin_action_links', 'afg_add_settings_links', 10, 2);
 
 function afg_add_settings_links( $links, $file ) {
     if ( $file == plugin_basename( dirname(__FILE__)) . '/index.php' ) {
@@ -86,6 +90,8 @@ function afg_admin_init() {
     register_setting('afg_settings_group', 'afg_disable_slideshow');
     register_setting('afg_settings_group', 'afg_slideshow_option');
     register_setting('afg_settings_group', 'afg_dismis_ss_msg');
+    register_setting('afg_settings_group', 'afg_api_secret');
+    register_setting('afg_settings_group', 'afg_flickr_token');
 
     // Register javascripts
     wp_register_script('edit-galleries-script', BASE_URL . '/js/edit_galleries.js');
@@ -107,11 +113,42 @@ function afg_get_all_options() {
         'afg_bg_color' => get_option('afg_bg_color'),
         'afg_width' => get_option('afg_width'),
         'afg_pagination' => get_option('afg_pagination'),
+        'afg_api_secret' => get_option('afg_api_secret'),
+        'afg_flickr_token' => get_option('afg_flickr_token'),
     );
 }
 
+function print_all_options() {
+    $all_options = afg_get_all_options();
+    foreach($all_options as $key => $value) {
+        echo $key . ' => ' . $value . '<br />';
+    }
+}
+
+function afg_auth_init() {
+    session_start();
+    global $pf;
+    unset($_SESSION['afgFlickr_auth_token']);
+    $pf->setToken('');
+    $pf->auth('read', $_SERVER['HTTP_REFERER']);
+    exit;
+}
+
+function afg_auth_read() {
+    if ( isset($_GET['frob']) ) {
+        global $pf;
+        $auth = $pf->auth_getToken($_GET['frob']);
+        update_option('afg_flickr_token', $auth['token']);
+        $pf->setToken($auth['token']);
+        header('Location: ' . $_SESSION['afgFlickr_auth_redirect']);
+        exit;
+    }
+}
+
+create_afgFlickr_obj();
+
 function afg_admin_html_page() {
-    global $afg_per_page_map, $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, $afg_columns_map, $afg_bg_color_map, $afg_width_map;
+    global $afg_per_page_map, $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, $afg_columns_map, $afg_bg_color_map, $afg_width_map, $pf;
 ?>
    <div class='wrap'>
    <h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
@@ -119,12 +156,17 @@ function afg_admin_html_page() {
 
 <?php
     if ($_POST) {
+        global $pf;
+
         if (isset($_POST['submit']) && $_POST['submit'] == 'Delete Cached Galleries') {
             delete_afg_caches();
             echo "<div class='updated'><p><strong>Cached data deleted successfully.</strong></p></div>";
         }
         else if (isset($_POST['submit']) && $_POST['submit'] == 'Save Changes') {
             update_option('afg_api_key', $_POST['afg_api_key']);
+            if (!$_POST['afg_api_secret'] || $_POST['afg_api_secret'] != get_option('afg_api_secret'))
+                update_option('afg_flickr_token', '');
+            update_option('afg_api_secret', $_POST['afg_api_secret']);
             update_option('afg_user_id', $_POST['afg_user_id']);
             if (ctype_digit($_POST['afg_per_page']) && (int)$_POST['afg_per_page']) {
                 update_option('afg_per_page', $_POST['afg_per_page']);
@@ -147,9 +189,14 @@ function afg_admin_html_page() {
             else update_option('afg_pagination', 'on');
 
             echo "<div class='updated'><p><strong>Settings updated successfully.</strong></p></div>";
+            if (get_option('afg_api_secret') && !get_option('afg_flickr_token')) {
+                echo "<div class='updated'><p><strong>Click \"Grant Access\" button to authorize Awesome Flickr Gallery to access your private photos from Flickr.</strong></p></div>";
+            }
         }
+        create_afgFlickr_obj();
     }
-    $url=$_SERVER['REQUEST_URI']; ?>
+    $url=$_SERVER['REQUEST_URI'];
+?>
     <form method='post' action='<?php echo $url ?>'>
         <?php echo afg_generate_version_line() ?>
                <div class="postbox-container" style="width:69%; margin-right:1%">
@@ -162,11 +209,27 @@ function afg_admin_html_page() {
                               <td style='width:28%'><input type='text' name='afg_api_key' size='30' value="<?php echo get_option('afg_api_key'); ?>" ><font style='color:red; font-weight:bold'>*</font></input> </td>
                               <td><font size='2'>Don't have a Flickr API Key?  Get it from <a href="http://www.flickr.com/services/api/keys/" target='blank'>here.</a> Go through the <a href='http://www.flickr.com/services/api/tos/'>Flickr API Terms of Service.</a></font></td>
                            </tr>
+                                <th scope='row'>Flickr API Secret</th>
+                           <td style="vertical-align:top"><input type='text' name='afg_api_secret' id='afg_api_secret' value="<?php echo get_option('afg_api_secret'); ?>"/>
+                            <br /><br />
+<?php if (get_option('afg_api_secret')) { 
+    if (get_option('afg_flickr_token')) { echo "<input type='button' class='button-secondary' value='Access Granted' disabled=''"; } else {
+        ?>
+    <input type="button" class="button-primary" value="Grant Access" onClick="document.location.href='<?php echo get_admin_url() .  'admin-ajax.php?action=afg_gallery_auth'; ?>';"/>
+                        <?php }}
+    else {
+    echo "<input type='button' class='button-secondary' value='Grant Access' disabled=''";    
+} ?>
+                           </td>
+                           <td style="vertical-align:top"><font size='2'>If you want to include your <b>Private Photos</b> in your galleries, enter your Flickr API Secret here
+                            and click Save Changes.</font>
+                        </td>
+                    </tr>
 
                            <tr valign='top'>
                               <th scope='row'>Flickr User ID</th>
                               <td><input type='text' name='afg_user_id' size='30' value="<?php echo get_option('afg_user_id'); ?>" /><font style='color:red; font-weight:bold'>*</font> </td>
-                              <td><font size='2'>Don't know your Flickr Usesr ID?  Get it from <a href="http://idgettr.com/" target='blank'>here.</a></font></td>
+                              <td><font size='2'>Don't know your Flickr User ID?  Get it from <a href="http://idgettr.com/" target='blank'>here.</a></font></td>
                            </tr>
                         </table>
                      </div>
@@ -179,7 +242,7 @@ function afg_admin_html_page() {
 
                            <tr valign='top'>
                               <th scope='row'>Max Photos Per Page</th>
-                              <td><input type='text' name='afg_per_page' id='afg_per_page' onblur='verifyPerPageBlank()' size='3' maxlength='3' value="<?php
+                              <td style="width:28%"><input type='text' name='afg_per_page' id='afg_per_page' onblur='verifyPerPageBlank()' size='3' maxlength='3' value="<?php
     echo get_option('afg_per_page')?get_option('afg_per_page'):10;
 ?>" /><font style='color:red; font-weight:bold'>*</font></td>
                            </tr>
@@ -264,19 +327,10 @@ function afg_admin_html_page() {
                                  <tr><th>If your Flickr Settings are correct, 5 of your recent photos from your Flickr photostream should appear here.</th></tr>
                                  <td>
 <?php
-
-    $params = array(
-        'api_key' => get_option('afg_api_key'),
-        'method' => 'flickr.people.getPublicPhotos',
-        'format' => 'php_serial',
-        'user_id' => get_option('afg_user_id'),
-        'per_page' => 5,
-    );
-
-    $rsp_obj = afg_get_flickr_data($params);
-    if ($rsp_obj['stat'] == 'fail') {
-        echo $rsp_obj['message'];
-    }
+    global $pf;
+    if (get_option('afg_flickr_token')) $rsp_obj = $pf->people_getPhotos(get_option('afg_user_id'), array('per_page' => 5, 'page' => 1));
+    else $rsp_obj = $pf->people_getPublicPhotos(get_option('afg_user_id'), NULL, NULL, 5, 1);
+    if (!$rsp_obj) echo afg_error();
     else {
         foreach($rsp_obj['photos']['photo'] as $photo) {
             $photo_url = "http://farm{$photo['farm']}.static.flickr.com/{$photo['server']}/{$photo['id']}_{$photo['secret']}_s.jpg";
@@ -294,10 +348,7 @@ function afg_admin_html_page() {
                         </div>
 <?php
     if (DEBUG) {
-        $all_options = afg_get_all_options();
-        foreach($all_options as $key => $value) {
-            echo $key . ' => ' . $value . '<br />';
-        }
+        print_all_options();
     }
 ?>
                      </div>
@@ -309,7 +360,10 @@ function afg_admin_html_page() {
         Settings</b> instead of a specific setting defined for that particular 
         gallery. <br /> <br />
         When you change any of <b>Default Settings</b>, all the settings in a gallery 
-        referencing the <b>Default Settings</b> will inherit the new value.
+        referencing the <b>Default Settings</b> will inherit the new value.<br /><br />
+        To access your private photos from Flickr, make sure that your App's authentication
+        type is set to <b>Web Application</b> and the <b>Callback URL</b>
+        points to <i>" . get_admin_url() . "</i>.
         ";
     echo afg_box('Help', $message);
 

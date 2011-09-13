@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '2.9.5');
+define('VERSION', '3.0.0');
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(
@@ -115,16 +115,16 @@ $afg_text_color_map = array(
     'White' => 'Black',
 );
 
-/* Encode the params array to make them URL safe.
- * Example params are api_key, api, user_id etc.
- */
-function afg_get_encoded_params($params) {
-    $encoded_params = array();
+function create_afgFlickr_obj() {
+    global $pf;
+    unset($_SESSION['afgFlickr_auth_token']);
+    $pf = new afgFlickr(get_option('afg_api_key'), get_option('afg_api_secret')? get_option('afg_api_secret'): NULL);
+    $pf->setToken(get_option('afg_flickr_token'));
+}
 
-    foreach ($params as $k => $v) {
-        $encoded_params[] = urlencode($k).'='.urlencode($v);
-    }
-    return $encoded_params;
+function afg_error() {
+    global $pf;
+    return "<h3>Awesome Flickr Gallery Error - #{$pf->error_code} {$pf->error_msg}</h3>";
 }
 
 function delete_afg_caches() {
@@ -142,38 +142,6 @@ function afg_get_photo_url($farm, $server, $pid, $secret, $size) {
 
 function afg_get_photo_page_url($pid, $uid) {
     return "http://www.flickr.com/photos/$uid/$pid";
-}
-
-function afg_construct_url($encoded_params) {
-    $url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
-    return $url;
-}
-
-function create_cache($content, $cache_file) {
-    $fp = fopen($cache_file, 'w');
-    fwrite($fp, $content);
-    fclose($fp);
-}
-
-function get_cached_content($cache_file) {
-    if (file_exists($cache_file)) {
-        return file_get_contents($cache_file);
-    }
-    return false;
-}
-
-function afg_get_flickr_data($params) {
-    $encoded_params = afg_get_encoded_params($params);
-    $url = afg_construct_url($encoded_params);
-    $curl = curl_init($url);
-    curl_setopt($curl, CURLOPT_HEADER, 0);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    $rsp = curl_exec($curl);  // get the file
-    if(curl_errno($curl)) {
-        echo 'Curl error: ' . curl_error($curl);
-    }
-    curl_close($curl);
-    return unserialize($rsp);
 }
 
 function afg_generate_version_line() {
