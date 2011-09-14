@@ -54,6 +54,10 @@ Can't get the plugin working?  Head to the discussion forum for solution -
 
 == Frequently Asked Questions ==
 
+= After upgrade to version 3.0.0, my photo descriptions appear as "array". =
+
+Just delete the cached gallery data from "Default Settings" page of the plugin and also delete any cached pages from your caching plugins (like mentioned below).
+
 = After upgrade, only one column appears in the gallery. =
 
 This happens when you have a cache plugin (like WP Super Cache or W3 All Cache) installed. Old cached CSS file is loaded instead of the new one. Just delete the cached pages from your cache plugin and refresh the gallery page 2-3 times, it will appear fine.
