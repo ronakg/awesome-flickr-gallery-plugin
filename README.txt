@@ -13,7 +13,7 @@ enabling you to customize it the way you like it.
 
 **Awesome Flickr Gallery** is a simple, fast and light plugin to create a
 gallery of your Flickr photos on your WordPress enabled website.  This plugin
-aims at providing a simple yet customizable way to create stunning Flickr
+aims at providing a simple yet customizable way to create clean and professional looking Flickr
 galleries.
 
 **Features:**
