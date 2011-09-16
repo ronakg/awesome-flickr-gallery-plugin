@@ -28,6 +28,7 @@ galleries.
 * Fits automatically according to the width of the theme or you can select the width of the gallery yourself
 * Ability to disable built-in slideshow so that you can use a slideshow plugin of your choice
 * Intuitive menu pages with easy configuration options and photo previews
+* SEO friendly, all your photos are available to search engine crawlers
 
 You can see a *live demo* of this plugin on my personal photography page -
 [Photos | RonakG.com](http://www.ronakg.com/photos/)
