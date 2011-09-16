@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.0.0 
+   Version: 3.0.1-beta1
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -111,14 +111,28 @@ function afg_display_gallery($atts) {
         'id' => '0',
     ), $atts ) );
 
-    $cur_page = 1;
-    $cur_page_url = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] : "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    $request_uri = $GLOBALS['HTTP_SERVER_VARS']['REQUEST_URI'];
+    
+    if (!$request_uri) $request_uri = $_SERVER['REQUEST_URI'];
 
-    preg_match("/\?afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
+    $cur_page = 1;
+    $cur_page_url = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://".$_SERVER['HTTP_HOST'].$request_uri : "http://".$_SERVER['SERVER_NAME'].$request_uri;
+
+    if (get_option('permalink_structure')) $url_separator = '?';
+    else $url_separator = '&';
+
+    if ($url_separator == '?') 
+        preg_match("/\?afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
+    else
+        preg_match("/&afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
+
     if ($matches) {
         $cur_page = ($matches['page_id']);
-        $match_pos = strpos($cur_page_url, "?afg{$id}_page_id=$cur_page");
+        $match_pos = strpos($cur_page_url, "{$url_separator}afg{$id}_page_id=$cur_page");
         $cur_page_url = substr($cur_page_url, 0, $match_pos);
+        if(function_exists('qtrans_convertURL')) {
+            $cur_page_url = qtrans_convertURL($cur_page_url);
+        }
     }
 
     $galleries = get_option('afg_galleries');
@@ -175,28 +189,25 @@ function afg_display_gallery($atts) {
     if ($photos == false || $total_photos != count($photos)) {
         $photos = array();
         for($i=1; $i<($total_photos/500)+1; $i++) {
-            $params['per_page'] = 500;
-            $params['page'] = $i;
-
             if ($photoset_id) {
                 $flickr_api = 'photoset';
-                $rsp_obj_total = $pf->photosets_getPhotos($photoset_id, $extras, NULL, 500, 1);
+                $rsp_obj_total = $pf->photosets_getPhotos($photoset_id, $extras, NULL, 500, $i);
                 if (!$rsp_obj_total) return afg_error();
             }
             else if ($gallery_id) {
                 $flickr_api = 'photos';
-                $rsp_obj_total = $pf->galleries_getPhotos($gallery_id, $extras, 500, 1);
+                $rsp_obj_total = $pf->galleries_getPhotos($gallery_id, $extras, 500, $i);
                 if (!$rsp_obj_total) return afg_error();
             }
             else if ($group_id) {
                 $flickr_api = 'photos';
-                $rsp_obj_total = $pf->groups_pools_getPhotos($group_id, NULL, NULL, NULL, $extras, 500, 1);
+                $rsp_obj_total = $pf->groups_pools_getPhotos($group_id, NULL, NULL, NULL, $extras, 500, $i);
                 if (!$rsp_obj_total) return afg_error();
             }
             else {
                 $flickr_api = 'photos';
-                if (get_option('afg_flickr_token')) $rsp_obj_total = $pf->people_getPhotos($user_id, array('extras' => $extras, 'per_page' => 500, 'page' => 1));
-                else $rsp_obj_total = $pf->people_getPublicPhotos($user_id, NULL, $extras, 500, 1);
+                if (get_option('afg_flickr_token')) $rsp_obj_total = $pf->people_getPhotos($user_id, array('extras' => $extras, 'per_page' => 500, 'page' => $i));
+                else $rsp_obj_total = $pf->people_getPublicPhotos($user_id, NULL, $extras, 500, $i);
                 if (!$rsp_obj_total) return afg_error();
             }
             $photos = array_merge($photos, $rsp_obj_total[$flickr_api]['photo']);
@@ -341,8 +352,8 @@ function afg_display_gallery($atts) {
         }
         else {
             $prev_page = $cur_page - 1;
-            $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}?afg{$id}_page_id=$prev_page\" title=\"Prev Page\">&nbsp;&#171; prev </a>&nbsp;&nbsp;&nbsp;&nbsp;";
-            $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}?afg{$id}_page_id=1\" title=\"Page 1\"> 1 </a>&nbsp;";
+            $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}{$url_separator}afg{$id}_page_id=$prev_page\" title=\"Prev Page\">&nbsp;&#171; prev </a>&nbsp;&nbsp;&nbsp;&nbsp;";
+            $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}{$url_separator}afg{$id}_page_id=1\" title=\"Page 1\"> 1 </a>&nbsp;";
         }
         if ($cur_page - 2 > 2) {
             $start_page = $cur_page - 2;
@@ -358,16 +369,16 @@ function afg_display_gallery($atts) {
             if ($cur_page == $count)
                 $disp_gallery .= "<font style=\"border:1px solid gray;background:gray;color:white\">&nbsp;{$count}&nbsp;</font>&nbsp;";
             else
-                $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}?afg{$id}_page_id={$count}\" title=\"Page {$count}\">&nbsp;{$count} </a>&nbsp;";
+                $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}{$url_separator}afg{$id}_page_id={$count}\" title=\"Page {$count}\">&nbsp;{$count} </a>&nbsp;";
         }
 
         if ($count < $total_pages) $disp_gallery .= " ... ";
         if ($count <= $total_pages)
-            $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}?afg{$id}_page_id={$total_pages}\" title=\"Page {$total_pages}\">&nbsp;{$total_pages} </a>&nbsp;";
+            $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}{$url_separator}afg{$id}_page_id={$total_pages}\" title=\"Page {$total_pages}\">&nbsp;{$total_pages} </a>&nbsp;";
         if ($cur_page == $total_pages) $disp_gallery .= "&nbsp;&nbsp;&nbsp;<font style=\"border:1px solid gray\">&nbsp;next &#187;&nbsp;</font>";
         else {
             $next_page = $cur_page + 1;
-            $disp_gallery .= "&nbsp;&nbsp;&nbsp;<a class=\"afg_page\" href=\"{$cur_page_url}?afg{$id}_page_id=$next_page\" title=\"Next Page\"> next &#187; </a>&nbsp;";
+            $disp_gallery .= "&nbsp;&nbsp;&nbsp;<a class=\"afg_page\" href=\"{$cur_page_url}{$url_separator}afg{$id}_page_id=$next_page\" title=\"Next Page\"> next &#187; </a>&nbsp;";
         }
 
         $disp_gallery .= "<div style='text-align:center'>({$total_photos} Photos)</div></div>";
