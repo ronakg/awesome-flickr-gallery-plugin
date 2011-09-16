@@ -36,9 +36,7 @@ Check out my home page to see a demo of how the Gallery fits into a sidebar widg
 
 **More Examples:**
 
-* [Demo Page 1](http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-1/)
-* [Demo Page 2](http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-2/)
-* [Demo Page 3](http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/demo-page-3/)
+* [Demo Page](http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/demo-page/)
 
 **Support:**
 
