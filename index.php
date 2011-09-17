@@ -118,8 +118,10 @@ function afg_display_gallery($atts) {
     $cur_page = 1;
     $cur_page_url = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://".$_SERVER['HTTP_HOST'].$request_uri : "http://".$_SERVER['SERVER_NAME'].$request_uri;
 
-    if (get_option('permalink_structure')) $url_separator = '?';
-    else $url_separator = '&';
+    if (strpos($cur_page_url,'?') === false)
+        $url_separator = '?';
+    else
+        $url_separator = '&';
 
     if ($url_separator == '?') 
         preg_match("/\?afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
