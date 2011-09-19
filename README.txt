@@ -107,6 +107,10 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 
 == Upgrade Notice ==
 
+= 3.0.1 =
+[Bug Fix] Awesome Flickr Gallery pagination doesn't work properly when qtranslate plugin is activated
+[Bug Fix] For galleries having more than 500 photos, it starts again with same set of photos
+
 = 3.0.0 =
 [FEATURE] Now you can include your PRIVATE PHOTOS also in galleries -
 [ENHANCEMENT] Group galleries now show owner of the photo and a link to owner's photostream -
@@ -213,6 +217,10 @@ Gallery (In no particular order):
 * View photo comments
 
 == Changelog ==
+
+= 3.0.1 =
+* [Bug Fix] Awesome Flickr Gallery pagination doesn't work properly when qtranslate plugin is activated
+* [Bug Fix] For galleries having more than 500 photos, it starts again with same set of photos
 
 = 3.0.0 =
 * [Feature] Now you can include your PRIVATE PHOTOS also in galleries -
