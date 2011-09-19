@@ -113,29 +113,24 @@ function afg_display_gallery($atts) {
 
     $request_uri = $GLOBALS['HTTP_SERVER_VARS']['REQUEST_URI'];
     
-    if (!$request_uri) $request_uri = $_SERVER['REQUEST_URI'];
+    if ($request_uri == '' || !$request_uri) $request_uri = $_SERVER['REQUEST_URI'];
 
     $cur_page = 1;
     $cur_page_url = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://".$_SERVER['HTTP_HOST'].$request_uri : "http://".$_SERVER['SERVER_NAME'].$request_uri;
 
-    if (strpos($cur_page_url,'?') === false)
-        $url_separator = '?';
-    else
-        $url_separator = '&';
-
-    if ($url_separator == '?') 
-        preg_match("/\?afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
-    else
-        preg_match("/&afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
+    preg_match("/afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
 
     if ($matches) {
         $cur_page = ($matches['page_id']);
-        $match_pos = strpos($cur_page_url, "{$url_separator}afg{$id}_page_id=$cur_page");
+        $match_pos = strpos($cur_page_url, "afg{$id}_page_id=$cur_page") - 1;
         $cur_page_url = substr($cur_page_url, 0, $match_pos);
         if(function_exists('qtrans_convertURL')) {
             $cur_page_url = qtrans_convertURL($cur_page_url);
         }
     }
+
+    if (strpos($cur_page_url,'?') === false) $url_separator = '?';
+    else $url_separator = '&';
 
     $galleries = get_option('afg_galleries');
     $gallery = $galleries[$id];
