@@ -44,6 +44,10 @@ Check out my home page to see a demo of how the Gallery fits into a sidebar widg
 Can't get the plugin working?  Head to the discussion forum for solution -
 [Discussions | RonakG.com](http://www.ronakg.com/discussions/)
 
+**Video Tutorial on How to Configure Awesome Flickr Gallery**
+
+[youtube http://www.youtube.com/watch?v=ZGKcptkTSIs]
+
 == Installation ==
 
 1. Extract the contents of the zip archive to the `/wp-content/plugins/` directory or install the plugin from your WordPress dashboard -> plugins -> add new menu
