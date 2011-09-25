@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.0.1
+   Version: 3.0.5
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -150,33 +150,43 @@ function afg_display_gallery($atts) {
     $gallery_width = get_afg_option($gallery, 'width');
     $pagination = get_afg_option($gallery, 'pagination');
 
+    if ($photo_size == 'custom') {
+        $custom_size = get_afg_option($gallery, 'custom_size');
+        $custom_size_square = get_afg_option($gallery, 'custom_size_square');
+        
+        if ($custom_size <= 70) $photo_size = '_s';
+        else if ($custom_size <= 90) $photo_size = '_t';
+        else if ($custom_size <= 220) $photo_size = '_m';
+        else if ($custom_size <= 500) $photo_size = 'NULL';
+    }
+    else {
+        $custom_size = 0;
+        $custom_size_square = 'false';
+    }
+
     if (isset($gallery['photo_source']) && $gallery['photo_source'] == 'photoset') $photoset_id = $gallery['photoset_id'];
     else if (isset($gallery['photo_source']) && $gallery['photo_source'] == 'gallery') $gallery_id = $gallery['gallery_id'];
     else if (isset($gallery['photo_source']) && $gallery['photo_source'] == 'group') $group_id = $gallery['group_id'];
 
-    /* Parameters to get public photos of the user.  Format we are requesting
-     * from Flickr is php_serial.
-     */
-
     if (isset($photoset_id) && $photoset_id) {
         $rsp_obj = $pf->photosets_getInfo($photoset_id);
-        if (!$rsp_obj) return afg_error();
+        if ($pf->error_code) return afg_error();
         $total_photos = $rsp_obj['photos'];
     }
     else if (isset($gallery_id) && $gallery_id) {
         $rsp_obj = $pf->galleries_getInfo($gallery_id);
-        if (!$rsp_obj) return afg_error();
+        if ($pf->error_code) return afg_error();
         $total_photos = $rsp_obj['gallery']['count_photos'];
     }
     else if (isset($group_id) && $group_id) {
         $rsp_obj = $pf->groups_pools_getPhotos($group_id, NULL, NULL, NULL, NULL, 1, 1);
-        if (!$rsp_obj) return afg_error();
+        if ($pf->error_code) return afg_error();
         $total_photos = $rsp_obj['photos']['total'];
         if ($total_photos > 500) $total_photos = 500;
         }
     else {
         $rsp_obj = $pf->people_getInfo($user_id);
-        if (!$rsp_obj) return afg_error();
+        if ($pf->error_code) return afg_error();
         $total_photos = $rsp_obj['photos']['count'];
     }
 
@@ -189,23 +199,23 @@ function afg_display_gallery($atts) {
             if ($photoset_id) {
                 $flickr_api = 'photoset';
                 $rsp_obj_total = $pf->photosets_getPhotos($photoset_id, $extras, NULL, 500, $i);
-                if (!$rsp_obj_total) return afg_error();
+                if ($pf->error_code) return afg_error();
             }
             else if ($gallery_id) {
                 $flickr_api = 'photos';
                 $rsp_obj_total = $pf->galleries_getPhotos($gallery_id, $extras, 500, $i);
-                if (!$rsp_obj_total) return afg_error();
+                if ($pf->error_code) return afg_error();
             }
             else if ($group_id) {
                 $flickr_api = 'photos';
                 $rsp_obj_total = $pf->groups_pools_getPhotos($group_id, NULL, NULL, NULL, $extras, 500, $i);
-                if (!$rsp_obj_total) return afg_error();
+                if ($pf->error_code) return afg_error();
             }
             else {
                 $flickr_api = 'photos';
                 if (get_option('afg_flickr_token')) $rsp_obj_total = $pf->people_getPhotos($user_id, array('extras' => $extras, 'per_page' => 500, 'page' => $i));
                 else $rsp_obj_total = $pf->people_getPublicPhotos($user_id, NULL, $extras, 500, $i);
-                if (!$rsp_obj_total) return afg_error();
+                if ($pf->error_code) return afg_error();
             }
             $photos = array_merge($photos, $rsp_obj_total[$flickr_api]['photo']);
         }
@@ -224,6 +234,8 @@ function afg_display_gallery($atts) {
         " - Group ID - " . (isset($group_id)? $group_id: '') .
         " - Per Page - " . $per_page .
         " - Photo Size - " . $photo_size .
+        " - Custom Size - " . $custom_size .
+        " - Square - " . $custom_size_square .
         " - Captions - " . $photo_title .
         " - Description - " . $photo_descr .
         " - Columns - " . $columns .
@@ -236,10 +248,10 @@ function afg_display_gallery($atts) {
         "-->";
 
     if ($slideshow_option == 'highslide')
-        $disp_gallery .= "<div class=\"highslide-gallery\">";
+        $disp_gallery .= "<div class='highslide-gallery'>";
 
     if ($gallery_width == 'auto') $gallery_width = 100;
-    $disp_gallery .= "<div style=\"display:table; margin:auto; border:0px; background-color:{$bg_color}; width:$gallery_width%\">";
+    $disp_gallery .= "<div class='afg-table' style='background-color:{$bg_color}; width:$gallery_width%'>";
 
     $photo_count = 1;
     $cur_col = 0;
@@ -258,9 +270,9 @@ function afg_display_gallery($atts) {
         if ( ($photo_count <= $per_page * $cur_page) && ($photo_count > $per_page * ($cur_page - 1)) ) {
             $text_color = isset($afg_text_color_map[$bg_color])? $afg_text_color_map[$bg_color]: '';
 
-            if ($cur_col % $columns == 0) $disp_gallery .= "<div style='display:table-row'>";
-            $disp_gallery .= "<div class='afg-cell' style=\"width:${column_width}%;" .
-                " color:{$text_color}; border-color:{$bg_color};\">";
+            if ($cur_col % $columns == 0) $disp_gallery .= "<div class='afg-row'>";
+            $disp_gallery .= "<div class='afg-cell' style='width:${column_width}%;" .
+                " color:{$text_color}; border-color:{$bg_color};'>";
 
             $pid_len = strlen($photo['id']);
 
@@ -294,28 +306,34 @@ function afg_display_gallery($atts) {
                 $photo_height = '';
             }
 
-            $disp_gallery .= "<a $class $rel $click_event href=\"$photo_page_url\"" .
-                " title=\"{$photo['title']}\">" .
-                "<img src=\"$photo_url\" $photo_width $photo_height alt=\"{$photo['title']}\" style=\"margin-top:5%; opacity:1;filter:alpha(opacity=100)\"" .
-                "onmouseover=\"this.style.opacity=0.6;this.filters.alpha.opacity=60\"" .
-                "onmouseout=\"this.style.opacity=1;this.filters.alpha.opacity=100\"" .
+            if ($custom_size) {
+                $timthumb_script = BASE_URL . "/timthumb.php?src=";
+                $timthumb_params = "&q=100&w=$custom_size";
+                if ($custom_size_square == 'true')
+                    $timthumb_params .= "&h=$custom_size";
+            }
+            else {
+                $timthumb_script = "";
+                $timthumb_params = "";
+            }
+
+            $disp_gallery .= "<a $class $rel $click_event href='$photo_page_url' " .
+                "title='{$photo['title']}'>" .
+                "<img class='afg-img' src='{$timthumb_script}{$photo_url}{$timthumb_params}' " .
+                "alt='{$photo['title']}' " .
+                "onmouseover='this.style.opacity=0.6;this.filters.alpha.opacity=60' " .
+                "onmouseout='this.style.opacity=1;this.filters.alpha.opacity=100' " .
                 "/></a>";
             if($size_heading_map[$photo_size] && $photo_title == 'on') {
-                if ($group_id) $owner_title = "- by <a href=\"http://www.flickr.com/photos/{$photo['owner']}/\" target='_blank'>{$photo['ownername']}</a>";
+                if ($group_id) $owner_title = "- by <a href='http://www.flickr.com/photos/{$photo['owner']}/' target='_blank'>{$photo['ownername']}</a>";
                 else $owner_title = '';
                 $disp_gallery .= "<div class='afg-title' style='" .
                    " font-size:{$size_heading_map[$photo_size]}'>{$photo['title']} $owner_title</div>";
             }
 
             if($photo_descr == 'on' && $photo_size != '_s' && $photo_size != '_t') {
-                if($photo['description']) {
-                    $disp_gallery .= "<div class='afg-description'>" .
-                        $photo['description'] . "</div>";
-                }
-            }
-
-            if ($photo_size != '_s' && $photo_size != '_t') {
-                $disp_gallery .= "<p>&nbsp;</p>";
+                $disp_gallery .= "<div class='afg-description'>" .
+                    $photo['description'] . "</div>";
             }
 
             $cur_col += 1;
@@ -326,9 +344,11 @@ function afg_display_gallery($atts) {
             if ($pagination == 'on') {
                 $photo_url = afg_get_photo_url($photo['farm'], $photo['server'],
                     $photo['id'], $photo['secret'], '_s');
-                $disp_gallery .= "<a style='display:none' $class $rel $click_event href=\"$photo_page_url\"" .
-                    " title=\"{$photo['title']}\">" .
-                    " <img alt=\"{$photo['title']}\" src=\"$photo_url\" width=\"75\" height=\"75\"></a>";
+                $disp_gallery .= "<a style='display:none' $class $rel $click_event href='$photo_page_url'" .
+                    " title='{$photo['title']}'>" .
+                    " <img class='afg-img' alt='{$photo['title']}' src='$photo_url' width='75' height='75'" .
+                    "onmouseover='this.style.opacity=0.6;this.filters.alpha.opacity=60' " .
+                    "onmouseout='this.style.opacity=1;this.filters.alpha.opacity=100'></a> ";
             }
         }
         $photo_count += 1;
@@ -339,18 +359,17 @@ function afg_display_gallery($atts) {
     if ($slideshow_option == 'highslide') $disp_gallery .= "</div>";
 
     // Pagination
-    $disp_gallery .= "<div style=\"background-color:{$bg_color}; margin:auto; border:0px; width:$gallery_width%\">";
     if ($pagination == 'on' && $total_pages > 1) {
-        $disp_gallery .= "<br /><br /><div style=\"text-align:center; color:{$text_color};" .
-            "vertical-align:top; font-size:90%; border-color:{$bg_color}\">";
+        $disp_gallery .= "<br /><br />";
+        $disp_gallery .= "<div class='afg-pagination' style='background-color:{$bg_color}; width:$gallery_width%; color:{$text_color}; border-color:{$bg_color}'>";
         if ($cur_page == 1) {
-            $disp_gallery .="<font style=\"border:1px solid gray;\">&nbsp;&#171; prev&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;";
-            $disp_gallery .="<font style=\"border:1px solid gray; background:gray; color:white\"> 1 </font>&nbsp;";
+            $disp_gallery .="<font class='afg-page'>&nbsp;&#171; prev&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;";
+            $disp_gallery .="<font class='afg-cur-page'> 1 </font>&nbsp;";
         }
         else {
             $prev_page = $cur_page - 1;
-            $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}{$url_separator}afg{$id}_page_id=$prev_page\" title=\"Prev Page\">&nbsp;&#171; prev </a>&nbsp;&nbsp;&nbsp;&nbsp;";
-            $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}{$url_separator}afg{$id}_page_id=1\" title=\"Page 1\"> 1 </a>&nbsp;";
+            $disp_gallery .= "<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id=$prev_page' title='Prev Page'>&nbsp;&#171; prev </a>&nbsp;&nbsp;&nbsp;&nbsp;";
+            $disp_gallery .= "<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id=1' title='Page 1'> 1 </a>&nbsp;";
         }
         if ($cur_page - 2 > 2) {
             $start_page = $cur_page - 2;
@@ -364,29 +383,27 @@ function afg_display_gallery($atts) {
         for ($count = $start_page; $count <= $end_page; $count += 1) {
             if ($count > $total_pages) break;
             if ($cur_page == $count)
-                $disp_gallery .= "<font style=\"border:1px solid gray;background:gray;color:white\">&nbsp;{$count}&nbsp;</font>&nbsp;";
+                $disp_gallery .= "<font class='afg-cur-page'>&nbsp;{$count}&nbsp;</font>&nbsp;";
             else
-                $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}{$url_separator}afg{$id}_page_id={$count}\" title=\"Page {$count}\">&nbsp;{$count} </a>&nbsp;";
+                $disp_gallery .= "<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id={$count}' title='Page {$count}'>&nbsp;{$count} </a>&nbsp;";
         }
 
         if ($count < $total_pages) $disp_gallery .= " ... ";
         if ($count <= $total_pages)
-            $disp_gallery .= "<a class=\"afg_page\" href=\"{$cur_page_url}{$url_separator}afg{$id}_page_id={$total_pages}\" title=\"Page {$total_pages}\">&nbsp;{$total_pages} </a>&nbsp;";
-        if ($cur_page == $total_pages) $disp_gallery .= "&nbsp;&nbsp;&nbsp;<font style=\"border:1px solid gray\">&nbsp;next &#187;&nbsp;</font>";
+            $disp_gallery .= "<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id={$total_pages}' title='Page {$total_pages}'>&nbsp;{$total_pages} </a>&nbsp;";
+        if ($cur_page == $total_pages) $disp_gallery .= "&nbsp;&nbsp;&nbsp;<font class='afg-page'>&nbsp;next &#187;&nbsp;</font>";
         else {
             $next_page = $cur_page + 1;
-            $disp_gallery .= "&nbsp;&nbsp;&nbsp;<a class=\"afg_page\" href=\"{$cur_page_url}{$url_separator}afg{$id}_page_id=$next_page\" title=\"Next Page\"> next &#187; </a>&nbsp;";
+            $disp_gallery .= "&nbsp;&nbsp;&nbsp;<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id=$next_page' title='Next Page'> next &#187; </a>&nbsp;";
         }
-
-        $disp_gallery .= "<div style='text-align:center'>({$total_photos} Photos)</div></div>";
+        $disp_gallery .= "<br />({$total_photos} Photos)";
+        $disp_gallery .= "</div>";
     }
     if ($credit_note == 'on') {
-        $disp_gallery .= "<div style=\"color:{$text_color};" .
-            "vertical-align:top; " .
-            "border-color:{$bg_color}\">";
-        $disp_gallery .= "<p style='text-align:right; font-size:0.9em;'>Powered by " .
-            "<a href=\"http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin\"" .
-            "title=\"Awesome Flickr Gallery by Ronak Gandhi\"/>AFG</a></p></div>";
+        $disp_gallery .= "<br />";
+        $disp_gallery .= "<div class='afg-credit' style='color:{$text_color}; border-color:{$bg_color};'>Powered by " .
+            "<a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin'" .
+            "title='Awesome Flickr Gallery by Ronak Gandhi'/>AFG</a>";
     }
     $disp_gallery .= "</div>";
     $disp_gallery .= "<!-- Awesome Flickr Gallery End -->";

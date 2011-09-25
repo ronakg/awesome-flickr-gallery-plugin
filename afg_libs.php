@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '3.0.1');
+define('VERSION', '3.0.5');
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(
@@ -34,39 +34,13 @@ $afg_width_map = array(
     '90' => '90 %',
 );
 
-$afg_per_page_map = array(
-    'default' => 'Default',
-    '1' => '1  ',
-    '4' => '4  ',
-    '5' => '5  ',
-    '6' => '6  ',
-    '7' => '7  ',
-    '8' => '8  ',
-    '9' => '9  ',
-    '10' => '10 ',
-    '11' => '11 ',
-    '12' => '12 ',
-    '13' => '13 ',
-    '14' => '14 ',
-    '15' => '15 ',
-    '16' => '16 ',
-    '17' => '17 ',
-    '18' => '18 ',
-    '19' => '19 ',
-    '20' => '20 ',
-    '21' => '21 ',
-    '22' => '22 ',
-    '23' => '23 ',
-    '24' => '24 ',
-    '25' => '25 ',
-);
-
 $afg_photo_size_map = array(
     'default' => 'Default',
     '_s' => 'Square (Max 75px)',
     '_t' => 'Thumbnail (Max 100px)',
     '_m' => 'Small (Max 240px)',
     'NULL' => 'Medium (Max 500px)',
+    'custom' => 'Custom',
 );
 
 $afg_on_off_map = array(
@@ -124,7 +98,21 @@ function create_afgFlickr_obj() {
 
 function afg_error() {
     global $pf;
-    return "<h3>Awesome Flickr Gallery Error - #{$pf->error_code} {$pf->error_msg}</h3>";
+    return "<h3>Awesome Flickr Gallery Error - $pf->error_msg</h3>";
+}
+
+function afg_fb_like_box() {
+    return "<div id=\"fb-root\"></div>
+        <script>(function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0];
+if (d.getElementById(id)) {return;}
+js = d.createElement(s); js.id = id;
+js.src = \"//connect.facebook.net/en_US/all.js#xfbml=1\";
+fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+    <div class=\"fb-like-box\" data-href=\"https://www.facebook.com/pages/Awesome-Flickr-Gallery/178711828873172\" data-width=\"292\" data-height=\"350\" data-show-faces=\"true\" data-stream=\"true\" data-header=\"true\"></div>
+    ";
 }
 
 function delete_afg_caches() {
@@ -202,7 +190,15 @@ function afg_generate_flickr_settings_table($photosets, $galleries, $groups) {
 }
 
 function afg_generate_gallery_settings_table() {
-    global $afg_per_page_map, $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, $afg_columns_map, $afg_bg_color_map, $afg_photo_source_map, $afg_width_map, $afg_yes_no_map;
+    global $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, 
+        $afg_columns_map, $afg_bg_color_map, $afg_photo_source_map, 
+        $afg_width_map, $afg_yes_no_map;
+    
+    if (get_option('afg_photo_size') == 'custom')
+        $photo_size = '(Custom - ' . get_option('afg_custom_size') . 'px' . ((get_option('afg_custom_size_square') == 'true')? ' - Square)': ')');
+    else
+        $photo_size = $afg_photo_size_map[get_option('afg_photo_size')];
+
     return "
     <div id=\"poststuff\">
         <div class=\"postbox\">
@@ -211,15 +207,25 @@ function afg_generate_gallery_settings_table() {
 
         <tr valign='top'>
         <th scope='row'>Max Photos Per Page</th>
-        <td><input type='checkbox' name='afg_per_page_check' id='afg_per_page_check' onclick='showHidePerPage()' value='default' checked=''> Default </input><input name='afg_per_page' disabled='true' id='afg_per_page' type='text' size='3' maxlength='3' onblur='verifyBlank()' value='10'/> 
+        <td style='width:28%'><input type='checkbox' name='afg_per_page_check' id='afg_per_page_check' onclick='showHidePerPage()' value='default' checked='' style='vertical-align:top'> Default </input><input name='afg_per_page' disabled='true' id='afg_per_page' type='text' size='3' maxlength='3' onblur='verifyBlank()' value='10'/> 
         </td>
         </tr>
 
         <tr valign='top'>
         <th scope='row'>Size of Photos</th>
-        <td><select name='afg_photo_size' id='afg_photo_size'>
-            " . afg_generate_options($afg_photo_size_map, 'default', True, $afg_photo_size_map[get_option('afg_photo_size')]) . "
+        <td><select name='afg_photo_size' id='afg_photo_size' onchange='customPhotoSize()'>
+            " . afg_generate_options($afg_photo_size_map, 'default', True, $photo_size) . "
         </select></td>
+        </tr>
+        
+        <tr valign='top' id='afg_custom_size_block' style='display:none'>
+        <th>Custom Width</th>
+        <td><input type='text' size='3' maxlength='3' name='afg_custom_size' id='afg_custom_size' onblur='verifyCustomSizeBlank()' value='100'><font color='red'>*</font> (in px)
+        &nbsp;Square? <input type='checkbox' id='afg_custom_size_square' name='afg_custom_size_square' value='true'>
+        </td>
+        <td><font size='2'>Fill in the exact width for the photos (min 50, max 500).  Height of the photos will be adjusted
+        accordingly to maintain aspect ratio of the photo. Enable <b>Square</b> to crop
+        the photo to a square aspect ratio.</td>
         </tr>
 
         <tr valign='top'>
@@ -227,7 +233,7 @@ function afg_generate_gallery_settings_table() {
         <td><select name='afg_captions' id='afg_captions'>
             " . afg_generate_options($afg_on_off_map, 'default', True, $afg_on_off_map[get_option('afg_captions')]) . "
         </select></td>
-        <td><font size='2'>Photo title setting applies only to Thumbnail (and above) size photos.</font></td>
+        <td><font size='2'>Photo Title setting applies only to Thumbnail (and above) size photos.</font></td>
         </tr>
 
         <tr valign='top'>

@@ -19,7 +19,6 @@ function afg_admin_menu() {
     $afg_edit_page = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'edit_themes', 'afg_edit_galleries_page', 'afg_edit_galleries');
     $afg_advanced_page = add_submenu_page('afg_plugin_page', 'Advanced Settings | Awesome Flickr Gallery', 'Advanced Settings', 'edit_themes', 'afg_advanced_page', 'afg_advanced_settings_page');
    
-    //    $page4 = add_submenu_page('afg_plugin_page', 'Add Users | Awesome Flickr Gallery', 'Add Users', 'edit_themes', 'afg_add_users_page', 'afg_add_users');
     add_action('admin_print_styles-' . $afg_edit_page, 'afg_edit_galleries_header');
     add_action('admin_print_styles-' . $afg_add_page, 'afg_edit_galleries_header');
     add_action('admin_print_styles-' . $afg_saved_page, 'afg_view_delete_galleries_header');
@@ -92,6 +91,8 @@ function afg_admin_init() {
     register_setting('afg_settings_group', 'afg_dismis_ss_msg');
     register_setting('afg_settings_group', 'afg_api_secret');
     register_setting('afg_settings_group', 'afg_flickr_token');
+    register_setting('afg_settings_group', 'afg_custom_size');
+    register_setting('afg_settings_group', 'afg_custom_size_square');
 
     // Register javascripts
     wp_register_script('edit-galleries-script', BASE_URL . '/js/edit_galleries.js');
@@ -148,7 +149,8 @@ function afg_auth_read() {
 create_afgFlickr_obj();
 
 function afg_admin_html_page() {
-    global $afg_per_page_map, $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, $afg_columns_map, $afg_bg_color_map, $afg_width_map, $pf;
+    global $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, 
+        $afg_columns_map, $afg_bg_color_map, $afg_width_map, $pf;
 ?>
    <div class='wrap'>
    <h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
@@ -176,6 +178,16 @@ function afg_admin_html_page() {
                 echo "<div class='updated'><p><strong>You entered invalid value for Per Page option.  It has been set to 10.</strong></p></div>";
             }
             update_option('afg_photo_size', $_POST['afg_photo_size']);
+            if (get_option('afg_photo_size') == 'custom') {
+                if (ctype_digit($_POST['afg_custom_size']) && (int)$_POST['afg_custom_size'] >= 50 && (int)$_POST['afg_custom_size'] <= 500) {
+                    update_option('afg_custom_size', $_POST['afg_custom_size']);
+                }
+                else {
+                    update_option('afg_custom_size', 100);
+                    echo "<div class='updated'><p><strong>You entered invalid value for Custom Width option.  It has been set to 100.</strong></p></div>";
+                }
+                update_option('afg_custom_size_square', $_POST['afg_custom_size_square']?$_POST['afg_custom_size_square']:'false');
+            }
             update_option('afg_captions', $_POST['afg_captions']);
             update_option('afg_descr', $_POST['afg_descr']);
             update_option('afg_columns', $_POST['afg_columns']);
@@ -221,7 +233,7 @@ function afg_admin_html_page() {
     echo "<input type='button' class='button-secondary' value='Grant Access' disabled=''";    
 } ?>
                            </td>
-                           <td style="vertical-align:top"><font size='2'>If you want to include your <b>Private Photos</b> in your galleries, enter your Flickr API Secret here
+                           <td style="vertical-align:top"><font size='2'><b>ONLY</b> If you want to include your <b>Private Photos</b> in your galleries, enter your Flickr API Secret here
                             and click Save Changes.</font>
                         </td>
                     </tr>
@@ -249,9 +261,19 @@ function afg_admin_html_page() {
 
                            <tr valign='top'>
                               <th scope='row'>Size of the Photos</th>
-                              <td><select name='afg_photo_size'>
+                              <td><select name='afg_photo_size' id='afg_photo_size' onchange='customPhotoSize()'>
                                     <?php echo afg_generate_options($afg_photo_size_map, get_option('afg_photo_size', '_m')); ?>
                               </select></td>
+                           </tr>
+
+                           <tr valign='top' id='afg_custom_size_block' style='display:none'>
+                             <th>Custom Width</th>
+                             <td><input type='text' size='3' maxlength='3' name='afg_custom_size' id='afg_custom_size' onblur='verifyCustomSizeBlank()' value="<?php echo get_option('afg_custom_size')?get_option('afg_custom_size'):100; ?>"><font color='red'>*</font> (in px)
+                             &nbsp;Square? <input type='checkbox' name='afg_custom_size_square' value='true' <?php if (get_option('afg_custom_size_square')) echo "checked=''"; ?>>
+                             </td>
+                             <td><font size='2'>Fill in the exact width for the photos (min 50, max 500).  Height of the photos will be adjusted
+                                                accordingly to maintain aspect ratio of the photo. Enable <b>Square</b> to crop
+                                                the photo to a square aspect ratio.</td>
                            </tr>
 
                            <tr valign='top'>
@@ -259,7 +281,7 @@ function afg_admin_html_page() {
                               <td><select name='afg_captions'>
                                     <?php echo afg_generate_options($afg_on_off_map, get_option('afg_captions', 'on')); ?>
                               </select></td>
-                              <td><font size='2'>Photo title setting applies only to Thumbnail (and above) size photos.</font></td>
+                              <td><font size='2'>Photo Title setting applies only to Thumbnail (and above) size photos.</font></td>
                            </tr>
 
                            <tr valign='top'>
@@ -361,9 +383,10 @@ function afg_admin_html_page() {
         gallery. <br /> <br />
         When you change any of <b>Default Settings</b>, all the settings in a gallery 
         referencing the <b>Default Settings</b> will inherit the new value.<br /><br />
-        To access your private photos from Flickr, make sure that your App's authentication
+        <font color='red'><b>Important Note about Private Photos:</b></font><br/>To access
+        your private photos from Flickr, make sure that your App's authentication
         type is set to <b>Web Application</b> and the <b>Callback URL</b>
-        points to <i>" . get_admin_url() . "</i>.
+        points to <font color='blue'><i>" . get_admin_url() . "</i></font>
         ";
     echo afg_box('Help', $message);
 
@@ -371,9 +394,11 @@ function afg_admin_html_page() {
         <br /><p style='text-align:center'><i>-- OR --</i></p>You can create a new Awesome Flickr Gallery with different settings on page <a href='{$_SERVER['PHP_SELF']}?page=afg_add_gallery_page'>Add Galleries.";
     echo afg_box('Usage Instructions', $message);
 
-    echo afg_donate_box() ?>
-                           </div>
-                        </form>
+    echo afg_donate_box(); 
+    echo afg_fb_like_box();
+?>
+        </div>
+            </form>
 <?php
 
 }

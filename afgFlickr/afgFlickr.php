@@ -216,7 +216,10 @@ if ( !class_exists('afgFlickr') ) {
 				curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 				$response = curl_exec($curl);
-				curl_close($curl);
+                                if(curl_errno($curl)) {
+                                        $response = curl_error($curl);
+                                }
+                                curl_close($curl);
 			} else {
 				// Use sockets.
 				foreach ( $data as $key => $value ) {
@@ -299,8 +302,12 @@ if ( !class_exists('afgFlickr') ) {
 			 */
 			//$this->parsed_response = unserialize($this->response);
 			$this->parsed_response = $this->clean_text_nodes(unserialize($this->response));
-			if ($this->parsed_response['stat'] == 'fail') {
-				if ($this->die_on_error) die("The Flickr API returned the following error: #{$this->parsed_response['code']} - {$this->parsed_response['message']}");
+                        if (!is_array($this->parsed_response)) {
+                                $this->error_code = true;
+                                $this->error_msg = $this->response;
+                        }
+                        else if ($this->parsed_response['stat'] == 'fail') {
+                                if ($this->die_on_error) die("The Flickr API returned the following error: #{$this->parsed_response['code']} - {$this->parsed_response['message']}");
 				else {
 					$this->error_code = $this->parsed_response['code'];
 					$this->error_msg = $this->parsed_response['message'];

@@ -10,7 +10,6 @@ function afg_view_delete_galleries_header() {
 }
 
 function afg_view_delete_galleries() {
-    global $afg_per_page_map, $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, $afg_columns_map, $afg_bg_color_map, $afg_photo_source_map;
 ?>
 <div class='wrap'>
 <h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php

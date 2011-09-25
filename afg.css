@@ -1,33 +1,76 @@
-/* Hover effect for pagination links */
-a.afg_page:hover {
-    background: royalblue;
-    color:white;
-    text-decoration: none;
+/* Effect for thumbnails in gallery */
+img.afg-img {
+    margin-top:5%;
+    opacity:1;
+    filter:alpha(opacity=100);
 }
 
-/* Text decoration for pagination links */
-a.afg_page:visited, a.afg_page:link {
-    text-decoration: none;
-    border:1px solid gray;
+/* Gallery structure */
+div.afg-table {
+    display:table; /* IMPORTANT */
+    margin:auto;
+    border:none; 
+}
+
+/* Table row */
+div.afg-row {
+    display:table-row; /* IMPORTANT */
 }
 
 /* Individual image cell in the gallery */
-.afg-cell {
-    display: table-cell; /* IMPORTANT */
-    text-align: left;
-    vertical-align: top;
-    margin: auto;
+div.afg-cell {
+    display:table-cell; /* IMPORTANT */
+    text-align:left;
+    vertical-align:top;
+    margin:auto;
+    padding-bottom:10px;
+}
+/* Hover effect for pagination links */
+a.afg-page:hover {
+    background:royalblue;
+    color:white;
+    text-decoration:none;
+}
+
+/* Pagination */
+div.afg-pagination {
+    margin:auto;
+    border:0;
+    text-align:center;
+    font-size:0.9em; 
+}
+
+font.afg-page {
+    border:1px solid gray;
+}
+
+font.afg-cur-page {
+    border:1px solid gray;
+    background-color:gray;
+    color:white;
+}
+
+/* Text decoration for pagination links */
+a.afg-page:visited, a.afg-page:link {
+    text-decoration:none;
+    border:1px solid gray;
+}
+
+/* Credit Note */
+div.afg-credit {
+    text-align:right;
+    font-size:0.9em;
 }
 
 /* Photo title */
 .afg-title {
-    margin-right: 5%;
-    margin-bottom: 5%;
+    margin-right:5%;
+    margin-bottom:5%;
 }
 
 /* Photo Description */
 .afg-description {
     font-size:85%;
     margin-right:5%;
-    font-style: italic;
+    font-style:italic;
 }
