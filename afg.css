@@ -63,13 +63,13 @@ div.afg-credit {
 }
 
 /* Photo title */
-.afg-title {
+div.afg-title {
     margin-right:5%;
     margin-bottom:5%;
 }
 
 /* Photo Description */
-.afg-description {
+div.afg-description {
     font-size:85%;
     margin-right:5%;
     font-style:italic;

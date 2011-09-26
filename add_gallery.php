@@ -11,13 +11,13 @@ function afg_add_gallery() {
     $rsp_obj = $pf->photosets_getList($user_id);
     $photosets_map = array();
     foreach($rsp_obj['photoset'] as $photoset) {
-        $photosets_map[$photoset['id']] = $photoset['title'];
+        $photosets_map[$photoset['id']] = $photoset['title']['_content'];
     }
 
     $rsp_obj = $pf->galleries_getList($user_id);
     $galleries_map = array();
     foreach($rsp_obj['galleries']['gallery'] as $gallery) {
-        $galleries_map[$gallery['id']] = $gallery['title'];
+        $galleries_map[$gallery['id']] = $gallery['title']['_content'];
     }
 
     $groups_map = array();
@@ -33,8 +33,8 @@ function afg_add_gallery() {
             $groups_map[$group['nsid']] = $group['name'];
         }
     }
-
     ?>
+
    <div class='wrap'>
    <h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
     echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Add Gallery | Awesome Flickr Gallery</h2>

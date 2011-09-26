@@ -99,7 +99,7 @@ function afg_edit_galleries() {
     if (!$rsp_obj) echo afg_error();
     else {
         foreach($rsp_obj['photoset'] as $photoset) {
-            $photosets_map[$photoset['id']] = $photoset['title'];
+            $photosets_map[$photoset['id']] = $photoset['title']['_content'];
         }
     }
 
@@ -108,7 +108,7 @@ function afg_edit_galleries() {
     if (!$rsp_obj) echo afg_error();
     else {
         foreach($rsp_obj['galleries']['gallery'] as $gallery) {
-            $galleries_map[$gallery['id']] = $gallery['title'];
+            $galleries_map[$gallery['id']] = $gallery['title']['_content'];
         }
     }
 
