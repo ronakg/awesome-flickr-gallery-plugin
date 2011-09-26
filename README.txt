@@ -232,7 +232,7 @@ Gallery (In no particular order):
 
 == Changelog ==
 
-= 3.0.6 =
+= 3.0.7 =
 * [Bug Fix] Website components messed up after upgrading to 3.0.5
 * [Bug Fix] Custom size thumbnails don't appear
 
