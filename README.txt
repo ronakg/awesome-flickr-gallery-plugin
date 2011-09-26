@@ -6,7 +6,7 @@ Requires at least: 3.0
 Tested up to: 3.2.1
 Stable tag: 3.0.6
 
-Create a photo gallery of your Flickr photos on your WordPress enabled website
+Create a photo gallery of your Flickr photos on your WordPress enabled WebSite
 enabling you to customize it the way you like it.
 
 == Description ==
