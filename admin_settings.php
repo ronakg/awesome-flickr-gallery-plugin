@@ -139,8 +139,8 @@ function afg_auth_read() {
     if ( isset($_GET['frob']) ) {
         global $pf;
         $auth = $pf->auth_getToken($_GET['frob']);
-        update_option('afg_flickr_token', $auth['token']);
-        $pf->setToken($auth['token']);
+        update_option('afg_flickr_token', $auth['token']['_content']);
+        $pf->setToken($auth['token']['_content']);
         header('Location: ' . $_SESSION['afgFlickr_auth_redirect']);
         exit;
     }

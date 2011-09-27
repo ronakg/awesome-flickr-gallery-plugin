@@ -4,7 +4,7 @@ Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plu
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide, group, photoset, set, yahoo, slider, thumbnail
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 3.0.7
+Stable tag: 3.0.8
 
 Create a photo gallery of your Flickr photos on your WordPress enabled WebSite
 enabling you to customize it the way you like it.
@@ -111,6 +111,9 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 [Discussions | RonakG.com](http://www.ronakg.com/discussions/)
 
 == Upgrade Notice ==
+
+= 3.0.8 =
+[BUG FIX] Including private photos doesn't work, gives Invalid Auth Token error
 
 = 3.0.7 =
 [BUG FIX] Weird formatting after upgrading to 3.0.5
@@ -231,6 +234,9 @@ Gallery (In no particular order):
 * View photo comments
 
 == Changelog ==
+
+= 3.0.8 =
+* [Bug Fix] Including private photos doesn't work, gives Invalid Auth Token error
 
 = 3.0.7 =
 * [Bug Fix] Website components messed up after upgrading to 3.0.5
