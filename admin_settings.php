@@ -51,6 +51,7 @@ function afg_setup_options() {
     if (get_option('afg_credit_note') == '0') update_option('afg_credit_note', 'off');
     if (!get_option('afg_pagination')) update_option('afg_pagination', 'on');
     if (get_option('afg_slideshow_option') == '') update_option('afg_slideshow_option', 'colorbox');
+    if (get_option('afg_custom_css') == '') update_option('afg_custom_css', '/* Start writing your custom CSS here */');
 
     $galleries = get_option('afg_galleries');
     if (!$galleries) {
@@ -93,6 +94,7 @@ function afg_admin_init() {
     register_setting('afg_settings_group', 'afg_flickr_token');
     register_setting('afg_settings_group', 'afg_custom_size');
     register_setting('afg_settings_group', 'afg_custom_size_square');
+    register_setting('afg_settings_group', 'afg_custom_css');
 
     // Register javascripts
     wp_register_script('edit-galleries-script', BASE_URL . '/js/edit_galleries.js');

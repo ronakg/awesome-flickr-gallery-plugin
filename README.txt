@@ -4,7 +4,7 @@ Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plu
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide, group, photoset, set, yahoo, slider, thumbnail
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 3.0.8
+Stable tag: 3.1.0
 
 Create a photo gallery of your Flickr photos on your WordPress enabled WebSite
 enabling you to customize it the way you like it.
@@ -24,6 +24,7 @@ galleries.
 * Select Photos from your Flickr Photostream, a Photoset, a Gallery or a Group
 * 2 Powerful slideshow options with thumbnail slider navigation
 * Customizable image sizes with cropping settings
+* Infinitely customizable with custom CSS field
 * Fits into a sidebar widget too
 * Insert multiple galleries on same page with independent slideshow and pagination
 * Fits automatically according to the width of the theme or you can select the width of the gallery yourself
@@ -112,6 +113,10 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 
 == Upgrade Notice ==
 
+= 3.1.0 =
+[Feature] A custom CSS field which can be used to override plugin's default CSS so that you can infinitely customize your galleries
+- [Bug Fix] On Safari browser, Add Gallery page goes into an alert loop
+
 = 3.0.8 =
 [BUG FIX] Including private photos doesn't work, gives Invalid Auth Token error
 
@@ -170,48 +175,6 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 - [Bug Fix] Awesome Flickr Gallery conflicts with other slider plugins
 - Minor improvements in UI
 
-= 2.6.2 =
-- [Bug Fix] Pagination broken on multisite wordpress deployment
-- [Bug Fix] Gallery doesn't load inside sidebar widget on some themes
-- [Bug Fix] Pagination and Gallery Width options doesn't appear in "Default Settings for References" box on admin pages
-- [Enhancement] Minor UI improvement for galleries displayed with Square and Thumbnail size photos
-
-= 2.6.1 =
-- Added a configuration option to control width of the gallery for better flexibility.
-- Added a configuration option to enale/disable pagination.  This helps if you want to insert the gallery into a sidebar widget.
-
-= 2.5.3 =
-- [Bug Fix] When changes are submitted on Edit Galleries page, selected gallery would go back to default instead of last edited gallery.
-- [Bug Fix] Credit Note would appear above the gallery if gallery has only 1 page
-- [Bug Fix] Donate button link was broken, fixed it.  Now shower all the donations :).
-
-= 2.5.1 =
-- [Bug Fix] Extra line breaks were added by some themes.
-- [Bug Fix] Do not show pagination bar if there is only one page.
-
-= 2.5.0 =
-- Now create multiple instances of your gallery with different settings.
-- Select photo source from your Flickr photostream, photoset or galleries.
-- New improved admin panel with slick menus and photo previews.
-
-= 1.3.0 =
-- Added SlideShow option when viewing full size photos
-- Moved to colorbox from lightbox for displaying full size photos
-
-= 1.1.7 =
-- [Bug Fix] Moved to a better API to fetch data from Flickr.
-
-= 1.1.6 =
-- [Bug Fix] Compatibility issue with some browsers.
-
-= 1.1.5 =
-- Much better looking page navigation.  Check out the screenshot.
-
-= 1.1.0 =
-- Added page navigation feature in this release.  Now there is a page
-  navigation links at the bottom of the gallery, so that users can go through
-  all your photos.
-
 == Screenshots ==
 
 1. Full size photo view with SlideShow along with thumbnail slider at the bottom
@@ -234,6 +197,10 @@ Gallery (In no particular order):
 * View photo comments
 
 == Changelog ==
+
+= 3.1.0 =
+* [Feature] A custom CSS field which can be used to override plugin's default CSS so that you can infinitely customize your galleries
+* [Bug Fix] On Safari browser, Add Gallery page goes into an alert loop
 
 = 3.0.8 =
 * [Bug Fix] Including private photos doesn't work, gives Invalid Auth Token error

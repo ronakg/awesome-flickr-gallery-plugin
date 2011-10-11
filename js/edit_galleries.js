@@ -24,7 +24,6 @@ function verifyCustomSizeBlank() {
     if (afg_photo_size.value == "custom" && afg_custom_size.value == "") {
         alert('Custom Width can not be blank if you want to use custom size.');
         submit_button.disabled = true;
-        afg_custom_size.focus();
         return
     }
     submit_button.disabled = false;
@@ -37,13 +36,11 @@ function verifyBlank() {
     if (per_page.value == '') {
         alert('Per Page can not be blank.');
         submit_button.disabled = true;
-        per_page.focus();
         return;
     }
-    else if(gname.value == '') {
+    else if (gname.value == '') {
         alert('Gallery Name can not be blank.');
         submit_button.disabled = true;
-        gname.focus();
         return;
     }
     submit_button.disabled = false;
@@ -136,7 +133,6 @@ function verifyEditBlank() {
     if (gname.value == "") {
         alert('Gallery Name can not be blank.');
         submit_button.disabled = true;
-        gname.focus();
         return;
     }
     submit_button.disabled = false;

@@ -7,19 +7,19 @@ img.afg-img {
 
 /* Gallery structure */
 div.afg-table {
-    display:table; /* IMPORTANT */
+    display:table; !important
     margin:auto;
     border:none; 
 }
 
 /* Table row */
 div.afg-row {
-    display:table-row; /* IMPORTANT */
+    display:table-row; !important
 }
 
 /* Individual image cell in the gallery */
 div.afg-cell {
-    display:table-cell; /* IMPORTANT */
+    display:table-cell; !important
     text-align:left;
     vertical-align:top;
     margin:auto;

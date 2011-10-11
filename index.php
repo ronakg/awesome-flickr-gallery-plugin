@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.0.8
+   Version: 3.1.0
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -39,6 +39,7 @@ if ( !is_admin() ) {
 }
 
 add_action('wp_head', 'add_afg_headers');
+
 function enqueue_afg_scripts() {
     if(!get_option('afg_disable_slideshow')) {
         if (get_option('afg_slideshow_option') == 'colorbox') {
@@ -95,6 +96,7 @@ function add_afg_headers() {
     });
          </script>";
     }
+    echo "<style type=\"text/css\">" . get_option('afg_custom_css') . "</style>";
 }
 
 function afg_return_error_code($rsp) {

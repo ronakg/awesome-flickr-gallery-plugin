@@ -8,6 +8,11 @@ if (is_admin()) {
     wp_enqueue_script('afg_highslide_js', BASE_URL . "/highslide/highslide-full.min.js");
     wp_enqueue_style('afg_colorbox_css', BASE_URL . "/colorbox/colorbox.css");
     wp_enqueue_style('afg_highslide_css', BASE_URL . "/highslide/highslide.css");
+    wp_enqueue_style('afg_custom_css_style', BASE_URL . "/CodeMirror/lib/codemirror.css");
+    wp_enqueue_script('afg_custom_css_js', BASE_URL . "/CodeMirror/lib/codemirror.js");
+    wp_enqueue_script('afg_custom_css_theme_js', BASE_URL . "/CodeMirror/mode/css/css.js");
+    wp_enqueue_style('afg_custom_css_theme_css', BASE_URL . "/CodeMirror/theme/cobalt.css");
+    wp_enqueue_style('afg_custom_css_style', BASE_URL . "/CodeMirror/css/docs.css");
     add_action('admin_head', 'add_afg_admin_headers');
 }
 
@@ -40,7 +45,8 @@ thumbstrip: {
         relativeTo: 'viewport'
 }
 });
-      </script>";
+      </script>
+          ";
    }
 
    function afg_advanced_settings_page() {
@@ -54,6 +60,7 @@ thumbstrip: {
       if (isset($_POST['afg_advanced_save_changes']) && $_POST['afg_advanced_save_changes']) {
           update_option('afg_disable_slideshow', isset($_POST['afg_disable_slideshow'])? $_POST['afg_disable_slideshow']: '');
           update_option('afg_slideshow_option', $_POST['afg_slideshow_option']);
+          update_option('afg_custom_css', $_POST['afg_custom_css']);
           echo "<div class='updated'><p><strong>Settings updated successfully.</strong></p></div>";
       }
 ?>
@@ -71,10 +78,8 @@ thumbstrip: {
                               <input type='radio' name='afg_slideshow_option' id='afg_slideshow_option' value='highslide'
                               <?php if (get_option('afg_slideshow_option') == 'highslide') echo "checked=''" ?> > HighSlide</input>
                            </td>
-                           <td><font size='2'><a href='http://highslide.com/#licence' target='_blank'>HighSlide</a> is better of the two slideshow options available.
-                                 It doesn't use jQuery, so it is less likely to cause a conflict with your theme or other plugins.  It also comes with a thumbnail slider,
-                                 which ColorBox doesn't have.  If your gallery has large number of photos, HighSlide can be marginally slower to load compared to ColorBox.
-                                 <br />However, <b>HighSlide is NOT FREE for Commercial websites</b>.  If you are using
+                           <td><font size='2'>
+                                 <b>HighSlide is NOT FREE for Commercial websites</b>.  If you are using
                                  <i>Awesome Flickr Gallery</i> on a commercial website, you need to purchase a license from their website
                                  <a href='http://highslide.com/#licence' target='_blank'>here</a>.  If you want a free slideshow,
                                  use ColorBox instead.</font></td></tr>
@@ -88,9 +93,19 @@ thumbstrip: {
                               Use this option if you want to use a different slideshow (probably from your theme or any other plugin).</font>
                         </td>
                     </tr>
-                  </table>
+                  </table></div>
+               <div id="poststuff">
+                  <div class="postbox">
+                     <h3>Custom CSS</h3>
+                        <div style="background-color:#FFFFE0; border-color:#E6DB55; maargin:5px 0 15px; border-radius:3px 3px 3px 3px; border-width: 1px; border-style: solid; padding: 8px 10px; line-height: 20px">
+                Check <a href='<?php echo BASE_URL . '/afg.css';?>' target='_blank'>afg.css</a> to see existing classes and properties for gallery which you can redefine here. Note that there is no validation applied to CSS Code entered here, so make sure that you enter valid CSS.
+                    </div><br/>
+                    <textarea id='afg_custom_css' name='afg_custom_css'><?php echo get_option('afg_custom_css');?></textarea>
+       <script type="text/javascript">var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('afg_custom_css'), {
+       lineNumbers: true, indentUnit: 4, theme: "cobalt", matchBrackets: true} );</script>
+
+</div></div>
                </div>
-            </div>
             <input type="submit" name="afg_advanced_save_changes" id="afg_advanced_save_changes" class="button-primary" value="Save Changes" />
          </div>
 
@@ -98,7 +113,9 @@ thumbstrip: {
 <?php
       $message = "Settings on this page are global and hence apply to all your Galleries.";
       echo afg_box('Help', $message);
-      echo afg_donate_box() ?>
+      echo afg_donate_box();
+      echo afg_fb_like_box();
+?>
             </div>
             <div class="postbox-container" style="width: 48%; margin-right:1%">
                <br />
