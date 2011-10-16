@@ -1,3 +1,8 @@
+/* Settings that apply to entire gallery */
+div.afg-gallery {
+    margin:auto;
+}
+
 /* Effect for thumbnails in gallery */
 img.afg-img {
     margin-top:5%;
@@ -7,19 +12,19 @@ img.afg-img {
 
 /* Gallery structure */
 div.afg-table {
-    display:table; !important
+    display:table !important;
     margin:auto;
     border:none; 
 }
 
 /* Table row */
 div.afg-row {
-    display:table-row; !important
+    display:table-row !important;
 }
 
 /* Individual image cell in the gallery */
 div.afg-cell {
-    display:table-cell; !important
+    display:table-cell !important;
     text-align:left;
     vertical-align:top;
     margin:auto;

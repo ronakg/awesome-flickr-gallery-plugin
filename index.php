@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.1.0
+   Version: 3.1.1
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -118,8 +118,8 @@ function afg_display_gallery($atts) {
     if ($request_uri == '' || !$request_uri) $request_uri = $_SERVER['REQUEST_URI'];
 
     $cur_page = 1;
-    $cur_page_url = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://".$_SERVER['HTTP_HOST'].$request_uri : "http://".$_SERVER['SERVER_NAME'].$request_uri;
-
+    $cur_page_url = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://".$_SERVER['SERVER_NAME'].$request_uri : "http://".$_SERVER['SERVER_NAME'].$request_uri;
+    $cur_page_url = preg_replace("/hilbert-in.com/", "pkhs.nl", $cur_page_url);
     preg_match("/afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
 
     if ($matches) {
@@ -249,11 +249,13 @@ function afg_display_gallery($atts) {
     if (($total_photos % $per_page) == 0) $total_pages = (int)($total_photos / $per_page);
     else $total_pages = (int)($total_photos / $per_page) + 1;
 
+    if ($gallery_width == 'auto') $gallery_width = 100;
+    $text_color = isset($afg_text_color_map[$bg_color])? $afg_text_color_map[$bg_color]: '';
+    $disp_gallery .= "<div class='afg-gallery' style='background-color:{$bg_color}; width:$gallery_width%; color:{$text_color}; border-color:{$bg_color};'>";
+
     if ($slideshow_option == 'highslide')
         $disp_gallery .= "<div class='highslide-gallery'>";
-
-    if ($gallery_width == 'auto') $gallery_width = 100;
-    $disp_gallery .= "<div class='afg-table' style='background-color:{$bg_color}; width:$gallery_width%'>";
+    $disp_gallery .= "<div class='afg-table' style='width:100%'>";
 
     $photo_count = 1;
     $cur_col = 0;
@@ -270,11 +272,9 @@ function afg_display_gallery($atts) {
         $photo_url = afg_get_photo_url($photo['farm'], $photo['server'],
             $photo['id'], $photo['secret'], $photo_size);
         if ( ($photo_count <= $per_page * $cur_page) && ($photo_count > $per_page * ($cur_page - 1)) ) {
-            $text_color = isset($afg_text_color_map[$bg_color])? $afg_text_color_map[$bg_color]: '';
 
             if ($cur_col % $columns == 0) $disp_gallery .= "<div class='afg-row'>";
-            $disp_gallery .= "<div class='afg-cell' style='width:${column_width}%;" .
-                " color:{$text_color}; border-color:{$bg_color};'>";
+            $disp_gallery .= "<div class='afg-cell' style='width:${column_width}%;'>";
 
             $pid_len = strlen($photo['id']);
 
@@ -363,7 +363,7 @@ function afg_display_gallery($atts) {
     // Pagination
     if ($pagination == 'on' && $total_pages > 1) {
         $disp_gallery .= "<br /><br />";
-        $disp_gallery .= "<div class='afg-pagination' style='background-color:{$bg_color}; width:$gallery_width%; color:{$text_color}; border-color:{$bg_color}'>";
+        $disp_gallery .= "<div class='afg-pagination'>";
         if ($cur_page == 1) {
             $disp_gallery .="<font class='afg-page'>&nbsp;&#171; prev&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;";
             $disp_gallery .="<font class='afg-cur-page'> 1 </font>&nbsp;";
@@ -403,11 +403,12 @@ function afg_display_gallery($atts) {
     }
     if ($credit_note == 'on') {
         $disp_gallery .= "<br />";
-        $disp_gallery .= "<div class='afg-credit' style='color:{$text_color}; border-color:{$bg_color};'>Powered by " .
+        $disp_gallery .= "<div class='afg-credit'>Powered by " .
             "<a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin'" .
             "title='Awesome Flickr Gallery by Ronak Gandhi'/>AFG</a>";
         $disp_gallery .= "</div>";
     }
+    $disp_gallery .= "</div>";
     $disp_gallery .= "<!-- Awesome Flickr Gallery End -->";
     return $disp_gallery;
 }
