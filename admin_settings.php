@@ -12,12 +12,12 @@ add_action('admin_menu', 'afg_admin_menu');
 add_action('wp_ajax_afg_gallery_auth', 'afg_auth_init');
 
 function afg_admin_menu() {
-    add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery', 'edit_themes', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png", 898);
-    $afg_main_page = add_submenu_page('afg_plugin_page', 'Default Settings | Awesome Flickr Gallery', 'Default Settings', 'edit_themes', 'afg_plugin_page', 'afg_admin_html_page');
-    $afg_add_page = add_submenu_page('afg_plugin_page', 'Add Gallery | Awesome Flickr Gallery', 'Add Gallery', 'edit_themes', 'afg_add_gallery_page', 'afg_add_gallery');
-    $afg_saved_page = add_submenu_page('afg_plugin_page', 'Saved Galleries | Awesome Flickr Gallery', 'Saved Galleries', 'edit_themes', 'afg_view_edit_galleries_page', 'afg_view_delete_galleries');
-    $afg_edit_page = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'edit_themes', 'afg_edit_galleries_page', 'afg_edit_galleries');
-    $afg_advanced_page = add_submenu_page('afg_plugin_page', 'Advanced Settings | Awesome Flickr Gallery', 'Advanced Settings', 'edit_themes', 'afg_advanced_page', 'afg_advanced_settings_page');
+    add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery', 'activate_plugins', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png", 898);
+    $afg_main_page = add_submenu_page('afg_plugin_page', 'Default Settings | Awesome Flickr Gallery', 'Default Settings', 'activate_plugins', 'afg_plugin_page', 'afg_admin_html_page');
+    $afg_add_page = add_submenu_page('afg_plugin_page', 'Add Gallery | Awesome Flickr Gallery', 'Add Gallery', 'manage_links', 'afg_add_gallery_page', 'afg_add_gallery');
+    $afg_saved_page = add_submenu_page('afg_plugin_page', 'Saved Galleries | Awesome Flickr Gallery', 'Saved Galleries', 'manage_links', 'afg_view_edit_galleries_page', 'afg_view_delete_galleries');
+    $afg_edit_page = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'manage_links', 'afg_edit_galleries_page', 'afg_edit_galleries');
+    $afg_advanced_page = add_submenu_page('afg_plugin_page', 'Advanced Settings | Awesome Flickr Gallery', 'Advanced Settings', 'activate_plugins', 'afg_advanced_page', 'afg_advanced_settings_page');
    
     add_action('admin_print_styles-' . $afg_edit_page, 'afg_edit_galleries_header');
     add_action('admin_print_styles-' . $afg_add_page, 'afg_edit_galleries_header');

@@ -6,5 +6,6 @@ jQuery("a[rel^='example4']").colorbox({
     slideshowSpeed: 3500,
     maxWidth: "90%",
     maxHeight: "90%",
+    current: "{current} of {total}",
     });
 });

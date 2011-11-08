@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.1.2
+   Version: 3.1.5
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -251,7 +251,7 @@ function afg_display_gallery($atts) {
 
     if ($gallery_width == 'auto') $gallery_width = 100;
     $text_color = isset($afg_text_color_map[$bg_color])? $afg_text_color_map[$bg_color]: '';
-    $disp_gallery .= "<div class='afg-gallery' style='background-color:{$bg_color}; width:$gallery_width%; color:{$text_color}; border-color:{$bg_color};'>";
+    $disp_gallery .= "<div class='afg-gallery custom-gallery-{$id}' style='background-color:{$bg_color}; width:$gallery_width%; color:{$text_color}; border-color:{$bg_color};'>";
 
     if ($slideshow_option == 'highslide')
         $disp_gallery .= "<div class='highslide-gallery'>";

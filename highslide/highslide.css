@@ -1,6 +1,6 @@
 /**
-**/ @file: highslide.css 
-* @version: 4.1.9
+* @file: highslide.css 
+* @version: 4.1.13
 */
 .highslide-container div {
 	font-family: Verdana, Helvetica;
@@ -42,10 +42,10 @@
 .highslide-image-blur {
 }
 .highslide-number {
+        font-weight: bold;
 	color: gray;
 	font-size: .8em;
     text-align: right;
-    font-weight: normal;
 }
 .highslide-caption {
 	display: none;

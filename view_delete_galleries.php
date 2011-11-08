@@ -44,7 +44,7 @@ function afg_view_delete_galleries() {
                            onclick="CheckAllDeleteGalleries()"/></th>
                         <th scope='row'><strong>ID</strong></th>
                         <th scope='row'><strong>Name</strong></th>
-                        <th scope='row'><strong>Short Code</strong></th>
+                        <th scope='row'><strong>Gallery Code</strong></th>
                         <th scope='row'><strong>Description</strong></th>
                      </tr>
 <?php
