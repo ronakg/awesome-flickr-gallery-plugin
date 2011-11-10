@@ -116,6 +116,7 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 
 = 3.1.7 =
 [FEATURE] Multiple sorting options now available for galleries. You can now use these options to override your sorting options set on Flickr.
+[ENHANCEMENT] Updated thumbnail resizing library to its latest version
 
 = 3.1.5 =
 [ENHANCEMENT] Editors can now access Add/Delete/Saved Galleries page.
@@ -215,6 +216,7 @@ Gallery (In no particular order):
 
 = 3.1.7 =
 * [Feature] Multiple sorting options now available for galleries. You can now use these options to override your sorting options set on Flickr.
+* [Enhancement] Updated thumbnail resizing library to its latest version
 
 = 3.1.5 =
 * [Enhancement] Editors can now access Add/Delete/Saved Galleries page.
