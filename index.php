@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.1.5
+   Version: 3.1.7
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -27,7 +27,7 @@ require_once('afgFlickr/afgFlickr.php');
 include_once('admin_settings.php');
 include_once('afg_libs.php');
 
-if ( !is_admin() ) {
+if (!is_admin()) {
     /* Short code to load Awesome Flickr Gallery plugin.  Detects the word
      * [AFG_gallery] in posts or pages and loads the gallery.
      */
@@ -143,6 +143,7 @@ function afg_display_gallery($atts) {
     $slideshow_option = get_option('afg_slideshow_option');
 
     $per_page = get_afg_option($gallery, 'per_page');
+    $sort_order = get_afg_option($gallery, 'sort_order');
     $photo_size = get_afg_option($gallery, 'photo_size');
     $photo_title = get_afg_option($gallery, 'captions');
     $photo_descr = get_afg_option($gallery, 'descr');
@@ -178,6 +179,7 @@ function afg_display_gallery($atts) {
         " - Gallery ID - " . (isset($gallery_id)? $gallery_id: '') .
         " - Group ID - " . (isset($group_id)? $group_id: '') .
         " - Per Page - " . $per_page .
+        " - Sort Order - " . $sort_order .
         " - Photo Size - " . $photo_size .
         " - Custom Size - " . $custom_size .
         " - Square - " . $custom_size_square .
@@ -215,7 +217,7 @@ function afg_display_gallery($atts) {
     }
 
     $photos = get_transient('afg_id_' . $id);
-    $extras = 'url_l, description';
+    $extras = 'url_l, description, date_upload, date_taken';
 
     if ($photos == false || $total_photos != count($photos)) {
         $photos = array();
@@ -260,6 +262,9 @@ function afg_display_gallery($atts) {
     $photo_count = 1;
     $cur_col = 0;
     $column_width = (int)($gallery_width/$columns);
+
+    if ($sort_order != 'flickr')
+        usort($photos, $sort_order);
 
     foreach($photos as $pid => $photo) {
         if (isset($photo['url_l'])? $photo['url_l']: '') {

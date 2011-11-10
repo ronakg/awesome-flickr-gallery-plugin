@@ -3,7 +3,16 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '3.1.5');
+define('VERSION', '3.1.7');
+
+$afg_sort_order_map = array(
+    'default' => 'Default',
+    'flickr' => 'As per Flickr',
+    'date_taken_cmp_newest' => 'By date taken (Newest first)',
+    'date_taken_cmp_oldest' => 'By date taken (Oldest first)',
+    'date_upload_cmp_newest' => 'By date uploaded (Newest first)',
+    'date_upload_cmp_oldest' => 'By date uploaded (Oldest first)',
+);
 
 /* Map for photo titles displayed on the gallery. */
 $size_heading_map = array(
@@ -101,6 +110,22 @@ function afg_error() {
     return "<h3>Awesome Flickr Gallery Error - $pf->error_msg</h3>";
 }
 
+function date_taken_cmp_newest($a, $b) {
+    return $a['datetaken'] < $b['datetaken'];
+}
+
+function date_taken_cmp_oldest($a, $b) {
+    return $a['datetaken'] > $b['datetaken'];
+}
+
+function date_upload_cmp_newest($a, $b) {
+    return $a['dateupload'] < $b['dateupload'];
+}
+
+function date_upload_cmp_oldest($a, $b) {
+    return $a['dateupload'] > $b['dateupload'];
+}
+
 function afg_fb_like_box() {
     return "<div id=\"fb-root\"></div>
         <script>(function(d, s, id) {
@@ -192,7 +217,7 @@ function afg_generate_flickr_settings_table($photosets, $galleries, $groups) {
 function afg_generate_gallery_settings_table() {
     global $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, 
         $afg_columns_map, $afg_bg_color_map, $afg_photo_source_map, 
-        $afg_width_map, $afg_yes_no_map;
+        $afg_width_map, $afg_yes_no_map, $afg_sort_order_map;
     
     if (get_option('afg_photo_size') == 'custom')
         $photo_size = '(Custom - ' . get_option('afg_custom_size') . 'px' . ((get_option('afg_custom_size_square') == 'true')? ' - Square)': ')');
@@ -210,6 +235,15 @@ function afg_generate_gallery_settings_table() {
         <td style='width:28%'><input type='checkbox' name='afg_per_page_check' id='afg_per_page_check' onclick='showHidePerPage()' value='default' checked='' style='vertical-align:top'> Default </input><input name='afg_per_page' disabled='true' id='afg_per_page' type='text' size='3' maxlength='3' onblur='verifyBlank()' value='10'/> 
         </td>
         </tr>
+
+        <tr valign='top'>
+        <th scope='row'>Sort order of Photos</th>
+        <td><select name='afg_sort_order' id='afg_sort_order'>"
+        . afg_generate_options($afg_sort_order_map, 'default', True, $afg_sort_order_map[get_option('afg_sort_order')]) . "
+    </select>
+            <td><font size='2'>Set the sort order of the photos as per your liking and forget about how photos are arranged on Flickr.</font></td>
+            </td>
+            </tr>
 
         <tr valign='top'>
         <th scope='row'>Size of Photos</th>

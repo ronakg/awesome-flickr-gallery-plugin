@@ -146,6 +146,7 @@ function loadGallerySettings() {
     var groups_box = document.getElementById('afg_groups_box');
     var source_label = document.getElementById('afg_source_label');
     var per_page = document.getElementById('afg_per_page');
+    var sort_order = document.getElementById('afg_sort_order');
     var per_page_check = document.getElementById('afg_per_page_check');
     var photo_size = document.getElementById('afg_photo_size');
     var captions = document.getElementById('afg_captions');
@@ -179,6 +180,7 @@ function loadGallerySettings() {
         per_page.disabled = true;
     }
     per_page.value = active_gallery.per_page || genparams.default_per_page;
+    sort_order.value = active_gallery.sort_order || 'default';
     photo_size.value = active_gallery.photo_size || 'default';
     captions.value = active_gallery.captions || 'default';
     descr.value = active_gallery.descr || 'default';

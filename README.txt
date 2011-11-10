@@ -3,8 +3,8 @@ Contributors: ronakg
 Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide, group, photoset, set, yahoo, slider, thumbnail
 Requires at least: 3.0
-Tested up to: 3.3-beta3
-Stable tag: 3.1.5
+Tested up to: 3.3-beta2
+Stable tag: 3.1.7
 
 Create a photo gallery of your Flickr photos on your WordPress enabled WebSite
 enabling you to customize it the way you like it.
@@ -23,6 +23,7 @@ galleries.
 * Create multiple galleries with different parameters
 * Select Photos from your Flickr Photostream, a Photoset, a Gallery or a Group
 * 2 Powerful slideshow options with thumbnail slider navigation
+* Multiple sorting options available so that you don't have to rely on Flickr's sorting options
 * Customizable image sizes with cropping settings
 * Infinitely customizable with custom CSS field
 * Fits into a sidebar widget too
@@ -112,6 +113,9 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 [Discussions | RonakG.com](http://www.ronakg.com/discussions/)
 
 == Upgrade Notice ==
+
+= 3.1.7 =
+[FEATURE] Multiple sorting options now available for galleries. You can now use these options to override your sorting options set on Flickr.
 
 = 3.1.5 =
 [ENHANCEMENT] Editors can now access Add/Delete/Saved Galleries page.
@@ -208,6 +212,9 @@ Gallery (In no particular order):
 * View photo comments
 
 == Changelog ==
+
+= 3.1.7 =
+* [Feature] Multiple sorting options now available for galleries. You can now use these options to override your sorting options set on Flickr.
 
 = 3.1.5 =
 * [Enhancement] Editors can now access Add/Delete/Saved Galleries page.

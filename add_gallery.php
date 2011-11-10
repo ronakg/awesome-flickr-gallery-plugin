@@ -53,6 +53,7 @@ function afg_add_gallery() {
                 'gallery_descr' => $_POST['afg_add_gallery_descr'],
                 'photo_source' => $_POST['afg_photo_source_type'],
                 'per_page' => afg_filter($_POST['afg_per_page']),
+                'sort_order' => afg_filter($_POST['afg_sort_order']),
                 'photo_size' => afg_filter($_POST['afg_photo_size']),
                 'captions' => afg_filter($_POST['afg_captions']),
                 'descr' => afg_filter($_POST['afg_descr']),
