@@ -69,61 +69,68 @@ function getPhotoSourceType() {
     var photosets_box = document.getElementById('afg_photosets_box');
     var galleries_box = document.getElementById('afg_galleries_box');
     var groups_box = document.getElementById('afg_groups_box');
+    var tags_box = document.getElementById('afg_tags');
     var source_label = document.getElementById('afg_photo_source_label');
+    var help_text = document.getElementById('afg_source_help');
 
     if (source_element.value == 'photostream') {
         source_label.style.display = 'none';
         photosets_box.style.display = 'none';
         galleries_box.style.display = 'none';
         groups_box.style.display = 'none';
+        tags_box.style.display = 'none';
+        help_text.style.display = 'none';
     }
     else if (source_element.value == 'gallery') {
         if (!galleries_box.value) {
             alert('You have no galleries associated with your Flickr account.');
             source_element.value = 'photostream';
-            source_label.style.display = 'none';
-            photosets_box.style.display = 'none';
-            galleries_box.style.display = 'none';
-            groups_box.style.display = 'none';
-            return;
+            getPhotoSourceType();
         }
         source_label.style.display = 'block';
         galleries_box.style.display = 'block';
         photosets_box.style.display = 'none';
         groups_box.style.display = 'none';
-        source_label.innerHTML = "Select Gallery";
+        tags_box.style.display = 'none';
+        help_text.style.display = 'none';
+        source_label.innerHTML = 'Select Gallery';
     }
     else if (source_element.value == 'photoset') {
         if (!photosets_box.value) {
             alert('You have no photosets associated with your Flickr account.');
             source_element.value = 'photostream';
-            source_label.style.display = 'none';
-            photosets_box.style.display = 'none';
-            galleries_box.style.display = 'none';
-            groups_box.style.display = 'none';
-            return;
+            getPhotoSourceType();
         }
         source_label.style.display = 'block';
         photosets_box.style.display = 'block';
         galleries_box.style.display = 'none';
         groups_box.style.display = 'none';
+        tags_box.style.display = 'none';
+        help_text.style.display = 'none';
         source_label.innerHTML = "Select Photoset";
     }
     else if (source_element.value == 'group') {
         if (!groups_box.value) {
             alert('You have no groups associated with your Flickr account.');
             source_element.value = 'photostream';
-            source_label.style.display = 'none';
-            photosets_box.style.display = 'none';
-            galleries_box.style.display = 'none';
-            groups_box.style.display = 'none';
-            return;
+            getPhotoSourceType();
         }
         source_label.style.display = 'block';
         photosets_box.style.display = 'none';
         galleries_box.style.display = 'none';
         groups_box.style.display = 'block';
+        tags_box.style.display = 'none';
+        help_text.style.display = 'none';
         source_label.innerHTML = "Select Group";
+    }
+    else if (source_element.value == 'tags') {
+        source_label.style.display = 'block';
+        photosets_box.style.display = 'none';
+        galleries_box.style.display = 'none';
+        groups_box.style.display = 'none';
+        tags_box.style.display = 'block';
+        help_text.style.display = 'block';
+        source_label.innerHTML = "Tags";
     }
 }
 
@@ -144,6 +151,7 @@ function loadGallerySettings() {
     var photosets_box = document.getElementById('afg_photosets_box');
     var galleries_box = document.getElementById('afg_galleries_box');
     var groups_box = document.getElementById('afg_groups_box');
+    var tags_box = document.getElementById('afg_tags');
     var source_label = document.getElementById('afg_source_label');
     var per_page = document.getElementById('afg_per_page');
     var sort_order = document.getElementById('afg_sort_order');
@@ -164,7 +172,6 @@ function loadGallerySettings() {
     var galleries = genparams.galleries.replace(/&quot;/g, '"');
     var jgalleries = jQuery.parseJSON(galleries);
     active_gallery = jgalleries[gallery.value];
-
 
     source_element = document.getElementById('afg_photo_source_type');
     source_element.value = active_gallery.photo_source;
@@ -208,15 +215,24 @@ function loadGallerySettings() {
         photosets_box.value = active_gallery.photoset_id;
         galleries_box.value = '';
         groups_box.value = '';
+        tags_box.value = '';
     }
-    if (source_element.value == 'gallery') {
+    else if (source_element.value == 'gallery') {
         galleries_box.value = active_gallery.gallery_id;
         photosets_box.value = '';
         groups_box.value = '';
+        tags_box.value = '';
     }
-    if (source_element.value == 'group') {
+    else if (source_element.value == 'group') {
         groups_box.value = active_gallery.group_id;
         photosets_box.value = '';
         galleries_box.value = '';
+        tags_box.value = '';
+    }
+    else if (source_element.value == 'tags') {
+        tags_box.value = active_gallery.tags;
+        photosets_box.value = '';
+        galleries_box.value = '';
+        groups_box.value = '';
     }
 }

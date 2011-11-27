@@ -40,6 +40,14 @@ function afg_add_settings_links( $links, $file ) {
 
 function afg_admin_settings_header() {
     wp_enqueue_script('admin-settings-script');
+    add_action('admin_head', 'afg_admin_headers');
+}
+
+function afg_admin_headers() {
+    echo "
+          <link href=\"https://plus.google.com/110562610836727777499\" rel=\"publisher\" />
+          <script type=\"text/javascript\" src=\"https://apis.google.com/js/plusone.js\">
+</script>";
 }
 
 function afg_setup_options() {
@@ -218,9 +226,9 @@ function afg_admin_html_page() {
 ?>
     <form method='post' action='<?php echo $url ?>'>
         <?php echo afg_generate_version_line() ?>
-               <div class="postbox-container" style="width:69%; margin-right:1%">
+               <div class="postbox-container" style="width:69%; margin-right:1.5%">
                   <div id="poststuff">
-                     <div class="postbox">
+                     <div class="postbox" style='box-shadow:0 0 2px'>
                         <h3>Flickr Settings</h3>
                         <table class='form-table'>
                            <tr valign='top'>
@@ -255,7 +263,7 @@ function afg_admin_html_page() {
                   </div>
 
                   <div id="poststuff">
-                     <div class="postbox">
+                     <div class="postbox" style='box-shadow:0 0 2px'>
                         <h3>Gallery Settings</h3>
                         <table class='form-table'>
 
@@ -359,7 +367,7 @@ function afg_admin_html_page() {
                         <input type="submit" name="submit" id="afg_save_changes" class="button-primary" value="Save Changes" />
                         <br /><br />
                         <div id="poststuff">
-                           <div class="postbox">
+                           <div class="postbox" style='box-shadow:0 0 2px'>
                               <h3>Your Photostream Preview</h3>
                               <table class='form-table'>
                                  <tr><th>If your Flickr Settings are correct, 5 of your recent photos from your Flickr photostream should appear here.</th></tr>
@@ -382,7 +390,7 @@ function afg_admin_html_page() {
                                     or page to actually see the Gallery.
                                  </td>
                            </table></div>
-                           <input type="submit" name="submit" class="button" value="Delete Cached Galleries" />
+                           <input type="submit" name="submit" class="button-secondary" value="Delete Cached Galleries"/>
                         </div>
 <?php
     if (DEBUG) {
@@ -411,7 +419,7 @@ function afg_admin_html_page() {
     echo afg_box('Usage Instructions', $message);
 
     echo afg_donate_box(); 
-    echo afg_fb_like_box();
+    echo afg_share_box();
 ?>
         </div>
             </form>

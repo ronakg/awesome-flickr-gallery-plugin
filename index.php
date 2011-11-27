@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.1.7
+   Version: 3.2
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -170,6 +170,7 @@ function afg_display_gallery($atts) {
     if (isset($gallery['photo_source']) && $gallery['photo_source'] == 'photoset') $photoset_id = $gallery['photoset_id'];
     else if (isset($gallery['photo_source']) && $gallery['photo_source'] == 'gallery') $gallery_id = $gallery['gallery_id'];
     else if (isset($gallery['photo_source']) && $gallery['photo_source'] == 'group') $group_id = $gallery['group_id'];
+    else if (isset($gallery['photo_source']) && $gallery['photo_source'] == 'tags') $tags = $gallery['tags'];
     
     $disp_gallery = "<!-- Awesome Flickr Gallery Start -->";
     $disp_gallery .= "<!--" .
@@ -178,6 +179,7 @@ function afg_display_gallery($atts) {
         " - Photoset ID - " . (isset($photoset_id)? $photoset_id: '') .
         " - Gallery ID - " . (isset($gallery_id)? $gallery_id: '') .
         " - Group ID - " . (isset($group_id)? $group_id: '') .
+        " - Tags - " . (isset($tags)? $tags: '') .
         " - Per Page - " . $per_page .
         " - Sort Order - " . $sort_order .
         " - Photo Size - " . $photo_size .
@@ -193,6 +195,8 @@ function afg_display_gallery($atts) {
         " - Slideshow - " . $slideshow_option .
         " - Disable slideshow? - " . $disable_slideshow .
         "-->";
+
+    $extras = 'url_l, description, date_upload, date_taken, owner_name';
 
     if (isset($photoset_id) && $photoset_id) {
         $rsp_obj = $pf->photosets_getInfo($photoset_id);
@@ -210,6 +214,11 @@ function afg_display_gallery($atts) {
         $total_photos = $rsp_obj['photos']['total'];
         if ($total_photos > 500) $total_photos = 500;
         }
+    else if (isset($tags) && $tags) {
+        $rsp_obj = $pf->photos_search(array('user_id'=>$user_id, 'tags'=>$tags, 'extras'=>$extras, 'per_page'=>1));
+        if ($pf->error_code) return afg_error();
+        $total_photos = $rsp_obj['photos']['total'];
+    }
     else {
         $rsp_obj = $pf->people_getInfo($user_id);
         if ($pf->error_code) return afg_error();
@@ -217,7 +226,6 @@ function afg_display_gallery($atts) {
     }
 
     $photos = get_transient('afg_id_' . $id);
-    $extras = 'url_l, description, date_upload, date_taken';
 
     if ($photos == false || $total_photos != count($photos)) {
         $photos = array();
@@ -235,6 +243,11 @@ function afg_display_gallery($atts) {
             else if ($group_id) {
                 $flickr_api = 'photos';
                 $rsp_obj_total = $pf->groups_pools_getPhotos($group_id, NULL, NULL, NULL, $extras, 500, $i);
+                if ($pf->error_code) return afg_error();
+            }
+            else if ($tags) {
+                $flickr_api = 'photos';
+                $rsp_obj_total = $pf->photos_search(array('user_id'=>$user_id, 'tags'=>$tags, 'extras'=>$extras, 'per_page'=>500, 'page'=>$i));
                 if ($pf->error_code) return afg_error();
             }
             else {
@@ -266,6 +279,44 @@ function afg_display_gallery($atts) {
     if ($sort_order != 'flickr')
         usort($photos, $sort_order);
 
+    if ($disable_slideshow) {
+        $class = '';
+        $rel = '';
+        $click_event = '';
+    }
+    else {
+        if ($slideshow_option == 'colorbox') {
+            $class = "class='afgcolorbox'";
+            $rel = "rel='example4{$id}'";
+            $click_event = '';
+        }
+        else if ($slideshow_option == 'highslide') {
+            $class = "class='highslide'";
+            $rel = "";
+            $click_event = "onclick='return hs.expand(this, {slideshowGroup: $id })'";
+        }
+    }
+
+    if ($photo_size == '_s') {
+        $photo_width = "width='75'";
+        $photo_height = "height='75'";
+    }
+    else {
+        $photo_width = '';
+        $photo_height = '';
+    }
+
+    if ($custom_size) {
+        $timthumb_script = BASE_URL . "/timthumb.php?src=";
+        $timthumb_params = "&q=100&w=$custom_size";
+        if ($custom_size_square == 'true')
+            $timthumb_params .= "&h=$custom_size";
+    }
+    else {
+        $timthumb_script = "";
+        $timthumb_params = "";
+    }
+
     foreach($photos as $pid => $photo) {
         if (isset($photo['url_l'])? $photo['url_l']: '') {
             $photo_page_url = $photo['url_l'];
@@ -283,57 +334,20 @@ function afg_display_gallery($atts) {
 
             $pid_len = strlen($photo['id']);
 
-            /* If photo descriptions are ON and size is not Square and Thumbnail,
-             * get photo descriptions
-             */
-            if ($disable_slideshow) {
-                $class = '';
-                $rel = '';
-                $click_event = '';
-            }
-            else {
-                if ($slideshow_option == 'colorbox') {
-                    $class = "class='afgcolorbox'";
-                    $rel = "rel='example4{$id}'";
-                    $click_event = '';
-                }
-                else if ($slideshow_option == 'highslide') {
-                    $class = "class='highslide'";
-                    $rel = "";
-                    $click_event = "onclick='return hs.expand(this, {slideshowGroup: $id })'";
-                }
-            }
-
-            if ($photo_size == '_s') {
-                $photo_width = "width='75'";
-                $photo_height = "height='75'";
-            }
-            else {
-                $photo_width = '';
-                $photo_height = '';
-            }
-
-            if ($custom_size) {
-                $timthumb_script = BASE_URL . "/timthumb.php?src=";
-                $timthumb_params = "&q=100&w=$custom_size";
-                if ($custom_size_square == 'true')
-                    $timthumb_params .= "&h=$custom_size";
-            }
-            else {
-                $timthumb_script = "";
-                $timthumb_params = "";
-            }
-
             $disp_gallery .= "<a $class $rel $click_event href='$photo_page_url' " .
                 "title='{$photo['title']}'>" .
                 "<img class='afg-img' src='{$timthumb_script}{$photo_url}{$timthumb_params}' " .
                 "alt='{$photo['title']}' " .
                 "onmouseover='this.style.opacity=0.6;this.filters.alpha.opacity=60' " .
-                "onmouseout='this.style.opacity=1;this.filters.alpha.opacity=100' " .
-                "/></a>";
-            if($size_heading_map[$photo_size] && $photo_title == 'on') {
-                if ($group_id) $owner_title = "- by <a href='http://www.flickr.com/photos/{$photo['owner']}/' target='_blank'>{$photo['ownername']}</a>";
-                else $owner_title = '';
+                "onmouseout='this.style.opacity=1;this.filters.alpha.opacity=100'/>" .
+                "</a>";
+
+            if ($size_heading_map[$photo_size] && $photo_title == 'on') {
+                if ($group_id || $gallery_id)
+                    $owner_title = "- by <a href='http://www.flickr.com/photos/{$photo['owner']}/' target='_blank'>{$photo['ownername']}</a>";
+                else
+                    $owner_title = '';
+
                 $disp_gallery .= "<div class='afg-title' style='" .
                    " font-size:{$size_heading_map[$photo_size]}'>{$photo['title']} $owner_title</div>";
             }

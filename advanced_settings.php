@@ -13,10 +13,10 @@ if (is_admin()) {
     wp_enqueue_script('afg_custom_css_theme_js', BASE_URL . "/CodeMirror/mode/css/css.js");
     wp_enqueue_style('afg_custom_css_theme_css', BASE_URL . "/CodeMirror/theme/cobalt.css");
     wp_enqueue_style('afg_custom_css_style', BASE_URL . "/CodeMirror/css/docs.css");
-    add_action('admin_head', 'add_afg_admin_headers');
+    add_action('admin_head', 'afg_advanced_headers');
 }
 
-function add_afg_admin_headers() {
+function afg_advanced_headers() {
     echo "<script type='text/javascript'>
         hs.graphicsDir = '" . BASE_URL . "/highslide/graphics/';
     hs.align = 'center';
@@ -46,6 +46,9 @@ thumbstrip: {
 }
 });
       </script>
+          <link href=\"https://plus.google.com/110562610836727777499\" rel=\"publisher\" />
+          <script type=\"text/javascript\" src=\"https://apis.google.com/js/plusone.js\">
+</script>
           ";
    }
 
@@ -66,9 +69,9 @@ thumbstrip: {
 ?>
          <form method='post' action='<?php echo $url ?>'>
             <?php echo afg_generate_version_line() ?>
-            <div class="postbox-container" style="width:69%; margin-right:1%">
+            <div class="postbox-container" style="width:69%; margin-right:1.5%">
                <div id="poststuff">
-                  <div class="postbox">
+                  <div class="postbox" style='box-shadow:0 0 2px'>
                      <h3>Advanced Settings</h3>
                      <table class='form-table'>
                         <tr valign='top'>
@@ -95,7 +98,7 @@ thumbstrip: {
                     </tr>
                   </table></div>
                <div id="poststuff">
-                  <div class="postbox">
+                  <div class="postbox" style='box-shadow:0 0 2px'>
                      <h3>Custom CSS</h3>
                         <div style="background-color:#FFFFE0; border-color:#E6DB55; maargin:5px 0 15px; border-radius:3px 3px 3px 3px; border-width: 1px; border-style: solid; padding: 8px 10px; line-height: 20px">
                 Check <a href='<?php echo BASE_URL . '/afg.css';?>' target='_blank'>afg.css</a> to see existing classes and properties for gallery which you can redefine here. Note that there is no validation applied to CSS Code entered here, so make sure that you enter valid CSS.
@@ -114,13 +117,13 @@ thumbstrip: {
       $message = "Settings on this page are global and hence apply to all your Galleries.";
       echo afg_box('Help', $message);
       echo afg_donate_box();
-      echo afg_fb_like_box();
+      echo afg_share_box();
 ?>
             </div>
-            <div class="postbox-container" style="width: 48%; margin-right:1%">
+            <div class="postbox-container" style="width: 49%; margin-right:1%">
                <br />
                <div id="poststuff">
-                  <div class="postbox">
+                  <div class="postbox" style='box-shadow:0 0 2px'>
                      <h3>ColorBox Example</h3>
                      <table class='form-table'>
                         <th>Click thumbnail to view slideshow<br /><br />
@@ -147,10 +150,10 @@ thumbstrip: {
                         </th>
                      </table>
             </div></div></div>
-            <div class="postbox-container" style="width: 49%;">
+            <div class="postbox-container" style="width:50%;">
                </br />
                <div id="poststuff">
-                  <div class="postbox">
+                  <div class="postbox" style='box-shadow:0 0 2px'>
                      <h3>HighSlide Example</h3>
                      <table class='form-table'>
                         <th>Click thumbnail to view slideshow<br /><br />

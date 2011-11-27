@@ -34,9 +34,9 @@ function afg_view_delete_galleries() {
 ?>
 
       <form onsubmit="return verifySelectedGalleries()" method='post' action='<?php echo $url ?>'>
-         <div class="postbox-container" style="width:69%; margin-right:1%">
+         <div class="postbox-container" style="width:69%; margin-right:1.5%">
             <div id="poststuff">
-               <div class="postbox">
+               <div class="postbox" style='box-shadow:0 0 2px'>
                   <h3>Saved Galleries</h3>
                   <table class='form-table' style='margin-top:0'>
                      <tr style='border:1px solid Gainsboro' valign='top'>
@@ -75,8 +75,10 @@ function afg_view_delete_galleries() {
             <input type="submit" name="submit" class="button" value="Delete Selected Galleries" />
          </div>
          <div class="postbox-container" style="width: 29%;">
-            <?php echo afg_usage_box('the Gallery Code') ?>
-            <?php echo afg_donate_box() ?>
+            <?php echo afg_usage_box('the Gallery Code');
+    echo afg_donate_box();
+    echo afg_share_box();
+ ?>
          </div>
       </form>
 <?php
