@@ -3,8 +3,8 @@ Contributors: ronakg
 Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide, group, photoset, set, yahoo, slider, thumbnail
 Requires at least: 3.0
-Tested up to: 3.3-beta3
-Stable tag: 3.2
+Tested up to: 3.3-beta4
+Stable tag: 3.2.1
 
 Create a photo gallery of your Flickr photos on your WordPress enabled WebSite
 enabling you to customize it the way you like it.
@@ -114,7 +114,7 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 
 == Upgrade Notice ==
 
-= 3.2 =
+= 3.2.1 =
 [MAJOR FEATURE] Now galleries can be created using tags.
 [Enhancement] For galleries created using a Flickr Gallery, URL of the owner's Flickr profile page appears as part of the title of the photo
 [Bug Fix] Slideshow doesn't show all the photos when accessed from any page but first
@@ -218,7 +218,7 @@ Gallery (In no particular order):
 
 == Changelog ==
 
-= 3.2 =
+= 3.2.1 =
 * [Major Feature] Now galleries can be created using tags.
 * [Enhancement] For galleries created using a Flickr Gallery, URL of the owner's Flickr profile page appears as part of the title of the photo
 * [Bug Fix] Slideshow doesn't show all the photos when accessed from any page but first

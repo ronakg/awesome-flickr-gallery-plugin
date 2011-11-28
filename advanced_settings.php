@@ -69,7 +69,7 @@ thumbstrip: {
 ?>
          <form method='post' action='<?php echo $url ?>'>
             <?php echo afg_generate_version_line() ?>
-            <div class="postbox-container" style="width:69%; margin-right:1.5%">
+            <div class="postbox-container" style="width:69%; margin-right:1%">
                <div id="poststuff">
                   <div class="postbox" style='box-shadow:0 0 2px'>
                      <h3>Advanced Settings</h3>

@@ -103,7 +103,7 @@ function afg_add_gallery() {
 ?>
 
             <form method='post' action='<?php echo $url ?>'>
-               <div class="postbox-container" style="width:69%; margin-right:1.5%">
+               <div class="postbox-container" style="width:69%; margin-right:1%">
                   <div id="poststuff">
                      <div class="postbox" style='box-shadow:0 0 2px'>
                         <h3>Gallery Parameters</h3>
