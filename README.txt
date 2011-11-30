@@ -207,14 +207,36 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 8. Saved Galleries Page
 9. Advanced Settings Page
 
-== Features Planned ==
+== User Testimonials ==
 
-Here's a list of planned features in upcoming releases of Awesome Flickr
-Gallery (In no particular order):
+*    The Tag feature works great! I have been waiting for a plugin like this. I love your plugin. - ryangirtler
 
-* Add multiple User accounts to generate Galleries
-* Generate a master gallery page with all your galleries linking to individual gallery pages
-* View photo comments
+*    The name of AFG says it all. I really like the way you’ve taken the time to make a UI for creating & editing galleries. – chassy
+
+*    this plugin is AMAZING!! Thank you – Yardena
+
+*    The gallery looks exceptionally clean and professional. – sherrieJD
+
+*    Awesome plugin! Awesome support! – zumine
+
+*    Super. It is a pleasure to work with you. Very professional and highly reactive. – fibonaccifactory
+
+*    Awesome. You rock. – VisionsInEd
+
+*    Thanks Ronak. It works beautifully. Awesome app you have built here. – miracleboy31
+
+*    You rock so much. Such a quick response time. Your plugin is SO SO SO much better than other flickr plugins. – AutoEntropy
+
+*    this gallery plugin is excellent I really like it and working with Flickr and WordPress makes my workflow much easier. – AtlantisWeb
+
+*    I have to say that I am loving what I am seeing. I set up a gallery and it looks great.  – svogt
+
+*    MANY thanks for your awesome Awesome Flickr Gallery! Works like a charm. -  Jessin
+
+*    i prefer awesome flickr gallery (i think is smoother and faster than slickr flickr) – apocalipsis1234
+
+*    your Awesome Flickr Gallery is one of the best plugins out there!! – RichardF
+
 
 == Changelog ==
 
