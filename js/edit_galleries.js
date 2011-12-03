@@ -73,7 +73,7 @@ function getPhotoSourceType() {
     var source_label = document.getElementById('afg_photo_source_label');
     var help_text = document.getElementById('afg_source_help');
 
-    if (source_element.value == 'photostream') {
+    if (source_element.value == 'photostream' || source_element.value == 'popular') {
         source_label.style.display = 'none';
         photosets_box.style.display = 'none';
         galleries_box.style.display = 'none';

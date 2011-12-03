@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '3.2.1');
+define('VERSION', '3.2.3');
 
 $afg_sort_order_map = array(
     'default' => 'Default',
@@ -28,6 +28,7 @@ $afg_photo_source_map = array(
     'photoset' => 'Photoset',
     'group' => 'Group',
     'tags' => 'Tags',
+    'popular' => 'My Popular Photos',
 );
 
 $afg_width_map = array(
@@ -218,7 +219,6 @@ function afg_generate_flickr_settings_table($photosets, $galleries, $groups) {
         </tr>
     </table>
 </div></div>";
-
 }
 
 function afg_generate_gallery_settings_table() {

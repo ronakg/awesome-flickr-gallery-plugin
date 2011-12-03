@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.2.1
+   Version: 3.2.3
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -171,6 +171,7 @@ function afg_display_gallery($atts) {
     else if (isset($gallery['photo_source']) && $gallery['photo_source'] == 'gallery') $gallery_id = $gallery['gallery_id'];
     else if (isset($gallery['photo_source']) && $gallery['photo_source'] == 'group') $group_id = $gallery['group_id'];
     else if (isset($gallery['photo_source']) && $gallery['photo_source'] == 'tags') $tags = $gallery['tags'];
+    else if (isset($gallery['photo_source']) && $gallery['photo_source'] == 'popular') $popular = true;
     
     $disp_gallery = "<!-- Awesome Flickr Gallery Start -->";
     $disp_gallery .= "<!--" .
@@ -180,6 +181,7 @@ function afg_display_gallery($atts) {
         " - Gallery ID - " . (isset($gallery_id)? $gallery_id: '') .
         " - Group ID - " . (isset($group_id)? $group_id: '') .
         " - Tags - " . (isset($tags)? $tags: '') .
+        " - Popular - " . (isset($popular)? $popular: '') .
         " - Per Page - " . $per_page .
         " - Sort Order - " . $sort_order .
         " - Photo Size - " . $photo_size .
@@ -219,6 +221,11 @@ function afg_display_gallery($atts) {
         if ($pf->error_code) return afg_error();
         $total_photos = $rsp_obj['photos']['total'];
     }
+    else if (isset($popular) && $popular) {
+        $rsp_obj = $pf->photos_search(array('user_id'=>$user_id, 'sort'=>'interestingness-desc', 'extras'=>$extras, 'per_page'=>1));
+        if ($pf->error_code) return afg_error();
+        $total_photos = $rsp_obj['photos']['total'];
+    }
     else {
         $rsp_obj = $pf->people_getInfo($user_id);
         if ($pf->error_code) return afg_error();
@@ -250,6 +257,11 @@ function afg_display_gallery($atts) {
                 $rsp_obj_total = $pf->photos_search(array('user_id'=>$user_id, 'tags'=>$tags, 'extras'=>$extras, 'per_page'=>500, 'page'=>$i));
                 if ($pf->error_code) return afg_error();
             }
+            else if ($popular) {
+                $flickr_api = 'photos';
+                $rsp_obj_total = $pf->photos_search(array('user_id'=>$user_id, 'sort'=>'interestingness-desc', 'extras'=>$extras, 'per_page'=>500, 'page'=>$i));
+                if ($pf->error_code) return afg_error();
+            }
             else {
                 $flickr_api = 'photos';
                 if (get_option('afg_flickr_token')) $rsp_obj_total = $pf->people_getPhotos($user_id, array('extras' => $extras, 'per_page' => 500, 'page' => $i));
@@ -276,7 +288,7 @@ function afg_display_gallery($atts) {
     $cur_col = 0;
     $column_width = (int)($gallery_width/$columns);
 
-    if ($sort_order != 'flickr')
+    if (!$popular && $sort_order != 'flickr')
         usort($photos, $sort_order);
 
     if ($disable_slideshow) {

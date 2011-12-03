@@ -114,6 +114,10 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 
 == Upgrade Notice ==
 
+= 3.2.3 =
+
+[FEATURE] Show off your Popular Flickr photos by selecting My Popular Photos as the source for the gallery.
+
 = 3.2.1 =
 [MAJOR FEATURE] Now galleries can be created using tags.
 [Enhancement] For galleries created using a Flickr Gallery, URL of the owner's Flickr profile page appears as part of the title of the photo
@@ -209,36 +213,27 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 
 == User Testimonials ==
 
-*    The Tag feature works great! I have been waiting for a plugin like this. I love your plugin. - ryangirtler
-
-*    The name of AFG says it all. I really like the way you’ve taken the time to make a UI for creating & editing galleries. – chassy
-
-*    this plugin is AMAZING!! Thank you – Yardena
-
-*    The gallery looks exceptionally clean and professional. – sherrieJD
-
-*    Awesome plugin! Awesome support! – zumine
-
-*    Super. It is a pleasure to work with you. Very professional and highly reactive. – fibonaccifactory
-
-*    Awesome. You rock. – VisionsInEd
-
-*    Thanks Ronak. It works beautifully. Awesome app you have built here. – miracleboy31
-
-*    You rock so much. Such a quick response time. Your plugin is SO SO SO much better than other flickr plugins. – AutoEntropy
-
-*    this gallery plugin is excellent I really like it and working with Flickr and WordPress makes my workflow much easier. – AtlantisWeb
-
-*    I have to say that I am loving what I am seeing. I set up a gallery and it looks great.  – svogt
-
-*    MANY thanks for your awesome Awesome Flickr Gallery! Works like a charm. -  Jessin
-
-*    i prefer awesome flickr gallery (i think is smoother and faster than slickr flickr) – apocalipsis1234
-
-*    your Awesome Flickr Gallery is one of the best plugins out there!! – RichardF
-
+* This remains the best way to set up flickr galleries! – forpetessake93
+* The Tag feature works great! I have been waiting for a plugin like this. I love your plugin. - ryangirtler
+* The name of AFG says it all. I really like the way you’ve taken the time to make a UI for creating & editing galleries. – chassy
+* this plugin is AMAZING!! Thank you – Yardena
+* The gallery looks exceptionally clean and professional. – sherrieJD
+* Awesome plugin! Awesome support! – zumine
+* Super. It is a pleasure to work with you. Very professional and highly reactive. – fibonaccifactory
+* Awesome. You rock. – VisionsInEd
+* Thanks Ronak. It works beautifully. Awesome app you have built here. – miracleboy31
+* You rock so much. Such a quick response time. Your plugin is SO SO SO much better than other flickr plugins. – AutoEntropy
+* this gallery plugin is excellent I really like it and working with Flickr and WordPress makes my workflow much easier. – AtlantisWeb
+* I have to say that I am loving what I am seeing. I set up a gallery and it looks great.  – svogt
+* MANY thanks for your awesome Awesome Flickr Gallery! Works like a charm. -  Jessin
+* i prefer awesome flickr gallery (i think is smoother and faster than slickr flickr) – apocalipsis1234
+* your Awesome Flickr Gallery is one of the best plugins out there!! – RichardF
 
 == Changelog ==
+
+= 3.2.3 =
+
+* [Feature] Show off your Popular Flickr photos by selecting My Popular Photos as the source for the gallery.
 
 = 3.2.1 =
 * [Major Feature] Now galleries can be created using tags.
