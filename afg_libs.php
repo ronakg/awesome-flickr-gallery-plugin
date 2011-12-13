@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '3.2.3');
+define('VERSION', '3.2.4');
 
 $afg_sort_order_map = array(
     'default' => 'Default',

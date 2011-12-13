@@ -8,6 +8,9 @@ img.afg-img {
     margin-top:5%;
     opacity:1;
     filter:alpha(opacity=100);
+    box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.6);
+    -webkit-box-shadow: 0 0 7px rgba(0, 0, 0, 0.6);
 }
 
 /* Gallery structure */
