@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.2.4
+   Version: 3.2.5
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -349,9 +349,7 @@ function afg_display_gallery($atts) {
             $disp_gallery .= "<a $class $rel $click_event href='$photo_page_url' " .
                 "title='{$photo['title']}'>" .
                 "<img class='afg-img' src='{$timthumb_script}{$photo_url}{$timthumb_params}' " .
-                "alt='{$photo['title']}' " .
-                "onmouseover='this.style.opacity=0.6;this.filters.alpha.opacity=60' " .
-                "onmouseout='this.style.opacity=1;this.filters.alpha.opacity=100'/>" .
+                "alt='{$photo['title']}'/>" .
                 "</a>";
 
             if ($size_heading_map[$photo_size] && $photo_title == 'on') {
@@ -383,9 +381,7 @@ function afg_display_gallery($atts) {
                     $photo_url = '';
                 $disp_gallery .= "<a style='display:none' $class $rel $click_event href='$photo_page_url'" .
                     " title='{$photo['title']}'>" .
-                    " <img class='afg-img' alt='{$photo['title']}' src='$photo_url' width='75' height='75'" .
-                    "onmouseover='this.style.opacity=0.6;this.filters.alpha.opacity=60' " .
-                    "onmouseout='this.style.opacity=1;this.filters.alpha.opacity=100'></a> ";
+                    " <img alt='{$photo['title']}' src='$photo_url' width='75' height='75'></a> ";
             }
         }
         $photo_count += 1;
@@ -397,8 +393,8 @@ function afg_display_gallery($atts) {
 
     // Pagination
     if ($pagination == 'on' && $total_pages > 1) {
-        $disp_gallery .= "<br /><br />";
         $disp_gallery .= "<div class='afg-pagination'>";
+        $disp_gallery .= "<br /><br />";
         if ($cur_page == 1) {
             $disp_gallery .="<font class='afg-page'>&nbsp;&#171; prev&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;";
             $disp_gallery .="<font class='afg-cur-page'> 1 </font>&nbsp;";
@@ -437,8 +433,8 @@ function afg_display_gallery($atts) {
         $disp_gallery .= "</div>";
     }
     if ($credit_note == 'on') {
-        $disp_gallery .= "<br />";
         $disp_gallery .= "<div class='afg-credit'>Powered by " .
+        $disp_gallery .= "<br />";
             "<a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin'" .
             "title='Awesome Flickr Gallery by Ronak Gandhi'/>AFG</a>";
         $disp_gallery .= "</div>";
