@@ -1,7 +1,7 @@
 === Awesome Flickr Gallery ===
 Contributors: ronakg
 Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
-Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide, group, photoset, set, yahoo, slider, thumbnail
+Tags: awesome, gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide, group, photoset, set, yahoo, slider, thumbnail
 Requires at least: 3.0
 Tested up to: 3.3.1
 Stable tag: 3.2.9
