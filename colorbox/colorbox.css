@@ -32,9 +32,9 @@
         .cboxIframe{background:#fff;}
         #cboxError{padding:50px; border:1px solid #ccc;}
         #cboxLoadedContent{margin-bottom:28px;}
-        #cboxTitle{position:absolute; font-size:1.2em; font-weight:bold; bottom:4px; left:0; text-align:center; width:100%; color:#666666;/*Ronak*/}
-        #cboxCurrent{position:absolute; bottom:4px; left:58px; color:#666666;/*Ronak*/}
-        #cboxSlideshow{position:absolute; bottom:4px; right:30px; color:#0092ef;}
+        #cboxTitle{position:absolute; font-size:1em; font-weight:bold; bottom:4px; left:0; text-align:center; width:100%; color:#666666;/*Ronak*/}
+        #cboxCurrent{position:absolute; font-size:0.9em; bottom:4px; left:58px; color:#666666;/*Ronak*/}
+        #cboxSlideshow{position:absolute; font-size:0.9em; bottom:4px; right:30px; color:#0092ef;}
         #cboxPrevious{position:absolute; bottom:0; left:0; background:url(images/controls.png) no-repeat -75px 0; width:25px; height:25px; text-indent:-9999px;}
         #cboxPrevious:hover{background-position:-75px -25px;}
         #cboxNext{position:absolute; bottom:0; left:27px; background:url(images/controls.png) no-repeat -50px 0; width:25px; height:25px; text-indent:-9999px;}

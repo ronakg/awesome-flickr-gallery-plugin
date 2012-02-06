@@ -87,13 +87,15 @@ function getPhotoSourceType() {
             source_element.value = 'photostream';
             getPhotoSourceType();
         }
-        source_label.style.display = 'block';
-        galleries_box.style.display = 'block';
-        photosets_box.style.display = 'none';
-        groups_box.style.display = 'none';
-        tags_box.style.display = 'none';
-        help_text.style.display = 'none';
-        source_label.innerHTML = 'Select Gallery';
+        else {
+            source_label.style.display = 'block';
+            galleries_box.style.display = 'block';
+            photosets_box.style.display = 'none';
+            groups_box.style.display = 'none';
+            tags_box.style.display = 'none';
+            help_text.style.display = 'none';
+            source_label.innerHTML = 'Select Gallery';
+        }
     }
     else if (source_element.value == 'photoset') {
         if (!photosets_box.value) {
@@ -101,13 +103,15 @@ function getPhotoSourceType() {
             source_element.value = 'photostream';
             getPhotoSourceType();
         }
-        source_label.style.display = 'block';
-        photosets_box.style.display = 'block';
-        galleries_box.style.display = 'none';
-        groups_box.style.display = 'none';
-        tags_box.style.display = 'none';
-        help_text.style.display = 'none';
-        source_label.innerHTML = "Select Photoset";
+        else {
+            source_label.style.display = 'block';
+            photosets_box.style.display = 'block';
+            galleries_box.style.display = 'none';
+            groups_box.style.display = 'none';
+            tags_box.style.display = 'none';
+            help_text.style.display = 'none';
+            source_label.innerHTML = "Select Photoset";
+        }
     }
     else if (source_element.value == 'group') {
         if (!groups_box.value) {
@@ -115,13 +119,15 @@ function getPhotoSourceType() {
             source_element.value = 'photostream';
             getPhotoSourceType();
         }
-        source_label.style.display = 'block';
-        photosets_box.style.display = 'none';
-        galleries_box.style.display = 'none';
-        groups_box.style.display = 'block';
-        tags_box.style.display = 'none';
-        help_text.style.display = 'none';
-        source_label.innerHTML = "Select Group";
+        else {
+            source_label.style.display = 'block';
+            photosets_box.style.display = 'none';
+            galleries_box.style.display = 'none';
+            groups_box.style.display = 'block';
+            tags_box.style.display = 'none';
+            help_text.style.display = 'none';
+            source_label.innerHTML = "Select Group";
+        }
     }
     else if (source_element.value == 'tags') {
         source_label.style.display = 'block';

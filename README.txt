@@ -3,8 +3,8 @@ Contributors: ronakg
 Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
 Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide, group, photoset, set, yahoo, slider, thumbnail
 Requires at least: 3.0
-Tested up to: 3.3
-Stable tag: 3.2.8
+Tested up to: 3.3.1
+Stable tag: 3.2.9
 
 Create a photo gallery of your Flickr photos on your WordPress enabled WebSite
 enabling you to customize it the way you like it.
@@ -113,6 +113,12 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 [Discussions | RonakG.com](http://www.ronakg.com/discussions/)
 
 == Upgrade Notice ==
+
+= 3.2.9 =
+[Enhancement] Description of the photos visible during slideshow with Highslide option
+[Enhancement] View on Flickr link added to slideshow
+[Bug Fix] PHP Warning comes when there are no photosets, groups or galleries associated with the account
+[Bug Fix] Photo title gets truncated when an apostrophe is present
 
 = 3.2.8 =
 [Update] Update image resizing script to the latest version with many bug fixes
@@ -241,6 +247,12 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 * your Awesome Flickr Gallery is one of the best plugins out there!! – RichardF
 
 == Changelog ==
+
+= 3.2.9 =
+* [Enhancement] Description of the photos visible during slideshow with Highslide option
+* [Enhancement] View on Flickr link added to slideshow
+* [Bug Fix] PHP Warning comes when there are no photosets, groups or galleries associated with the account
+* [Bug Fix] Photo title gets truncated when an apostrophe is present
 
 = 3.2.8 =
 * [Update] Update image resizing script to the latest version with many bug fixes

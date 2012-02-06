@@ -98,8 +98,7 @@ function afg_edit_galleries() {
 
     $photosets_map = array();
     $rsp_obj = $pf->photosets_getList($user_id);
-    if (!$rsp_obj) echo afg_error();
-    else {
+    if (!$pf->error_code) {
         foreach($rsp_obj['photoset'] as $photoset) {
             $photosets_map[$photoset['id']] = $photoset['title']['_content'];
         }
@@ -107,8 +106,7 @@ function afg_edit_galleries() {
 
     $galleries_map = array();
     $rsp_obj = $pf->galleries_getList($user_id);
-    if (!$rsp_obj) echo afg_error();
-    else {
+    if (!$pf->error_code) {
         foreach($rsp_obj['galleries']['gallery'] as $gallery) {
             $galleries_map[$gallery['id']] = $gallery['title']['_content'];
         }
@@ -117,8 +115,7 @@ function afg_edit_galleries() {
     $groups_map = array();
     if (get_option('afg_flickr_token')) {
         $rsp_obj = $pf->groups_pools_getGroups();
-        if (!$rsp_obj) echo afg_error();
-        else {
+        if (!$pf->error_code) {
             foreach($rsp_obj['group'] as $group) {
                 $groups_map[$group['nsid']] = $group['name'];
             }
@@ -126,8 +123,7 @@ function afg_edit_galleries() {
     }
     else {
         $rsp_obj = $pf->people_getPublicGroups($user_id);
-        if (!$rsp_obj) echo afg_error();
-        else {
+        if (!$pf->error_code) {
             foreach($rsp_obj as $group) {
                 $groups_map[$group['nsid']] = $group['name'];
             }

@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.2.8
+   Version: 3.2.9
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -118,7 +118,7 @@ function afg_display_gallery($atts) {
     if ($request_uri == '' || !$request_uri) $request_uri = $_SERVER['REQUEST_URI'];
 
     $cur_page = 1;
-    $cur_page_url = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://".$_SERVER['SERVER_NAME'].$request_uri : "http://".$_SERVER['SERVER_NAME'].$request_uri;
+    $cur_page_url = ( isset($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS'] == 'on') || $_SERVER['HTTPS'] == '1') ) ? "https://".$_SERVER['SERVER_NAME'].$request_uri : "http://".$_SERVER['SERVER_NAME'].$request_uri;
     $cur_page_url = preg_replace("/hilbert-in.com/", "pkhs.nl", $cur_page_url);
     preg_match("/afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
 
@@ -330,6 +330,10 @@ function afg_display_gallery($atts) {
     }
 
     foreach($photos as $pid => $photo) {
+        $photo['title'] = htmlentities($photo['title'], ENT_QUOTES);
+        $photo['description']['_content'] = htmlentities($photo['description']['_content'], ENT_QUOTES);
+        if ($photoset_id)
+            $photo['owner'] = $user_id;
         if (isset($photo['url_l'])? $photo['url_l']: '') {
             $photo_page_url = $photo['url_l'];
         }
@@ -339,17 +343,24 @@ function afg_display_gallery($atts) {
         }
         $photo_url = afg_get_photo_url($photo['farm'], $photo['server'],
             $photo['id'], $photo['secret'], $photo_size);
+
+        $photo_title_text = "{$photo['title']}";
+        if($slideshow_option == 'highslide' && $photo['description']['_content']) { 
+            $photo_title_text .= "<br/><font style=\"font-size:0.8em\">{$photo['description']['_content']}</font>";
+        }
+        $photo_title_text .= " • <a style=\"font-size:0.8em\" href=\"http://www.flickr.com/photos/" . $photo['owner'] . "/" . $photo['id'] . "/\" target=\"_blank\">View on Flickr</a>";
+
         if ( ($photo_count <= $per_page * $cur_page) && ($photo_count > $per_page * ($cur_page - 1)) ) {
 
             if ($cur_col % $columns == 0) $disp_gallery .= "<div class='afg-row'>";
             $disp_gallery .= "<div class='afg-cell' style='width:${column_width}%;'>";
 
             $pid_len = strlen($photo['id']);
-
+            
             $disp_gallery .= "<a $class $rel $click_event href='$photo_page_url' " .
-                "title='{$photo['title']}'>" .
+                "title='{$photo_title_text}'>" .
                 "<img class='afg-img' src='{$timthumb_script}{$photo_url}{$timthumb_params}' " .
-                "alt='{$photo['title']}'/>" .
+                "alt='{$photo_title_text}'>" .
                 "</a>";
 
             if ($size_heading_map[$photo_size] && $photo_title == 'on') {
@@ -380,8 +391,8 @@ function afg_display_gallery($atts) {
                 else
                     $photo_url = '';
                 $disp_gallery .= "<a style='display:none' $class $rel $click_event href='$photo_page_url'" .
-                    " title='{$photo['title']}'>" .
-                    " <img alt='{$photo['title']}' src='$photo_url' width='75' height='75'></a> ";
+                    " title='{$photo_title_text}'>" .
+                    " <img alt='{$photo_title_text}' src='$photo_url' width='75' height='75'></a> ";
             }
         }
         $photo_count += 1;
