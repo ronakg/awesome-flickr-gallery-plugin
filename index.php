@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.2.9
+   Version: 3.2.10
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -300,7 +300,7 @@ function afg_display_gallery($atts) {
         if ($slideshow_option == 'colorbox') {
             $class = "class='afgcolorbox'";
             $rel = "rel='example4{$id}'";
-            $click_event = '';
+            $click_event = "";
         }
         else if ($slideshow_option == 'highslide') {
             $class = "class='highslide'";
@@ -330,8 +330,11 @@ function afg_display_gallery($atts) {
     }
 
     foreach($photos as $pid => $photo) {
-        $photo['title'] = htmlentities($photo['title'], ENT_QUOTES);
-        $photo['description']['_content'] = htmlentities($photo['description']['_content'], ENT_QUOTES);
+        $p_title = esc_attr($photo['title']);
+        $p_description = esc_attr($photo['description']['_content']);
+
+        $p_description = preg_replace("/\n/", "<br />", $p_description);
+
         if ($photoset_id)
             $photo['owner'] = $user_id;
         if (isset($photo['url_l'])? $photo['url_l']: '') {
@@ -344,23 +347,22 @@ function afg_display_gallery($atts) {
         $photo_url = afg_get_photo_url($photo['farm'], $photo['server'],
             $photo['id'], $photo['secret'], $photo_size);
 
-        $photo_title_text = "{$photo['title']}";
-        if($slideshow_option == 'highslide' && $photo['description']['_content']) { 
-            $photo_title_text .= "<br/><font style=\"font-size:0.8em\">{$photo['description']['_content']}</font>";
+        $photo_title_text = $p_title;
+        if($slideshow_option == 'highslide' && $p_description) { 
+            $photo_title_text .= '<br /><span style="font-size:0.8em;">' . $p_description . '</span>';
         }
-        $photo_title_text .= " • <a style=\"font-size:0.8em\" href=\"http://www.flickr.com/photos/" . $photo['owner'] . "/" . $photo['id'] . "/\" target=\"_blank\">View on Flickr</a>";
+        $photo_title_text .= ' • <a style="font-size:0.8em;" href="http://www.flickr.com/photos/' . $photo['owner'] . '/' . $photo['id'] . '/" target="_blank">View on Flickr</a>';
+
+        $photo_title_text = esc_attr($photo_title_text);
 
         if ( ($photo_count <= $per_page * $cur_page) && ($photo_count > $per_page * ($cur_page - 1)) ) {
-
             if ($cur_col % $columns == 0) $disp_gallery .= "<div class='afg-row'>";
             $disp_gallery .= "<div class='afg-cell' style='width:${column_width}%;'>";
 
             $pid_len = strlen($photo['id']);
             
-            $disp_gallery .= "<a $class $rel $click_event href='$photo_page_url' " .
-                "title='{$photo_title_text}'>" .
-                "<img class='afg-img' src='{$timthumb_script}{$photo_url}{$timthumb_params}' " .
-                "alt='{$photo_title_text}'>" .
+            $disp_gallery .= "<a $class $rel $click_event href='{$photo_page_url}' title='{$photo_title_text}'>" .
+                "<img class='afg-img' src='{$timthumb_script}{$photo_url}{$timthumb_params}' alt='{$photo_title_text}'/>" .
                 "</a>";
 
             if ($size_heading_map[$photo_size] && $photo_title == 'on') {
@@ -369,13 +371,12 @@ function afg_display_gallery($atts) {
                 else
                     $owner_title = '';
 
-                $disp_gallery .= "<div class='afg-title' style='" .
-                   " font-size:{$size_heading_map[$photo_size]}'>{$photo['title']} $owner_title</div>";
+                $disp_gallery .= "<div class='afg-title' style='font-size:{$size_heading_map[$photo_size]}'>{$p_title} $owner_title</div>";
             }
 
             if($photo_descr == 'on' && $photo_size != '_s' && $photo_size != '_t') {
                 $disp_gallery .= "<div class='afg-description'>" .
-                    $photo['description']['_content'] . "</div>";
+                    $p_description . "</div>";
             }
 
             $cur_col += 1;

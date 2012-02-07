@@ -1,10 +1,10 @@
 === Awesome Flickr Gallery ===
 Contributors: ronakg
 Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
-Tags: gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide, group, photoset, set, yahoo, slider, thumbnail, plugin, images
+Tags: awesome, gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide, group, photoset, yahoo, slider, thumbnail, images
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 3.2.9
+Stable tag: 3.2.10
 License: GPLv2 or later
 
 Create a photo gallery of your Flickr photos on your WordPress enabled WebSite enabling you to customize it the way you like it.
@@ -113,6 +113,9 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 [Discussions | RonakG.com](http://www.ronakg.com/discussions/)
 
 == Upgrade Notice ==
+
+= 3.2.10 =
+[Bug Fix] Gallery is messed up with some themes where photo description contains either a hyperlink or new line characters
 
 = 3.2.9 =
 [Enhancement] Description of the photos visible during slideshow with Highslide option
@@ -247,6 +250,9 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 * your Awesome Flickr Gallery is one of the best plugins out there!! – RichardF
 
 == Changelog ==
+
+= 3.2.10 =
+* [Bug Fix] Gallery is messed up with some themes where photo description contains either a hyperlink or new line characters
 
 = 3.2.9 =
 * [Enhancement] Description of the photos visible during slideshow with Highslide option
