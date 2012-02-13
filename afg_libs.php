@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '3.2.10');
+define('VERSION', '3.2.14');
 
 $afg_sort_order_map = array(
     'default' => 'Default',
@@ -12,6 +12,7 @@ $afg_sort_order_map = array(
     'date_taken_cmp_oldest' => 'By date taken (Oldest first)',
     'date_upload_cmp_newest' => 'By date uploaded (Newest first)',
     'date_upload_cmp_oldest' => 'By date uploaded (Oldest first)',
+    'random' => 'Random',
 );
 
 /* Map for photo titles displayed on the gallery. */

@@ -4,7 +4,7 @@ Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plu
 Tags: awesome, gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide, group, photoset, yahoo, slider, thumbnail, images
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 3.2.10
+Stable tag: 3.2.14
 License: GPLv2 or later
 
 Create a photo gallery of your Flickr photos on your WordPress enabled WebSite enabling you to customize it the way you like it.
@@ -113,6 +113,12 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 [Discussions | RonakG.com](http://www.ronakg.com/discussions/)
 
 == Upgrade Notice ==
+
+= 3.2.14 =
+[FEATURE] A new sort order option "Random" added
+[BUG FIX] Tool-tip text of the thumbnails contain HTML code
+[BUG FIX] Photo descriptions with hyperlinks do not render properly
+[BUG FIX] Photo titles with apostrophe appear truncated
 
 = 3.2.10 =
 [Bug Fix] Gallery is messed up with some themes where photo description contains either a hyperlink or new line characters
@@ -233,6 +239,7 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 
 == User Testimonials ==
 
+* Awesome Flickr Gallery plugin is legend by the way - thanks for such a fantastic tool - LeonsLens
 * This remains the best way to set up flickr galleries! – forpetessake93
 * The Tag feature works great! I have been waiting for a plugin like this. I love your plugin. - ryangirtler
 * The name of AFG says it all. I really like the way you’ve taken the time to make a UI for creating & editing galleries. – chassy
@@ -250,6 +257,12 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 * your Awesome Flickr Gallery is one of the best plugins out there!! – RichardF
 
 == Changelog ==
+
+= 3.2.14 =
+* [Feature] A new sort order option "Random" added
+* [Bug Fix] Tool-tip text of the thumbnails contain HTML code
+* [Bug Fix] Photo descriptions with hyperlinks do not render properly
+* [Bug Fix] Photo titles with apostrophe appear truncated
 
 = 3.2.10 =
 * [Bug Fix] Gallery is messed up with some themes where photo description contains either a hyperlink or new line characters
