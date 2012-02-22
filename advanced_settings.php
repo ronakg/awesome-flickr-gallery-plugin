@@ -3,11 +3,6 @@ require_once('afg_libs.php');
 
 if (is_admin()) {
     wp_enqueue_script('jquery');
-    wp_enqueue_script('afg_colorbox_script', BASE_URL . "/colorbox/jquery.colorbox-min.js" , array('jquery'));
-    wp_enqueue_script('afg_colorbox_js', BASE_URL . "/colorbox/mycolorbox.js" , array('jquery'));
-    wp_enqueue_script('afg_highslide_js', BASE_URL . "/highslide/highslide-full.min.js");
-    wp_enqueue_style('afg_colorbox_css', BASE_URL . "/colorbox/colorbox.css");
-    wp_enqueue_style('afg_highslide_css', BASE_URL . "/highslide/highslide.css");
     wp_enqueue_style('afg_custom_css_style', BASE_URL . "/CodeMirror/lib/codemirror.css");
     wp_enqueue_script('afg_custom_css_js', BASE_URL . "/CodeMirror/lib/codemirror.js");
     wp_enqueue_script('afg_custom_css_theme_js', BASE_URL . "/CodeMirror/mode/css/css.js");
@@ -17,38 +12,9 @@ if (is_admin()) {
 }
 
 function afg_advanced_headers() {
-    echo "<script type='text/javascript'>
-        hs.graphicsDir = '" . BASE_URL . "/highslide/graphics/';
-    hs.align = 'center';
-    hs.transitions = ['expand', 'crossfade'];
-    hs.fadeInOut = true;
-    hs.dimmingOpacity = 0.85;
-    hs.outlineType = 'rounded-white';
-    hs.captionEval = 'this.thumb.alt';
-    hs.marginBottom = 115; // make room for the thumbstrip and the controls
-    hs.numberPosition = 'caption';
-    // Add the slideshow providing the controlbar and the thumbstrip
-    hs.addSlideshow({
-        //slideshowGroup: 'group1',
-        interval: 3500,
-            repeat: false,
-            useControls: true,
-            overlayOptions: {
-                className: 'text-controls',
-                    position: 'bottom center',
-                    relativeTo: 'viewport',
-                    offsetY: -60
-},
-thumbstrip: {
-    position: 'bottom center',
-        mode: 'horizontal',
-        relativeTo: 'viewport'
-}
-});
-      </script>
+    echo "
           <link href=\"https://plus.google.com/110562610836727777499\" rel=\"publisher\" />
-          <script type=\"text/javascript\" src=\"https://apis.google.com/js/plusone.js\">
-</script>
+          <script type=\"text/javascript\" src=\"https://apis.google.com/js/plusone.js\"></script>
           ";
    }
 

@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '3.3.0');
+define('VERSION', '3.3.1');
 
 $afg_sort_order_map = array(
     'default' => 'Default',
@@ -18,7 +18,6 @@ $afg_sort_order_map = array(
 $afg_slideshow_map = array(
     'default' => 'Default',
     'colorbox' => 'Colorbox',
-    'highslide' => 'Highslide',
     'disable' => 'No Slideshow',
     'flickr' => 'Link to Flickr Photo page',
     'none' => 'No Slideshow and No Link',
@@ -296,10 +295,7 @@ function afg_generate_gallery_settings_table() {
         <td><select name='afg_slideshow_option' id='afg_slideshow_option'>
         " . afg_generate_options($afg_slideshow_map, 'default', True, $afg_slideshow_map[get_option('afg_slideshow_option')]) . "
     </select></td>
-            <td><font size='2'><b>HighSlide is NOT FREE for Commercial websites</b>.  If you are using
-            <i>Awesome Flickr Gallery</i> on a commercial website, you need to purchase a license from their website
-            <a href='http://highslide.com/#licence' target='_blank'>here</a>.  If you want a free slideshow,
-            use ColorBox instead.</font></td>
+            <td><font size='2'></font></td>
             </tr>
 
         <tr valign='top'>

@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.3.0
+   Version: 3.3.1
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -42,53 +42,32 @@ add_action('wp_head', 'add_afg_headers');
 
 function enqueue_afg_scripts() {
     wp_enqueue_script('jquery');
-    wp_enqueue_script('afg_colorbox_script', BASE_URL . "/colorbox/jquery.colorbox-min.js" , array('jquery'));
+    wp_enqueue_script('afg_colorbox_script', BASE_URL . "/colorbox/jquery.colorbox.js" , array('jquery'));
     wp_enqueue_script('afg_colorbox_js', BASE_URL . "/colorbox/mycolorbox.js" , array('jquery'));
-    wp_enqueue_script('afg_highslide_js', BASE_URL . "/highslide/highslide-full.min.js");
 }
 
 function enqueue_afg_styles() {
     wp_enqueue_style('afg_colorbox_css', BASE_URL . "/colorbox/colorbox.css");
-    wp_enqueue_style('afg_highslide_css', BASE_URL . "/highslide/highslide.css");
     wp_enqueue_style('afg_css', BASE_URL . "/afg.css");
 }
 
 function add_afg_headers() {
-    echo "<script type='text/javascript'>
-            hs.graphicsDir = '" . BASE_URL . "/highslide/graphics/';
-        hs.align = 'center';
-        hs.transitions = ['expand', 'crossfade'];
-        hs.fadeInOut = true;
-        hs.dimmingOpacity = 0.85;
-        hs.outlineType = 'rounded-white';
-        hs.captionEval = 'this.thumb.alt';
-        hs.marginBottom = 115; // make room for the thumbstrip and the controls
-        hs.numberPosition = 'caption';
-        // Add the slideshow providing the controlbar and the thumbstrip
-        hs.addSlideshow({
-            //slideshowGroup: 'group1',
-            interval: 3500,
-                repeat: false,
-                useControls: true,
-                overlayOptions: {
-                    className: 'text-controls',
-                        position: 'bottom center',
-                        relativeTo: 'viewport',
-                        offsetY: -60
-    },
-    thumbstrip: {
-        position: 'bottom center',
-            mode: 'horizontal',
-            relativeTo: 'viewport'
-    }
-    });
-         </script>";
     echo "<style type=\"text/css\">" . get_option('afg_custom_css') . "</style>";
 }
 
 function afg_return_error_code($rsp) {
     return $rsp['message'];
 }
+
+function upgrade_handler() {
+    $galleries = get_option('afg_galleries');
+    foreach($galleries as $gallery) {
+        if($gallery['slideshow_option'] == 'highslide')
+            $gallery['slideshow_option'] = 'colorbox';
+    }
+}
+
+upgrade_handler();
 
 /* Main function that loads the gallery. */
 function afg_display_gallery($atts) {
@@ -267,8 +246,6 @@ function afg_display_gallery($atts) {
     $text_color = isset($afg_text_color_map[$bg_color])? $afg_text_color_map[$bg_color]: '';
     $disp_gallery .= "<div class='afg-gallery custom-gallery-{$id}' style='background-color:{$bg_color}; width:$gallery_width%; color:{$text_color}; border-color:{$bg_color};'>";
 
-    if ($slideshow_option == 'highslide')
-        $disp_gallery .= "<div class='highslide-gallery'>";
     $disp_gallery .= "<div class='afg-table' style='width:100%'>";
 
     $photo_count = 1;
@@ -292,11 +269,6 @@ function afg_display_gallery($atts) {
             $class = "class='afgcolorbox'";
             $rel = "rel='example4{$id}'";
             $click_event = "";
-        }
-        else if ($slideshow_option == 'highslide') {
-            $class = "class='highslide'";
-            $rel = "";
-            $click_event = "onclick='return hs.expand(this, {slideshowGroup: $id })'";
         }
         else if ($slideshow_option == 'flickr') {
             $class = "";
@@ -347,9 +319,6 @@ function afg_display_gallery($atts) {
                 $photo['owner'] = $user_id;
 
             $photo_title_text = $p_title;
-            if ($slideshow_option == 'highslide' && $p_description) { 
-                $photo_title_text .= '<br /><span style="font-size:0.8em;">' . $p_description . '</span>';
-            }
             $photo_title_text .= ' • <a style="font-size:0.8em;" href="http://www.flickr.com/photos/' . $photo['owner'] . '/' . $photo['id'] . '/" target="_blank">View on Flickr</a>';
 
             $photo_title_text = esc_attr($photo_title_text);
@@ -393,15 +362,9 @@ function afg_display_gallery($atts) {
         }
         else {
             if ($pagination == 'on' && $slideshow_option != 'none') {
-                if ($slideshow_option == 'highslide') {
-                    $photo_url = afg_get_photo_url($photo['farm'], $photo['server'],
-                        $photo['id'], $photo['secret'], '_s');
-                }
-                else
-                    $photo_url = '';
                 $disp_gallery .= "<a style='display:none' $class $rel $click_event href='$photo_page_url'" .
                     " title='{$photo_title_text}'>" .
-                    " <img class='afg-img' alt='{$photo_title_text}' src='$photo_url' width='75' height='75'></a> ";
+                    " <img class='afg-img' alt='{$photo_title_text}' width='75' height='75'></a> ";
             }
         }
         $photo_count += 1;
@@ -409,7 +372,6 @@ function afg_display_gallery($atts) {
 
     if ($cur_col % $columns != 0) $disp_gallery .= '</div>';
     $disp_gallery .= '</div>';
-    if ($slideshow_option == 'highslide') $disp_gallery .= "</div>";
 
     // Pagination
     if ($pagination == 'on' && $total_pages > 1) {

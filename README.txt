@@ -1,10 +1,10 @@
 === Awesome Flickr Gallery ===
 Contributors: ronakg
 Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
-Tags: awesome, gallery, flickr, photo, image, slideshow, colorbox, portfolio, highslide, group, photoset, yahoo, slider, thumbnail, images
+Tags: awesome, gallery, flickr, photo, image, slideshow, colorbox, portfolio, group, photoset, yahoo, slider, thumbnail, images
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 3.3.0
+Stable tag: 3.3.1
 License: GPLv2 or later
 
 Create a photo gallery of your Flickr photos on your WordPress enabled WebSite enabling you to customize it the way you like it.
@@ -22,7 +22,6 @@ galleries.
 * Support for both Public and Private photos
 * Create multiple galleries with different parameters
 * Select Photos from your Flickr Photostream, a Photoset, a Gallery, a Group or a set of tags
-* 2 Powerful slideshow options with thumbnail slider navigation
 * Multiple sorting options available so that you don't have to rely on Flickr's sorting options
 * Customizable image sizes with cropping settings
 * Infinitely customizable with custom CSS field
@@ -113,6 +112,9 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 [Discussions | RonakG.com](http://www.ronakg.com/discussions/)
 
 == Upgrade Notice ==
+
+= 3.3.1 =
+[MAJOR CHANGE] Highslide had to be removed from Slideshow options as WordPress moderators objected about the same due to licensing issues. This update removes the Highslide option. If you are using Highslide, you will be migrated to use Colorbox instead. 
 
 = 3.3.0 =
 [FEATURE] Ability to set the slideshow per gallery.
@@ -232,7 +234,6 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 
 == Screenshots ==
 
-1. Full size photo view with SlideShow along with thumbnail slider at the bottom
 2. Awesome Flickr Gallery with Thumbnail size photos with white background
 3. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
 4. Awesome Flickr Gallery with photos of size Small with Title and Description ON
@@ -262,6 +263,9 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 * your Awesome Flickr Gallery is one of the best plugins out there!! – RichardF
 
 == Changelog ==
+
+= 3.3.1 =
+* [MAJOR CHANGE] Highslide had to be removed from Slideshow options as WordPress moderators objected about the same due to licensing issues. This update removes the Highslide option. If you are using Highslide, you will be migrated to use Colorbox instead. 
 
 = 3.3.0 =
 * [Feature] Ability to set the slideshow per gallery.
