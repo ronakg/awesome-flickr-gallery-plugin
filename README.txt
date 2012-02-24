@@ -234,14 +234,14 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 
 == Screenshots ==
 
-2. Awesome Flickr Gallery with Thumbnail size photos with white background
-3. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
-4. Awesome Flickr Gallery with photos of size Small with Title and Description ON
-5. Default Settings Page
-6. Add Gallery Page
-7. Edit Galleries Page
-8. Saved Galleries Page
-9. Advanced Settings Page
+1. Awesome Flickr Gallery with Thumbnail size photos with white background
+2. Awesome Flickr Gallery with photos of size Square with Title and Description OFF
+3. Awesome Flickr Gallery with photos of size Small with Title and Description ON
+4. Default Settings Page
+5. Add Gallery Page
+6. Edit Galleries Page
+7. Saved Galleries Page
+8. Advanced Settings Page
 
 == User Testimonials ==
 
