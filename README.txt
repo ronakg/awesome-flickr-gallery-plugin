@@ -4,7 +4,7 @@ Donate link: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plu
 Tags: awesome, gallery, flickr, photo, image, slideshow, colorbox, portfolio, group, photoset, yahoo, slider, thumbnail, images
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 3.3.1
+Stable tag: 3.3.2
 License: GPLv2 or later
 
 Create a photo gallery of your Flickr photos on your WordPress enabled WebSite enabling you to customize it the way you like it.
@@ -112,6 +112,11 @@ Still can't get the plugin working?  Head to the discussion forum for solution -
 [Discussions | RonakG.com](http://www.ronakg.com/discussions/)
 
 == Upgrade Notice ==
+
+= 3.3.2 =
+[ENHANCEMENT] Intelligently resize images based on orientation of the image (landscape vs portrait).
+[BUG FIX] Do not include Colorbox script if it is not enabled.
+[BUG FIX] Square option for Custom Photo Size gets reset
 
 = 3.3.1 =
 [MAJOR CHANGE] Highslide had to be removed from Slideshow options as WordPress moderators objected about the same due to licensing issues. This update removes the Highslide option. If you are using Highslide, you will be migrated to use Colorbox instead. 
@@ -263,6 +268,11 @@ MUST UPGRADE for all who are facing conflict issue with other plugin or themes.
 * your Awesome Flickr Gallery is one of the best plugins out there!! – RichardF
 
 == Changelog ==
+
+= 3.3.2 =
+* [ENHANCEMENT] Intelligently resize images based on orientation of the image (landscape vs portrait).
+* [BUG FIX] Do not include Colorbox script if it is not enabled.
+* [BUG FIX] Square option for Custom Photo Size gets reset
 
 = 3.3.1 =
 * [MAJOR CHANGE] Highslide had to be removed from Slideshow options as WordPress moderators objected about the same due to licensing issues. This update removes the Highslide option. If you are using Highslide, you will be migrated to use Colorbox instead. 

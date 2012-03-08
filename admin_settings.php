@@ -122,6 +122,8 @@ function afg_get_all_options() {
         'afg_photo_size' => get_option('afg_photo_size'),
         'afg_per_page' => get_option('afg_per_page'),
         'afg_sort_order' => get_option('afg_sort_order'),
+        'afg_custom_size' => get_option('afg_custom_size'),
+        'afg_custom_size_square' => get_option('afg_custom_size_square'),
         'afg_captions' => get_option('afg_captions'),
         'afg_descr' => get_option('afg_descr'),
         'afg_columns' => get_option('afg_columns'),
@@ -297,7 +299,7 @@ function afg_admin_html_page() {
                            <tr valign='top' id='afg_custom_size_block' style='display:none'>
                              <th>Custom Width</th>
                              <td><input type='text' size='3' maxlength='3' name='afg_custom_size' id='afg_custom_size' onblur='verifyCustomSizeBlank()' value="<?php echo get_option('afg_custom_size')?get_option('afg_custom_size'):100; ?>"><font color='red'>*</font> (in px)
-                             &nbsp;Square? <input type='checkbox' name='afg_custom_size_square' value='true' <?php if (get_option('afg_custom_size_square')) echo "checked=''"; ?>>
+                             &nbsp;Square? <input type='checkbox' name='afg_custom_size_square' value='true' <?php if (get_option('afg_custom_size_square') == 'true') echo "checked=''"; ?>>
                              </td>
                              <td><font size='2'>Fill in the exact width for the photos (min 50, max 500).  Height of the photos will be adjusted
                                                 accordingly to maintain aspect ratio of the photo. Enable <b>Square</b> to crop
