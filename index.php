@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.3.1
+   Version: 3.3.2
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -34,20 +34,28 @@ if (!is_admin()) {
     add_shortcode('AFG_gallery', 'afg_display_gallery');
     add_filter('widget_text', 'do_shortcode', SHORTCODE_PRIORITY);
 
-    add_action('wp_print_scripts', 'enqueue_afg_scripts');
+    $enable_colorbox = false;
+
+    $galleries = get_option('afg_galleries');
+    foreach($galleries as $gallery) {
+        if($gallery['slideshow_option'] == 'colorbox') $enable_colorbox = true;
+    }
+
+    if (get_option('afg_slideshow_option') == 'colorbox' || $enable_colorbox)
+        add_action('wp_print_scripts', 'enqueue_cbox_scripts');
     add_action('wp_print_styles', 'enqueue_afg_styles');
 }
 
 add_action('wp_head', 'add_afg_headers');
 
-function enqueue_afg_scripts() {
+function enqueue_cbox_scripts() {
     wp_enqueue_script('jquery');
     wp_enqueue_script('afg_colorbox_script', BASE_URL . "/colorbox/jquery.colorbox.js" , array('jquery'));
     wp_enqueue_script('afg_colorbox_js', BASE_URL . "/colorbox/mycolorbox.js" , array('jquery'));
+    wp_enqueue_style('afg_colorbox_css', BASE_URL . "/colorbox/colorbox.css");
 }
 
 function enqueue_afg_styles() {
-    wp_enqueue_style('afg_colorbox_css', BASE_URL . "/colorbox/colorbox.css");
     wp_enqueue_style('afg_css', BASE_URL . "/afg.css");
 }
 
@@ -286,16 +294,7 @@ function afg_display_gallery($atts) {
         $photo_height = '';
     }
 
-    if ($custom_size) {
-        $timthumb_script = BASE_URL . "/afg_img_rsz.php?src=";
-        $timthumb_params = "&q=100&w=$custom_size";
-        if ($custom_size_square == 'true')
-            $timthumb_params .= "&h=$custom_size";
-    }
-    else {
-        $timthumb_script = "";
-        $timthumb_params = "";
-    }
+    
 
     foreach($photos as $pid => $photo) {
         $p_title = esc_attr($photo['title']);
@@ -336,6 +335,23 @@ function afg_display_gallery($atts) {
 
             if ($slideshow_option != 'none')
                 $disp_gallery .= "<a $class $rel $click_event href='{$photo_page_url}' title='{$photo['title']}'>";
+
+            if ($custom_size) {
+                $timthumb_script = BASE_URL . "/afg_img_rsz.php?src=";
+                if($photo['width_l'] > $photo['height_l']) {
+                    $timthumb_params = "&q=100&w=$custom_size";
+                    if ($custom_size_square == 'true')  $timthumb_params .= "&h=$custom_size";
+                }
+                else {
+                    $timthumb_params = "&q=100&h=$custom_size";
+                    if ($custom_size_square == 'true')  $timthumb_params .= "&w=$custom_size";
+                }
+
+            }
+            else {
+                $timthumb_script = "";
+                $timthumb_params = "";
+            }
 
             $disp_gallery .= "<img class='afg-img' src='{$timthumb_script}{$photo_url}{$timthumb_params}' alt='{$photo_title_text}'/>";
 
