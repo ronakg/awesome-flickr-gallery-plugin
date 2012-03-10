@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/!svn/ver/507598/awesome-flickr-gallery-plugin/trunk/js
+END
+admin_settings.js
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/!svn/ver/443092/awesome-flickr-gallery-plugin/trunk/js/admin_settings.js
+END
+edit_galleries.js
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/!svn/ver/507598/awesome-flickr-gallery-plugin/trunk/js/edit_galleries.js
+END
+view_delete_galleries.js
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/!svn/ver/388757/awesome-flickr-gallery-plugin/trunk/js/view_delete_galleries.js
+END
+delete_users.js
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/!svn/ver/401380/awesome-flickr-gallery-plugin/trunk/js/delete_users.js
+END
