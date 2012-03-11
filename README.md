@@ -35,6 +35,16 @@ Can't get the plugin working?  Head to the discussion forum for solution - [Disc
 - Configure plugin using Awesome Flickr Gallery settings page
 - Place `[AFG_gallery]` in your posts and/or pages to show the default gallery or create new galleries with different settings and insert the generated code
 
+##Screenshots:
+
+![Awesome Flickr Gallery with Thumbnail size photos with white background](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-1.png "Awesome Flickr Gallery with Thumbnail size photos with white background")
+![Awesome Flickr Gallery with photos of size Square with Title and Description OFF](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-2.png "Awesome Flickr Gallery with photos of size Square with Title and Description OFF")
+![Awesome Flickr Gallery with photos of size Small with Title and Description ON](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-3.png "Awesome Flickr Gallery with photos of size Small with Title and Description ON")
+![Default Settings Page](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-4.png "Default Settings Page")
+![Add Gallery Page](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-5.png "Add Gallery Page")
+![Saved Galleries Page](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-7.png "Saved Galleries Page")
+![Advanced Settings Page](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-8.png "Advanced Settings Page")
+
 ##Frequently Asked Questions:
 
 #### After upgrade to version 3.0.0, my photo descriptions appear as "array". ####
