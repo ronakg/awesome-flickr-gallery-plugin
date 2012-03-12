@@ -7,6 +7,7 @@ _Awesome Flickr Gallery_ is a simple, fast and light plugin to create a gallery 
 * Fast and light - uses intelligent caching to load galleries instantly
 * Support for both Public and Private photos
 * Create multiple galleries with different parameters
+* Two powerful slideshow options in Colorbox and HighSlide
 * Select Photos from your Flickr Photostream, a Photoset, a Gallery, a Group or a set of tags
 * Multiple sorting options available so that you don't have to rely on Flickr's sorting options
 * Customizable image sizes with cropping settings

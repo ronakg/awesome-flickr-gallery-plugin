@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', get_option('siteurl'));
 define('DEBUG', false);
-define('VERSION', '3.3.2');
+define('VERSION', '3.3.5');
 
 $afg_sort_order_map = array(
     'default' => 'Default',
@@ -18,6 +18,7 @@ $afg_sort_order_map = array(
 $afg_slideshow_map = array(
     'default' => 'Default',
     'colorbox' => 'Colorbox',
+    'highslide' => 'Highslide',
     'disable' => 'No Slideshow',
     'flickr' => 'Link to Flickr Photo page',
     'none' => 'No Slideshow and No Link',
@@ -182,7 +183,7 @@ function afg_generate_version_line() {
         " <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/faq/\">FAQ</a> |" .
         " <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/\">Rate this plugin</a> |" .
         " <a href=\"http://www.ronakg.com/discussions/\">Support Forums</a> |" .
-        " <a href=\"http://wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/changelog/\">Changelog</a> |" .
+        " <a href=\"https://github.com/ronakg/Awesome-Flickr-Gallery/wiki/Changelog\">Changelog</a> |" .
         " <a href=\"http://www.ronakg.com/photos/\">Live Demo</a>" .
     " </h4>";
     return $return_str;
@@ -295,7 +296,10 @@ function afg_generate_gallery_settings_table() {
         <td><select name='afg_slideshow_option' id='afg_slideshow_option'>
         " . afg_generate_options($afg_slideshow_map, 'default', True, $afg_slideshow_map[get_option('afg_slideshow_option')]) . "
     </select></td>
-            <td><font size='2'></font></td>
+            <td><font size='2'><b>HighSlide is NOT FREE for Commercial websites</b>.  If you are using
+            <i>Awesome Flickr Gallery</i> on a commercial website, you need to purchase a license from their website
+            <a href='http://highslide.com/#licence' target='_blank'>here</a>.  If you want a free slideshow,
+            use ColorBox instead.</font></td>
             </tr>
 
         <tr valign='top'>

@@ -1,13 +1,17 @@
 <?php
 require_once('afg_libs.php');
 
-if (is_admin()) {
+function afg_admin_enqueue_scripts() {
     wp_enqueue_script('jquery');
-    wp_enqueue_style('afg_custom_css_style', BASE_URL . "/CodeMirror/lib/codemirror.css");
     wp_enqueue_script('afg_custom_css_js', BASE_URL . "/CodeMirror/lib/codemirror.js");
     wp_enqueue_script('afg_custom_css_theme_js', BASE_URL . "/CodeMirror/mode/css/css.js");
+    wp_enqueue_style('afg_custom_css_style', BASE_URL . "/CodeMirror/lib/codemirror.css");
     wp_enqueue_style('afg_custom_css_theme_css', BASE_URL . "/CodeMirror/theme/cobalt.css");
     wp_enqueue_style('afg_custom_css_style', BASE_URL . "/CodeMirror/css/docs.css");
+}
+
+if (is_admin()) {
+    add_action('admin_enqueue_scripts', 'afg_admin_enqueue_scripts');
     add_action('admin_head', 'afg_advanced_headers');
 }
 

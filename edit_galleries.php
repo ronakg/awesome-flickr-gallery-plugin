@@ -3,7 +3,7 @@ include_once('afg_libs.php');
 $default_gallery_id = 0;
 $warning = false;
 
-if ($_POST && $_POST['afg_edit_gallery_name']) {
+if (isset($_POST['afg_edit_gallery_name']) && $_POST['afg_edit_gallery_name']) {
     global $default_gallery_id;
     global $warning;
 
