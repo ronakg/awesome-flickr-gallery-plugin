@@ -25,7 +25,7 @@
  */
 
 require_once('afgFlickr/afgFlickr.php');
-include_once('admin_settings.php');
+include_once('afg_admin_settings.php');
 include_once('afg_libs.php');
 include_once('afg_update.php');
 

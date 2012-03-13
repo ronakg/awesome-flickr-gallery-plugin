@@ -1,9 +1,9 @@
 <?php
 include_once('afg_libs.php');
-include_once('edit_galleries.php');
-include_once('add_gallery.php');
-include_once('view_delete_galleries.php');
-include_once('advanced_settings.php');
+include_once('afg_edit_galleries.php');
+include_once('afg_add_galleries.php');
+include_once('afg_saved_galleries.php');
+include_once('afg_advanced_settings.php');
 require_once('afgFlickr/afgFlickr.php');
 
 add_action('admin_init', 'afg_admin_init');
@@ -109,10 +109,9 @@ function afg_admin_init() {
     register_setting('afg_settings_group', 'afg_sort_order');
 
     // Register javascripts
-    wp_register_script('edit-galleries-script', BASE_URL . '/js/edit_galleries.js');
-    wp_register_script('admin-settings-script', BASE_URL . '/js/admin_settings.js');
-    wp_register_script('view-delete-galleries-script', BASE_URL . '/js/view_delete_galleries.js');
-    wp_register_script('delete-users-script', BASE_URL . '/js/delete_users.js');
+    wp_register_script('edit-galleries-script', BASE_URL . '/js/afg_edit_galleries.js');
+    wp_register_script('admin-settings-script', BASE_URL . '/js/afg_admin_settings.js');
+    wp_register_script('view-delete-galleries-script', BASE_URL . '/js/afg_saved_galleries.js');
 }
 
 function afg_get_all_options() {
