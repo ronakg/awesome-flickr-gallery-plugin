@@ -60,9 +60,14 @@ function upgrade_handler() {
     unset($galleries[0]['slideshow_option']);
     update_option('afg_galleries', $galleries);
     unset($gallery);
+
+    if (!is_writable(dirname(__FILE__) . "/cache")) {
+        mkdir(dirname(__FILE__) . "/cache", 0755);
+    }
 }
 
 upgrade_handler();
+
 $enable_colorbox = get_option('afg_slideshow_option') == 'colorbox';
 $enable_highslide = get_option('afg_slideshow_option') == 'highslide';
 
