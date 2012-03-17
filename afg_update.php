@@ -39,11 +39,12 @@ function afg_check_for_plugin_update($checked_data) {
     // Start checking for an update
     $raw_response = wp_remote_post($api_url, $request_string);
 
-    if (!is_wp_error($raw_response) && ($raw_response['response']['code'] == 200))
+    if (!is_wp_error($raw_response) && ($raw_response['response']['code'] == 200)) {
         $response = unserialize($raw_response['body']);
 
-    if (is_object($response) && !empty($response)) // Feed the update data into WP updater
-        $checked_data->response[$plugin_slug .'/'. $plugin_slug_file] = $response;
+        if (is_object($response) && !empty($response)) // Feed the update data into WP updater
+            $checked_data->response[$plugin_slug .'/'. $plugin_slug_file] = $response;
+    }
 	
     return $checked_data;
 }
