@@ -62,7 +62,10 @@ function upgrade_handler() {
     unset($gallery);
 
     if (!is_writable(dirname(__FILE__) . "/cache")) {
-        mkdir(dirname(__FILE__) . "/cache", 0755);
+        if (!@mkdir(dirname(__FILE__) . "/cache", 0755)) {
+            $error = error_get_last();
+            echo($error['message']);
+        }
     }
 }
 
