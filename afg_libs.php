@@ -1,7 +1,7 @@
 <?php
 
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
-define('SITE_URL', get_option('siteurl'));
+define('SITE_URL', site_url());
 define('DEBUG', false);
 define('VERSION', '3.3.5');
 

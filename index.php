@@ -445,7 +445,7 @@ function afg_display_gallery($atts) {
                 $timthumb_params = "";
             }
 
-            $disp_gallery .= "<img class='afg-img' src='{$timthumb_script}{$photo_url}{$timthumb_params}' alt='{$photo_title_text}'/>";
+            $disp_gallery .= "<img class='afg-img' title='{$photo['title']}' src='{$timthumb_script}{$photo_url}{$timthumb_params}' alt='{$photo_title_text}'/>";
 
             if ($slideshow_option != 'none')
                 $disp_gallery .= "</a>";
