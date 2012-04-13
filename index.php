@@ -162,12 +162,13 @@ function afg_display_gallery($atts) {
     ), $atts ) );
 
     $request_uri = $GLOBALS['HTTP_SERVER_VARS']['REQUEST_URI'];
-    
+
     if ($request_uri == '' || !$request_uri) $request_uri = $_SERVER['REQUEST_URI'];
 
     $cur_page = 1;
-    $cur_page_url = ( isset($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS'] == 'on') || $_SERVER['HTTPS'] == '1') ) ? "https://".$_SERVER['SERVER_NAME'].$request_uri : "http://".$_SERVER['SERVER_NAME'].$request_uri;
-    $cur_page_url = preg_replace("/hilbert-in.com/", "pkhs.nl", $cur_page_url);
+
+    $cur_page_url = get_site_url(NULL, $request_uri);
+
     preg_match("/afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
 
     if ($matches) {
@@ -204,7 +205,7 @@ function afg_display_gallery($atts) {
     if ($photo_size == 'custom') {
         $custom_size = get_afg_option($gallery, 'custom_size');
         $custom_size_square = get_afg_option($gallery, 'custom_size_square');
-        
+
         if ($custom_size <= 70) $photo_size = '_s';
         else if ($custom_size <= 90) $photo_size = '_t';
         else if ($custom_size <= 220) $photo_size = '_m';
@@ -228,7 +229,8 @@ function afg_display_gallery($atts) {
     else if ($gallery['photo_source'] == 'group') $group_id = $gallery['group_id'];
     else if ($gallery['photo_source'] == 'tags') $tags = $gallery['tags'];
     else if ($gallery['photo_source'] == 'popular') $popular = true;
-    
+
+
     $disp_gallery = "<!-- Awesome Flickr Gallery Start -->";
     $disp_gallery .= "<!--" .
         " - Version - " . VERSION .
@@ -386,7 +388,6 @@ function afg_display_gallery($atts) {
         $photo_height = '';
     }
 
-    
 
     foreach($photos as $pid => $photo) {
         $p_title = esc_attr($photo['title']);
@@ -410,7 +411,7 @@ function afg_display_gallery($atts) {
                 $photo['owner'] = $user_id;
 
             $photo_title_text = $p_title;
-            if ($slideshow_option == 'highslide' && $p_description) { 
+            if ($slideshow_option == 'highslide' && $p_description) {
                 $photo_title_text .= '<br /><span style="font-size:0.8em;">' . $p_description . '</span>';
             }
             $photo_title_text .= ' • <a style="font-size:0.8em;" href="http://www.flickr.com/photos/' . $photo['owner'] . '/' . $photo['id'] . '/" target="_blank">View on Flickr</a>';
@@ -480,7 +481,7 @@ function afg_display_gallery($atts) {
                 else
                     $photo_url = '';
 
-                if ($slideshow_option == 'highslide') 
+                if ($slideshow_option == 'highslide')
                     $photo_src_text = "src='$photo_url'";
                 else
                     $photo_src_text = "";
