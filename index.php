@@ -166,8 +166,9 @@ function afg_display_gallery($atts) {
     if ($request_uri == '' || !$request_uri) $request_uri = $_SERVER['REQUEST_URI'];
 
     $cur_page = 1;
-    $cur_page_url = ( isset($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS'] == 'on') || $_SERVER['HTTPS'] == '1') ) ? "https://".$_SERVER['SERVER_NAME'].$request_uri : "http://".$_SERVER['SERVER_NAME'].$request_uri;
-    $cur_page_url = preg_replace("/hilbert-in.com/", "pkhs.nl", $cur_page_url);
+
+    $cur_page_url = get_site_url(NULL, $request_uri);
+
     preg_match("/afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
 
     if ($matches) {
