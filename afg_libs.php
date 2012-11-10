@@ -111,7 +111,7 @@ $afg_text_color_map = array(
 );
 
 function afg_get_cur_url() {
-    $protocol = $_SERVER['HTTPS'] == 'on'? 'https' : 'http';
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')? 'https' : 'http';
 
     $host     = $_SERVER['HTTP_HOST'];
     $script   = $_SERVER['SCRIPT_NAME'];
