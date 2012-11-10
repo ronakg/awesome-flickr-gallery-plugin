@@ -142,7 +142,7 @@ function afg_display_gallery($atts) {
     ), $atts ) );
 
     $cur_page = 1;
-    $cur_page_url =afg_get_cur_url();
+    $cur_page_url = afg_get_cur_url();
 
     preg_match("/afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
 
