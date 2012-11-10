@@ -51,26 +51,6 @@ function afg_enqueue_styles() {
     wp_enqueue_style('afg_css', BASE_URL . "/afg.css");
 }
 
-function upgrade_handler() {
-    $galleries = get_option('afg_galleries');
-    foreach($galleries as &$gallery) {
-        if(!isset($gallery['slideshow_option']))
-            $gallery['slideshow_option'] = 'colorbox';
-    }
-    unset($galleries[0]['slideshow_option']);
-    update_option('afg_galleries', $galleries);
-    unset($gallery);
-
-    if (!is_writable(dirname(__FILE__) . "/cache")) {
-        if (!@mkdir(dirname(__FILE__) . "/cache", 0755)) {
-            $error = error_get_last();
-            echo($error['message']);
-        }
-    }
-}
-
-upgrade_handler();
-
 $enable_colorbox = get_option('afg_slideshow_option') == 'colorbox';
 $enable_highslide = get_option('afg_slideshow_option') == 'highslide';
 
@@ -161,13 +141,8 @@ function afg_display_gallery($atts) {
         'id' => '0',
     ), $atts ) );
 
-    $request_uri = $GLOBALS['HTTP_SERVER_VARS']['REQUEST_URI'];
-
-    if ($request_uri == '' || !$request_uri) $request_uri = $_SERVER['REQUEST_URI'];
-
     $cur_page = 1;
-
-    $cur_page_url = get_site_url(NULL, $request_uri);
+    $cur_page_url =afg_get_cur_url();
 
     preg_match("/afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
 
@@ -339,14 +314,13 @@ function afg_display_gallery($atts) {
 
     if ($gallery_width == 'auto') $gallery_width = 100;
     $text_color = isset($afg_text_color_map[$bg_color])? $afg_text_color_map[$bg_color]: '';
-    $disp_gallery .= "<div class='afg-gallery custom-gallery-{$id}' style='background-color:{$bg_color}; width:$gallery_width%; color:{$text_color}; border-color:{$bg_color};'>";
+    $disp_gallery .= "<div class='afg-gallery custom-gallery-{$id}' id='afg-{$id}' style='background-color:{$bg_color}; width:$gallery_width%; color:{$text_color}; border-color:{$bg_color};'>";
 
     if ($slideshow_option == 'highslide')
         $disp_gallery .= "<div class='highslide-gallery'>";
     $disp_gallery .= "<div class='afg-table' style='width:100%'>";
 
     $photo_count = 1;
-    $cur_col = 0;
     $column_width = (int)($gallery_width/$columns);
 
     if (!$popular && $sort_order != 'flickr') {
@@ -388,7 +362,7 @@ function afg_display_gallery($atts) {
         $photo_height = '';
     }
 
-
+    $cur_col = 0;
     foreach($photos as $pid => $photo) {
         $p_title = esc_attr($photo['title']);
         $p_description = esc_attr($photo['description']['_content']);
@@ -423,8 +397,9 @@ function afg_display_gallery($atts) {
             }
         }
 
+        if ($cur_col % $columns == 0) $disp_gallery .= "<div class='afg-row'>";
+
         if ( ($photo_count <= $per_page * $cur_page) && ($photo_count > $per_page * ($cur_page - 1)) ) {
-            if ($cur_col % $columns == 0) $disp_gallery .= "<div class='afg-row'>";
             $disp_gallery .= "<div class='afg-cell' style='width:${column_width}%;'>";
 
             $pid_len = strlen($photo['id']);
@@ -470,7 +445,6 @@ function afg_display_gallery($atts) {
 
             $cur_col += 1;
             $disp_gallery .= '</div>';
-            if ($cur_col % $columns == 0) $disp_gallery .= '</div>';
         }
         else {
             if ($pagination == 'on' && $slideshow_option != 'none') {
@@ -491,6 +465,7 @@ function afg_display_gallery($atts) {
                     " <img class='afg-img' alt='{$photo_title_text}' $photo_src_text width='75' height='75'></a> ";
             }
         }
+        if ($cur_col % $columns == 0) $disp_gallery .= '</div>';
         $photo_count += 1;
     }
 
@@ -508,8 +483,8 @@ function afg_display_gallery($atts) {
         }
         else {
             $prev_page = $cur_page - 1;
-            $disp_gallery .= "<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id=$prev_page' title='Prev Page'>&nbsp;&#171; prev </a>&nbsp;&nbsp;&nbsp;&nbsp;";
-            $disp_gallery .= "<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id=1' title='Page 1'> 1 </a>&nbsp;";
+            $disp_gallery .= "<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id=$prev_page#afg-{$id}' title='Prev Page'>&nbsp;&#171; prev </a>&nbsp;&nbsp;&nbsp;&nbsp;";
+            $disp_gallery .= "<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id=1#afg-{$id}' title='Page 1'> 1 </a>&nbsp;";
         }
         if ($cur_page - 2 > 2) {
             $start_page = $cur_page - 2;
@@ -525,16 +500,16 @@ function afg_display_gallery($atts) {
             if ($cur_page == $count)
                 $disp_gallery .= "<font class='afg-cur-page'>&nbsp;{$count}&nbsp;</font>&nbsp;";
             else
-                $disp_gallery .= "<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id={$count}' title='Page {$count}'>&nbsp;{$count} </a>&nbsp;";
+                $disp_gallery .= "<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id={$count}#afg-{$id}' title='Page {$count}'>&nbsp;{$count} </a>&nbsp;";
         }
 
         if ($count < $total_pages) $disp_gallery .= " ... ";
         if ($count <= $total_pages)
-            $disp_gallery .= "<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id={$total_pages}' title='Page {$total_pages}'>&nbsp;{$total_pages} </a>&nbsp;";
+            $disp_gallery .= "<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id={$total_pages}#afg-{$id}' title='Page {$total_pages}'>&nbsp;{$total_pages} </a>&nbsp;";
         if ($cur_page == $total_pages) $disp_gallery .= "&nbsp;&nbsp;&nbsp;<font class='afg-page'>&nbsp;next &#187;&nbsp;</font>";
         else {
             $next_page = $cur_page + 1;
-            $disp_gallery .= "&nbsp;&nbsp;&nbsp;<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id=$next_page' title='Next Page'> next &#187; </a>&nbsp;";
+            $disp_gallery .= "&nbsp;&nbsp;&nbsp;<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id=$next_page#afg-{$id}' title='Next Page'> next &#187; </a>&nbsp;";
         }
         $disp_gallery .= "<br />({$total_photos} Photos)";
         $disp_gallery .= "</div>";

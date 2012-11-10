@@ -85,13 +85,18 @@ function afg_add_gallery() {
             if ($gallery['photo_size'] == 'custom') {
                 if (ctype_digit($_POST['afg_custom_size']) && (int)$_POST['afg_custom_size'] >= 50 && (int)$_POST['afg_custom_size'] <= 500) {
                     $gallery['custom_size'] = $_POST['afg_custom_size'];
+                    if (!is_dir(dirname(__FILE__) . "/cache")) {
+                        if (!wp_mkdir_p(dirname(__FILE__) . "/cache")) {
+                            echo("<div class='updated'><p>Could not create directory - '" . dirname(__FILE__) . "/cache'. This is required for custom size photos to be displayed. Manually create this directory and set permissions for this directory as 777.</p></div>");
+                        }
+                    }
                 }
                 else {
                     $gallery['custom_size'] = 100;
                     echo "<div class='updated'><p><strong>You entered invalid value for Custom Width option.  It has been set to 100.</strong></p></div>";
 
                 }
-                $gallery['custom_size_square'] = $_POST['afg_custom_size_square']?$_POST['afg_custom_size_square']:'false';
+                $gallery['custom_size_square'] = isset($_POST['afg_custom_size_square'])?$_POST['afg_custom_size_square']:'false';
             }
 
             $galleries = get_option('afg_galleries');

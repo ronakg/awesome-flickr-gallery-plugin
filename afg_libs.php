@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', site_url());
 define('DEBUG', false);
-define('VERSION', '3.3.5');
+define('VERSION', '3.3.6');
 
 $afg_sort_order_map = array(
     'default' => 'Default',
@@ -109,6 +109,18 @@ $afg_text_color_map = array(
     'Black' => 'White',
     'White' => 'Black',
 );
+
+function afg_get_cur_url() {
+    $protocol = $_SERVER['HTTPS'] == 'on'? 'https' : 'http';
+
+    $host     = $_SERVER['HTTP_HOST'];
+    $script   = $_SERVER['SCRIPT_NAME'];
+    $params   = $_SERVER['QUERY_STRING'];
+
+    $currentUrl = $protocol . '://' . $host . $script . '?' . $params;
+
+    return $currentUrl;
+}
 
 function create_afgFlickr_obj() {
     global $pf;

@@ -12,12 +12,12 @@ add_action('admin_menu', 'afg_admin_menu');
 add_action('wp_ajax_afg_gallery_auth', 'afg_auth_init');
 
 function afg_admin_menu() {
-    add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery', 'activate_plugins', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png", 898);
-    $afg_main_page = add_submenu_page('afg_plugin_page', 'Default Settings | Awesome Flickr Gallery', 'Default Settings', 'activate_plugins', 'afg_plugin_page', 'afg_admin_html_page');
-    $afg_add_page = add_submenu_page('afg_plugin_page', 'Add Gallery | Awesome Flickr Gallery', 'Add Gallery', 'manage_links', 'afg_add_gallery_page', 'afg_add_gallery');
-    $afg_saved_page = add_submenu_page('afg_plugin_page', 'Saved Galleries | Awesome Flickr Gallery', 'Saved Galleries', 'manage_links', 'afg_view_edit_galleries_page', 'afg_view_delete_galleries');
-    $afg_edit_page = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'manage_links', 'afg_edit_galleries_page', 'afg_edit_galleries');
-    $afg_advanced_page = add_submenu_page('afg_plugin_page', 'Advanced Settings | Awesome Flickr Gallery', 'Advanced Settings', 'activate_plugins', 'afg_advanced_page', 'afg_advanced_settings_page');
+    add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery', 'create_users', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png", 898);
+    $afg_main_page = add_submenu_page('afg_plugin_page', 'Default Settings | Awesome Flickr Gallery', 'Default Settings', 'create_users', 'afg_plugin_page', 'afg_admin_html_page');
+    $afg_add_page = add_submenu_page('afg_plugin_page', 'Add Gallery | Awesome Flickr Gallery', 'Add Gallery', 'moderate_comments', 'afg_add_gallery_page', 'afg_add_gallery');
+    $afg_saved_page = add_submenu_page('afg_plugin_page', 'Saved Galleries | Awesome Flickr Gallery', 'Saved Galleries', 'moderate_comments', 'afg_view_edit_galleries_page', 'afg_view_delete_galleries');
+    $afg_edit_page = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'moderate_comments', 'afg_edit_galleries_page', 'afg_edit_galleries');
+    $afg_advanced_page = add_submenu_page('afg_plugin_page', 'Advanced Settings | Awesome Flickr Gallery', 'Advanced Settings', 'create_users', 'afg_advanced_page', 'afg_advanced_settings_page');
    
     add_action('admin_print_styles-' . $afg_edit_page, 'afg_edit_galleries_header');
     add_action('admin_print_styles-' . $afg_add_page, 'afg_edit_galleries_header');
@@ -175,8 +175,21 @@ function afg_admin_html_page() {
     echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Awesome Flickr Gallery Settings</h2>
 
 <?php
+function upgrade_handler() {
+    $galleries = get_option('afg_galleries');
+    foreach ($galleries as &$gallery) {
+        if (!isset($gallery['slideshow_option']))
+            $gallery['slideshow_option'] = 'colorbox';
+    }
+    update_option('afg_galleries', $galleries);
+    unset($gallery);
+
+}
+
+upgrade_handler();
+
     if ($_POST) {
-        global $pf;
+        global $pf, $custom_size_err_msg;
 
         if (isset($_POST['submit']) && $_POST['submit'] == 'Delete Cached Galleries') {
             delete_afg_caches();
@@ -200,6 +213,11 @@ function afg_admin_html_page() {
             if (get_option('afg_photo_size') == 'custom') {
                 if (ctype_digit($_POST['afg_custom_size']) && (int)$_POST['afg_custom_size'] >= 50 && (int)$_POST['afg_custom_size'] <= 500) {
                     update_option('afg_custom_size', $_POST['afg_custom_size']);
+                    if (!is_dir(dirname(__FILE__) . "/cache")) {
+                        if (!wp_mkdir_p(dirname(__FILE__) . "/cache")) {
+                            echo("<div class='updated'><p>Could not create directory - '" . dirname(__FILE__) . "/cache'. This is required for custom size photos to be displayed. Manually create this directory and set permissions for this directory as 777.</p></div>");
+                        }
+                    }
                 }
                 else {
                     update_option('afg_custom_size', 100);
@@ -226,6 +244,7 @@ function afg_admin_html_page() {
             }
         }
         create_afgFlickr_obj();
+
     }
     $url=$_SERVER['REQUEST_URI'];
 ?>

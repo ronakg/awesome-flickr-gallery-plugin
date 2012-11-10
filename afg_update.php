@@ -1,6 +1,6 @@
 <?php
 include_once('afg_libs.php');
-if (DEBUG) {
+if (false) {
     // TEMP: Enable update check on every request. Normally you don't need 
     // this! This is for testing only!
     set_site_transient('update_plugins', null);
@@ -21,6 +21,14 @@ $plugin_slug_file = 'index.php';
 // Take over the update check
 add_filter('pre_set_site_transient_update_plugins', 
     'afg_check_for_plugin_update');
+
+define ('AFG_SSL_VERIFY', FALSE);
+  
+add_action('http_request_args', 'afg_ssl_verify', 10, 2);
+function afg_ssl_verify($args, $url) {
+    $args['sslverify'] = AFG_SSL_VERIFY;
+    return $args;
+}
 
 function afg_check_for_plugin_update($checked_data) {
     global $api_url, $plugin_slug, $plugin_slug_file, $package_type;
