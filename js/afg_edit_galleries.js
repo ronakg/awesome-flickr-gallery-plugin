@@ -167,6 +167,7 @@ function loadGallerySettings() {
     var descr = document.getElementById('afg_descr');
     var columns = document.getElementById('afg_columns');
     var slideshow_option = document.getElementById('afg_slideshow_option');
+	var view_on_flickr = document.getElementById('afg_view_on_flickr');
     var credit_note = document.getElementById('afg_credit_note');
     var bg_color = document.getElementById('afg_bg_color');
     var width = document.getElementById('afg_width');
@@ -200,6 +201,7 @@ function loadGallerySettings() {
     descr.value = active_gallery.descr || 'default';
     columns.value = active_gallery.columns || 'default';
     slideshow_option.value = active_gallery.slideshow_option || 'default';
+	view_on_flickr.value = active_gallery.view_on_flickr || 'default';
     bg_color.value = active_gallery.bg_color || 'default';
     width.value = active_gallery.width || 'default';
     pagination.value = active_gallery.pagination || 'default';

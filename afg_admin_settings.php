@@ -61,6 +61,7 @@ function afg_setup_options() {
     if (get_option('afg_slideshow_option') == '') update_option('afg_slideshow_option', 'colorbox');
     if (get_option('afg_custom_css') == '') update_option('afg_custom_css', '/* Start writing your custom CSS here */');
     if (get_option('afg_disable_slideshow')) update_option('afg_slideshow_option', 'disable');
+	if (!get_option('afg_view_on_flickr')) update_option('afg_view_on_flickr', 'on');
 
     $galleries = get_option('afg_galleries');
     if (!$galleries) {
@@ -99,6 +100,7 @@ function afg_admin_init() {
     register_setting('afg_settings_group', 'afg_include_private');
     register_setting('afg_settings_group', 'afg_auth_token');
     register_setting('afg_settings_group', 'afg_disable_slideshow');
+	register_setting('afg_settings_group', 'afg_view_on_flickr');
     register_setting('afg_settings_group', 'afg_slideshow_option');
     register_setting('afg_settings_group', 'afg_dismis_ss_msg');
     register_setting('afg_settings_group', 'afg_api_secret');
@@ -133,6 +135,7 @@ function afg_get_all_options() {
         'afg_api_secret' => get_option('afg_api_secret'),
         'afg_flickr_token' => get_option('afg_flickr_token'),
         'afg_slideshow_option' => get_option('afg_slideshow_option'),
+		'afg_view_on_flickr' => get_option('afg_view_on_flickr'),
     );
 }
 
@@ -229,7 +232,11 @@ upgrade_handler();
             update_option('afg_descr', $_POST['afg_descr']);
             update_option('afg_columns', $_POST['afg_columns']);
             update_option('afg_slideshow_option', $_POST['afg_slideshow_option']);
-            update_option('afg_width', $_POST['afg_width']);
+			
+            if (isset($_POST['afg_view_on_flickr']) && $_POST['afg_view_on_flickr']) update_option('afg_view_on_flickr', 'off');
+            else update_option('afg_view_on_flickr', 'on');
+			
+			update_option('afg_width', $_POST['afg_width']);
             update_option('afg_bg_color', $_POST['afg_bg_color']);
 
             if (isset($_POST['afg_credit_note']) && $_POST['afg_credit_note']) update_option('afg_credit_note', 'on');
@@ -358,6 +365,17 @@ upgrade_handler();
                                  use ColorBox instead.</font></td>
                               </tr>
 
+
+                              <tr valign='top'>
+                                 <th scope='row'>Disable View_on_Flickr Link?</th>
+                                 <td><input type='checkbox' name='afg_view_on_flickr' value='off'
+<?php
+    if (get_option('afg_view_on_flickr', 'off') == 'off') {
+        echo 'checked=\'\'';
+    }
+?>/></td>
+                                 <td><font size='2'>If you don't want the View_on_Flickr link in the slideshow.</td>
+                                 </tr>
 
                               <tr valign='top'>
                                  <th scope='row'>Background Color</th>

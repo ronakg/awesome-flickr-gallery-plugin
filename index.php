@@ -3,8 +3,8 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.3.6
-   Author: Ronak Gandhi
+   Version: 3.3.6sj
+   Author: Ronak Gandhi (slightly modified by susanne_j@gmx.de)
    Author URI: http://www.ronakg.com
    License: GPL2
 
@@ -165,6 +165,7 @@ function afg_display_gallery($atts) {
     $user_id = get_option('afg_user_id');
     $disable_slideshow = (get_afg_option($gallery, 'slideshow_option') == 'disable');
     $slideshow_option = get_afg_option($gallery, 'slideshow_option');
+	$view_on_flickr = get_afg_option($gallery, 'view_on_flickr');
 
     $per_page = get_afg_option($gallery, 'per_page');
     $sort_order = get_afg_option($gallery, 'sort_order');
@@ -229,6 +230,7 @@ function afg_display_gallery($atts) {
         " - Pagination - " . $pagination .
         " - Slideshow - " . $slideshow_option .
         " - Disable slideshow? - " . $disable_slideshow .
+		" - View on flickr link? - " . $view_on_flickr .
         "-->";
 
     $extras = 'url_l, description, date_upload, date_taken, owner_name';
@@ -388,7 +390,10 @@ function afg_display_gallery($atts) {
             if ($slideshow_option == 'highslide' && $p_description) {
                 $photo_title_text .= '<br /><span style="font-size:0.8em;">' . $p_description . '</span>';
             }
-            $photo_title_text .= ' • <a style="font-size:0.8em;" href="http://www.flickr.com/photos/' . $photo['owner'] . '/' . $photo['id'] . '/" target="_blank">View on Flickr</a>';
+			//FIXME
+			if ($view_on_flickr == 'on') {
+				$photo_title_text .= ' • <a style="font-size:0.8em;" href="http://www.flickr.com/photos/' . $photo['owner'] . '/' . $photo['id'] . '/" target="_blank">View on Flickr</a>';
+			}
 
             $photo_title_text = esc_attr($photo_title_text);
 

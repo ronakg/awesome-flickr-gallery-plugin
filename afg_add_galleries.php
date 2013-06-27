@@ -67,6 +67,7 @@ function afg_add_gallery() {
                 'descr' => afg_filter($_POST['afg_descr']),
                 'columns' => afg_filter($_POST['afg_columns']),
                 'slideshow_option' => afg_filter($_POST['afg_slideshow_option']),
+				'view_on_flickr' => afg_filter($_POST['afg_view_on_flickr']),
                 'credit_note' => afg_filter($_POST['afg_credit_note']),
                 'bg_color' => afg_filter($_POST['afg_bg_color']),
                 'width' => afg_filter($_POST['afg_width']),

@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', site_url());
 define('DEBUG', false);
-define('VERSION', '3.3.6');
+define('VERSION', '3.3.6sj');
 
 $afg_sort_order_map = array(
     'default' => 'Default',
@@ -308,7 +308,15 @@ function afg_generate_gallery_settings_table() {
             <i>Awesome Flickr Gallery</i> on a commercial website, you need to purchase a license from their website
             <a href='http://highslide.com/#licence' target='_blank'>here</a>.  If you want a free slideshow,
             use ColorBox instead.</font></td>
-            </tr>
+        </tr>
+
+        <tr valign='top'>
+        <th scope='row'>Disable View_on_Flickr Link?</th>
+        <td><select name='afg_view_on_flickr' id='afg_view_on_flickr'>
+        " . afg_generate_options($afg_yes_no_map, 'default', True, $afg_yes_no_map[get_option('afg_view_on_flickr')]) . "
+        </select></td>
+        <td><font size='2'>If you don't want the View_on_Flickr link in the slideshow.</td>
+        </tr>
 
         <tr valign='top'>
         <th scope='row'>Background Color</th>
@@ -425,6 +433,7 @@ function afg_reference_box() {
     $message .= "<br />Gallery Width - <b>" . ((get_option('afg_width') == 'auto')?"Automatic":get_option('afg_width') . "%") . "</b>";
     $message .= "<br />Pagination - <b>" . get_option('afg_pagination') . "</b>";
     $message .= "<br />Credit Note - <b>" . get_option('afg_credit_note') . "</b>";
+	$message .= "<br />View on Flickr - <b>" . get_option('afg_view_on_flickr') . "</b>";
     return afg_box('Default Settings for Reference', $message);
 }
 
