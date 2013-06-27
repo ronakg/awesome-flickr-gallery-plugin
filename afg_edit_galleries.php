@@ -26,6 +26,7 @@ if (isset($_POST['afg_edit_gallery_name']) && $_POST['afg_edit_gallery_name']) {
         'captions' => afg_filter($_POST['afg_captions']),
         'descr' => afg_filter($_POST['afg_descr']),
         'columns' => afg_filter($_POST['afg_columns']),
+		'flowlayout' => afg_filter($_POST['afg_flowlayout']),
         'slideshow_option' => afg_filter($_POST['afg_slideshow_option']),
 		'view_on_flickr' => afg_filter($_POST['afg_view_on_flickr']),
         'credit_note' => afg_filter($_POST['afg_credit_note']),

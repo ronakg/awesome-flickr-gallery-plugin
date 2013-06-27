@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', site_url());
 define('DEBUG', false);
-define('VERSION', '3.3.6sj_1');
+define('VERSION', '3.3.6sj_2');
 
 $afg_sort_order_map = array(
     'default' => 'Default',
@@ -300,6 +300,16 @@ function afg_generate_gallery_settings_table() {
         </tr>
 
         <tr valign='top'>
+        <th scope='row'>Use a flowting layout if neccessary?</th>
+        <td><select name='afg_flowlayout' id='afg_flowlayout'>
+        " . afg_generate_options($afg_on_off_map, 'default', True, $afg_on_off_map[get_option('afg_flowlayout')]) . "
+        </select></td>
+        <td><font size='2'>The above selected columns are displayed, if the page is wide enough. But if it's 
+		displayed e.g. on a mobile phone, you could use this option, which negates in the case that there is not
+		enough space, the column count.</font></td>
+        </tr>
+
+        <tr valign='top'>
         <th scope='row'>Slideshow Behavior</th>
         <td><select name='afg_slideshow_option' id='afg_slideshow_option'>
         " . afg_generate_options($afg_slideshow_map, 'default', True, $afg_slideshow_map[get_option('afg_slideshow_option')]) . "
@@ -434,6 +444,7 @@ function afg_reference_box() {
     $message .= "<br />Pagination - <b>" . get_option('afg_pagination') . "</b>";
     $message .= "<br />Credit Note - <b>" . get_option('afg_credit_note') . "</b>";
 	$message .= "<br />View on Flickr - <b>" . get_option('afg_view_on_flickr') . "</b>";
+	$message .= "<br />Use a flowting layout - <b>" . get_option('afg_flowlayout') . "</b>";
     return afg_box('Default Settings for Reference', $message);
 }
 

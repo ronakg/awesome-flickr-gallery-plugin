@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.3.6sj_1
+   Version: 3.3.6sj_2
    Author: Ronak Gandhi (slightly modified by susanne_j@gmx.de)
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -174,13 +174,17 @@ function afg_display_gallery($atts) {
     $photo_descr = get_afg_option($gallery, 'descr');
     $bg_color = get_afg_option($gallery, 'bg_color');
     $columns = get_afg_option($gallery, 'columns');
+	$flowlayout = get_afg_option($gallery, 'flowlayout');
     $credit_note = get_afg_option($gallery, 'credit_note');
     $gallery_width = get_afg_option($gallery, 'width');
     $pagination = get_afg_option($gallery, 'pagination');
+	
+	$img_cell_min_width = 0;
 
     if ($photo_size == 'custom') {
         $custom_size = get_afg_option($gallery, 'custom_size');
         $custom_size_square = get_afg_option($gallery, 'custom_size_square');
+		$img_cell_min_width = $custom_size + 10;
 
         if ($custom_size <= 70) $photo_size = '_s';
         else if ($custom_size <= 90) $photo_size = '_t';
@@ -190,6 +194,11 @@ function afg_display_gallery($atts) {
     else {
         $custom_size = 0;
         $custom_size_square = 'false';
+		
+		if ($photo_size == "_s") $img_cell_min_width = 85;
+		else if ($photo_size == "_t") $img_cell_min_width = 110;
+		else if ($photo_size == "_m") $img_cell_min_width = 250;
+		else if ($photo_size == "NULL") $img_cell_min_width = 510;
     }
 
     $photoset_id = NULL;
@@ -224,6 +233,7 @@ function afg_display_gallery($atts) {
         " - Captions - " . $photo_title .
         " - Description - " . $photo_descr .
         " - Columns - " . $columns .
+		" - Flowlayout - " . $flowlayout . 
         " - Credit Note - " . $credit_note .
         " - Background Color - " . $bg_color .
         " - Width - " . $gallery_width .
@@ -390,7 +400,6 @@ function afg_display_gallery($atts) {
             if ($slideshow_option == 'highslide' && $p_description) {
                 $photo_title_text .= '<br /><span style="font-size:0.8em;">' . $p_description . '</span>';
             }
-			//FIXME
 			if ($view_on_flickr == 'on') {
 				$photo_title_text .= ' • <a style="font-size:0.8em;" href="http://www.flickr.com/photos/' . $photo['owner'] . '/' . $photo['id'] . '/" target="_blank">View on Flickr</a>';
 			}
@@ -402,10 +411,16 @@ function afg_display_gallery($atts) {
             }
         }
 
-        if ($cur_col % $columns == 0) $disp_gallery .= "<div class='afg-row'>";
+		if ($flowlayout != 'on') {
+			if ($cur_col % $columns == 0) $disp_gallery .= "<div class='afg-row'>";
+		}
 
         if ( ($photo_count <= $per_page * $cur_page) && ($photo_count > $per_page * ($cur_page - 1)) ) {
-            $disp_gallery .= "<div class='afg-cell' style='width:${column_width}%;'>";
+			if ($flowlayout == 'on') {
+				$disp_gallery .= "<div class='afg-cell2' style='min-width: ${img_cell_min_width}px; width:${column_width}%;'>";
+			} else {
+				$disp_gallery .= "<div class='afg-cell' style='width:${column_width}%;'>";
+			}
 
             $pid_len = strlen($photo['id']);
 
@@ -470,7 +485,10 @@ function afg_display_gallery($atts) {
                     " <img class='afg-img' alt='{$photo_title_text}' $photo_src_text width='75' height='75'></a> ";
             }
         }
-        if ($cur_col % $columns == 0) $disp_gallery .= '</div>';
+		
+		if ($flowlayout != 'on') {
+			if ($cur_col % $columns == 0) $disp_gallery .= '</div>';
+		}
         $photo_count += 1;
     }
 
