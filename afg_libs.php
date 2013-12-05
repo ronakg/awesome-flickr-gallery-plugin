@@ -173,7 +173,7 @@ function afg_get_photo_url($farm, $server, $pid, $secret, $size) {
     if ($size == 'NULL') {
         $size = '';
     }
-    return urlencode("http://farm$farm.static.flickr.com/$server/{$pid}_$secret$size.jpg");
+    return "http://farm".urlencode($farm).".static.flickr.com/".urlencode($server)."/".urlencode($pid)."_".urlencode($secret).urlencode($size).".jpg";
 }
 
 function afg_get_photo_page_url($pid, $uid) {
