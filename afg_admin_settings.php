@@ -61,6 +61,8 @@ function afg_setup_options() {
     if (get_option('afg_slideshow_option') == '') update_option('afg_slideshow_option', 'colorbox');
     if (get_option('afg_custom_css') == '') update_option('afg_custom_css', '/* Start writing your custom CSS here */');
     if (get_option('afg_disable_slideshow')) update_option('afg_slideshow_option', 'disable');
+	if (!get_option('afg_view_on_flickr')) update_option('afg_view_on_flickr', 'on');
+	if (!get_option('afg_flowlayout')) update_option('afg_flowlayout', 'off');
 
     $galleries = get_option('afg_galleries');
     if (!$galleries) {
@@ -89,6 +91,7 @@ function afg_admin_init() {
     register_setting('afg_settings_group', 'afg_captions');
     register_setting('afg_settings_group', 'afg_descr');
     register_setting('afg_settings_group', 'afg_columns');
+	register_setting('afg_settings_group', 'afg_flowlayout');
     register_setting('afg_settings_group', 'afg_credit_note');
     register_setting('afg_settings_group', 'afg_bg_color');
     register_setting('afg_settings_group', 'afg_version');
@@ -99,6 +102,7 @@ function afg_admin_init() {
     register_setting('afg_settings_group', 'afg_include_private');
     register_setting('afg_settings_group', 'afg_auth_token');
     register_setting('afg_settings_group', 'afg_disable_slideshow');
+	register_setting('afg_settings_group', 'afg_view_on_flickr');
     register_setting('afg_settings_group', 'afg_slideshow_option');
     register_setting('afg_settings_group', 'afg_dismis_ss_msg');
     register_setting('afg_settings_group', 'afg_api_secret');
@@ -133,6 +137,8 @@ function afg_get_all_options() {
         'afg_api_secret' => get_option('afg_api_secret'),
         'afg_flickr_token' => get_option('afg_flickr_token'),
         'afg_slideshow_option' => get_option('afg_slideshow_option'),
+		'afg_view_on_flickr' => get_option('afg_view_on_flickr'),
+		'afg_flowlayout' => get_option('afg_flowlayout'),
     );
 }
 
@@ -228,8 +234,16 @@ upgrade_handler();
             update_option('afg_captions', $_POST['afg_captions']);
             update_option('afg_descr', $_POST['afg_descr']);
             update_option('afg_columns', $_POST['afg_columns']);
+			
+            if (isset($_POST['afg_flowlayout']) && $_POST['afg_flowlayout']) update_option('afg_flowlayout', 'on');
+            else update_option('afg_flowlayout', 'off');
+			
             update_option('afg_slideshow_option', $_POST['afg_slideshow_option']);
-            update_option('afg_width', $_POST['afg_width']);
+			
+            if (isset($_POST['afg_view_on_flickr']) && $_POST['afg_view_on_flickr']) update_option('afg_view_on_flickr', 'off');
+            else update_option('afg_view_on_flickr', 'on');
+			
+			update_option('afg_width', $_POST['afg_width']);
             update_option('afg_bg_color', $_POST['afg_bg_color']);
 
             if (isset($_POST['afg_credit_note']) && $_POST['afg_credit_note']) update_option('afg_credit_note', 'on');
@@ -348,6 +362,19 @@ upgrade_handler();
                               </tr>
 
                               <tr valign='top'>
+                                 <th scope='row'>Use a flowting layout if neccessary?</th>
+                                 <td><input type='checkbox' name='afg_flowlayout' value='on'
+<?php
+    if (get_option('afg_flowlayout', 'on') == 'on') {
+        echo 'checked=\'\'';
+    }
+?>/></td>
+                                 <td><font size='2'>The above selected columns are displayed, if the page is wide enough. But if it's 
+									displayed e.g. on a mobile phone, you could use this option, which negates in the case that there is not
+									enough space, the column count.</td>
+                            </tr>
+
+                              <tr valign='top'>
                                  <th scope='row'>Slideshow Behavior</th>
                                  <td><select name='afg_slideshow_option'>
                                        <?php echo afg_generate_options($afg_slideshow_map, get_option('afg_slideshow_option', 'colorbox')); ?>
@@ -358,6 +385,16 @@ upgrade_handler();
                                  use ColorBox instead.</font></td>
                               </tr>
 
+                              <tr valign='top'>
+                                 <th scope='row'>Disable View_on_Flickr Link?</th>
+                                 <td><input type='checkbox' name='afg_view_on_flickr' value='off'
+<?php
+    if (get_option('afg_view_on_flickr', 'off') == 'off') {
+        echo 'checked=\'\'';
+    }
+?>/></td>
+                                 <td><font size='2'>If you don't want the View_on_Flickr link in the slideshow.</td>
+                                 </tr>
 
                               <tr valign='top'>
                                  <th scope='row'>Background Color</th>

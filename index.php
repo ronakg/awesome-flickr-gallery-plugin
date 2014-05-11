@@ -3,8 +3,8 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.3.6
-   Author: Ronak Gandhi
+   Version: 3.3.6sj_3
+   Author: Ronak Gandhi (slightly modified by susanne_j@gmx.de)
    Author URI: http://www.ronakg.com
    License: GPL2
 
@@ -58,6 +58,7 @@ if (!is_admin()) {
     /* Short code to load Awesome Flickr Gallery plugin.  Detects the word
      * [AFG_gallery] in posts or pages and loads the gallery.
      */
+	add_shortcode('AFG_random_photo', 'afg_random_photo');
     add_shortcode('AFG_gallery', 'afg_display_gallery');
     add_filter('widget_text', 'do_shortcode', 11);
 
@@ -165,6 +166,7 @@ function afg_display_gallery($atts) {
     $user_id = get_option('afg_user_id');
     $disable_slideshow = (get_afg_option($gallery, 'slideshow_option') == 'disable');
     $slideshow_option = get_afg_option($gallery, 'slideshow_option');
+	$view_on_flickr = get_afg_option($gallery, 'view_on_flickr');
 
     $per_page = get_afg_option($gallery, 'per_page');
     $sort_order = get_afg_option($gallery, 'sort_order');
@@ -173,13 +175,17 @@ function afg_display_gallery($atts) {
     $photo_descr = get_afg_option($gallery, 'descr');
     $bg_color = get_afg_option($gallery, 'bg_color');
     $columns = get_afg_option($gallery, 'columns');
+	$flowlayout = get_afg_option($gallery, 'flowlayout');
     $credit_note = get_afg_option($gallery, 'credit_note');
     $gallery_width = get_afg_option($gallery, 'width');
     $pagination = get_afg_option($gallery, 'pagination');
+	
+	$img_cell_min_width = 0;
 
     if ($photo_size == 'custom') {
         $custom_size = get_afg_option($gallery, 'custom_size');
         $custom_size_square = get_afg_option($gallery, 'custom_size_square');
+		$img_cell_min_width = $custom_size + 10;
 
         if ($custom_size <= 70) $photo_size = '_s';
         else if ($custom_size <= 90) $photo_size = '_t';
@@ -189,6 +195,11 @@ function afg_display_gallery($atts) {
     else {
         $custom_size = 0;
         $custom_size_square = 'false';
+		
+		if ($photo_size == "_s") $img_cell_min_width = 85;
+		else if ($photo_size == "_t") $img_cell_min_width = 110;
+		else if ($photo_size == "_m") $img_cell_min_width = 250;
+		else if ($photo_size == "NULL") $img_cell_min_width = 510;
     }
 
     $photoset_id = NULL;
@@ -223,12 +234,14 @@ function afg_display_gallery($atts) {
         " - Captions - " . $photo_title .
         " - Description - " . $photo_descr .
         " - Columns - " . $columns .
+		" - Flowlayout - " . $flowlayout . 
         " - Credit Note - " . $credit_note .
         " - Background Color - " . $bg_color .
         " - Width - " . $gallery_width .
         " - Pagination - " . $pagination .
         " - Slideshow - " . $slideshow_option .
         " - Disable slideshow? - " . $disable_slideshow .
+		" - View on flickr link? - " . $view_on_flickr .
         "-->";
 
     $extras = 'url_l, description, date_upload, date_taken, owner_name';
@@ -388,7 +401,9 @@ function afg_display_gallery($atts) {
             if ($slideshow_option == 'highslide' && $p_description) {
                 $photo_title_text .= '<br /><span style="font-size:0.8em;">' . $p_description . '</span>';
             }
-            $photo_title_text .= ' • <a style="font-size:0.8em;" href="http://www.flickr.com/photos/' . $photo['owner'] . '/' . $photo['id'] . '/" target="_blank">View on Flickr</a>';
+			if ($view_on_flickr == 'on') {
+				$photo_title_text .= ' • <a style="font-size:0.8em;" href="http://www.flickr.com/photos/' . $photo['owner'] . '/' . $photo['id'] . '/" target="_blank">View on Flickr</a>';
+			}
 
             $photo_title_text = esc_attr($photo_title_text);
 
@@ -397,10 +412,16 @@ function afg_display_gallery($atts) {
             }
         }
 
-        if ($cur_col % $columns == 0) $disp_gallery .= "<div class='afg-row'>";
+		if ($flowlayout != 'on') {
+			if ($cur_col % $columns == 0) $disp_gallery .= "<div class='afg-row'>";
+		}
 
         if ( ($photo_count <= $per_page * $cur_page) && ($photo_count > $per_page * ($cur_page - 1)) ) {
-            $disp_gallery .= "<div class='afg-cell' style='width:${column_width}%;'>";
+			if ($flowlayout == 'on') {
+				$disp_gallery .= "<div class='afg-cell2' style='min-width: ${img_cell_min_width}px; width:${column_width}%;'>";
+			} else {
+				$disp_gallery .= "<div class='afg-cell' style='width:${column_width}%;'>";
+			}
 
             $pid_len = strlen($photo['id']);
 
@@ -465,11 +486,16 @@ function afg_display_gallery($atts) {
                     " <img class='afg-img' alt='{$photo_title_text}' $photo_src_text width='75' height='75'></a> ";
             }
         }
-        if ($cur_col % $columns == 0) $disp_gallery .= '</div>';
+		
+		if ($flowlayout != 'on') {
+			if ($cur_col % $columns == 0) $disp_gallery .= '</div>'; /* closing div for afg-row in case of completely filled row */
+		}
         $photo_count += 1;
     }
 
-    if ($cur_col % $columns != 0) $disp_gallery .= '</div>';
+	if ($flowlayout != 'on') {
+		if ($cur_col % $columns != 0) $disp_gallery .= '</div>'; /* closing div for afg-row in case that the last row was not completely filled */
+	}
     $disp_gallery .= '</div>';
     if ($slideshow_option == 'highslide') $disp_gallery .= "</div>";
 
@@ -512,7 +538,7 @@ function afg_display_gallery($atts) {
             $disp_gallery .= "&nbsp;&nbsp;&nbsp;<a class='afg-page' href='{$cur_page_url}{$url_separator}afg{$id}_page_id=$next_page#afg-{$id}' title='Next Page'> next &#187; </a>&nbsp;";
         }
         $disp_gallery .= "<br />({$total_photos} Photos)";
-        $disp_gallery .= "</div>";
+        $disp_gallery .= "</div>"; /* Closing div for pagination */
     }
     if ($credit_note == 'on') {
         $disp_gallery .= "<br />";
@@ -523,6 +549,47 @@ function afg_display_gallery($atts) {
     }
     $disp_gallery .= "</div>";
     $disp_gallery .= "<!-- Awesome Flickr Gallery End -->";
+    return $disp_gallery;
+}
+
+/* Main function for the random photo display. */
+function afg_random_photo($atts) {
+    global $size_heading_map, $afg_text_color_map, $pf;
+
+    if (!get_option('afg_pagination')) update_option('afg_pagination', 'on');
+
+    extract( shortcode_atts( array(
+        'id' => '0',
+    ), $atts ) );
+
+    $cur_page = 1;
+    $cur_page_url = afg_get_cur_url();
+
+    preg_match("/afg{$id}_page_id=(?P<page_id>\d+)/", $cur_page_url, $matches);
+
+    if ($matches) {
+        $cur_page = ($matches['page_id']);
+        $match_pos = strpos($cur_page_url, "afg{$id}_page_id=$cur_page") - 1;
+        $cur_page_url = substr($cur_page_url, 0, $match_pos);
+        if(function_exists('qtrans_convertURL')) {
+            $cur_page_url = qtrans_convertURL($cur_page_url);
+        }
+    }
+
+    if (strpos($cur_page_url,'?') === false) $url_separator = '?';
+    else $url_separator = '&';
+
+    $galleries = get_option('afg_galleries');
+    $gallery = $galleries[$id];
+
+    $api_key = get_option('afg_api_key');
+    $user_id = get_option('afg_user_id');
+	
+	/* here's the processing! */
+	
+	$disp_gallery = "<!-- Awesome Flickr Random Photo Start -->";
+    $disp_gallery .= "<div>Random Photo</div>";
+    $disp_gallery .= "<!-- Awesome Flickr Random Photo End -->";
     return $disp_gallery;
 }
 ?>
