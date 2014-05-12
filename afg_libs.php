@@ -109,6 +109,45 @@ $afg_text_color_map = array(
     'White' => 'Black',
 );
 
+function afg_get_sets_groups_galleries (&$photosets_map, &$groups_map, &$galleries_map, $user_id) {
+    global $pf;
+
+    $rsp_obj = $pf->photosets_getList($user_id);
+    if (!$pf->error_code) {
+        foreach($rsp_obj['photoset'] as $photoset) {
+            $photosets_map[$photoset['id']] = $photoset['title']['_content'];
+        }
+    }
+
+    $rsp_obj = $pf->galleries_getList($user_id);
+    if (!$pf->error_code) {
+        foreach($rsp_obj['galleries']['gallery'] as $gallery) {
+            $galleries_map[$gallery['id']] = $gallery['title']['_content'];
+        }
+    }
+
+    if (get_option('afg_flickr_token')) {
+        $rsp_obj = $pf->groups_pools_getGroups();
+        if (!$pf->error_code) {
+            foreach($rsp_obj['group'] as $group) {
+                $groups_map[$group['nsid']] = $group['name'];
+            }
+        }
+    }
+    else {
+        $rsp_obj = $pf->people_getPublicGroups($user_id);
+        if (!$pf->error_code) {
+            foreach($rsp_obj as $group) {
+                $groups_map[$group['nsid']] = $group['name'];
+            }
+        }
+    }
+
+    asort($photosets_map);
+    asort($groups_map);
+    asort($galleries_map);
+}
+
 function afg_get_cur_url() {
     $isHTTPS = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on");
     $port = (isset($_SERVER["SERVER_PORT"]) && ((!$isHTTPS && $_SERVER["SERVER_PORT"] != "80") || ($isHTTPS && $_SERVER["SERVER_PORT"] != "443")));
