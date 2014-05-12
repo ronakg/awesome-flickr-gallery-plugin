@@ -23,10 +23,9 @@ if ( !class_exists('afgFlickr') ) {
         var $api_key;
         var $secret;
 
- 		var $rest_endpoint = 'https://api.flickr.com/services/rest/';
-		var $upload_endpoint = 'https://up.flickr.com/services/upload/';
-		var $replace_endpoint = 'https://up.flickr.com/services/replace/';
-
+        var $rest_endpoint = 'https://api.flickr.com/services/rest/';
+        var $upload_endpoint = 'https://api.flickr.com/services/upload/';
+        var $replace_endpoint = 'https://api.flickr.com/services/replace/';
         var $req;
         var $response;
         var $parsed_response;
@@ -380,9 +379,9 @@ if ( !class_exists('afgFlickr') ) {
             }
 
             if ($size == "original") {
-                $url = "http://farm" . $photo['farm'] . ".static.flickr.com/" . $photo['server'] . "/" . $photo['id'] . "_" . $photo['originalsecret'] . "_o" . "." . $photo['originalformat'];
+                $url = "https://farm" . $photo['farm'] . ".static.flickr.com/" . $photo['server'] . "/" . $photo['id'] . "_" . $photo['originalsecret'] . "_o" . "." . $photo['originalformat'];
             } else {
-                $url = "http://farm" . $photo['farm'] . ".static.flickr.com/" . $photo['server'] . "/" . $photo['id'] . "_" . $photo['secret'] . $sizes[$size] . ".jpg";
+                $url = "https://farm" . $photo['farm'] . ".static.flickr.com/" . $photo['server'] . "/" . $photo['id'] . "_" . $photo['secret'] . $sizes[$size] . ".jpg";
             }
             return $url;
         }
@@ -392,7 +391,7 @@ if ( !class_exists('afgFlickr') ) {
              * website provides, but isn't available in the API. I'm providing this service as long
              * as it doesn't flood my server with requests and crash it all the time.
              */
-            return unserialize(file_get_contents('http://phpflickr.com/geodata/?format=php&lat=' . $lat . '&lon=' . $lon));
+            return unserialize(file_get_contents('https://phpflickr.com/geodata/?format=php&lat=' . $lat . '&lon=' . $lon));
         }
 
         function sync_upload ($photo, $title = null, $description = null, $tags = null, $is_public = null, $is_friend = null, $is_family = null) {
@@ -599,7 +598,7 @@ if ( !class_exists('afgFlickr') ) {
                 if ($this->service == "23") {
                     header("Location: http://www.23hq.com/services/auth/?api_key=" . $this->api_key . "&perms=" . $perms . "&api_sig=". $api_sig);
                 } else {
-                    header("Location: http://www.flickr.com/services/auth/?api_key=" . $this->api_key . "&perms=" . $perms . "&api_sig=". $api_sig);
+                    header("Location: https://www.flickr.com/services/auth/?api_key=" . $this->api_key . "&perms=" . $perms . "&api_sig=". $api_sig);
                 }
                 exit;
             } else {

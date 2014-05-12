@@ -7,23 +7,22 @@ include_once('afg_advanced_settings.php');
 require_once('afgFlickr/afgFlickr.php');
 
 add_action('admin_init', 'afg_admin_init');
-add_action('admin_init', 'afg_auth_read');
 add_action('admin_menu', 'afg_admin_menu');
 add_action('wp_ajax_afg_gallery_auth', 'afg_auth_init');
 
 function afg_admin_menu() {
-    add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery', 'create_users', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png", 898);
-    $afg_main_page = add_submenu_page('afg_plugin_page', 'Default Settings | Awesome Flickr Gallery', 'Default Settings', 'create_users', 'afg_plugin_page', 'afg_admin_html_page');
-    $afg_add_page = add_submenu_page('afg_plugin_page', 'Add Gallery | Awesome Flickr Gallery', 'Add Gallery', 'moderate_comments', 'afg_add_gallery_page', 'afg_add_gallery');
-    $afg_saved_page = add_submenu_page('afg_plugin_page', 'Saved Galleries | Awesome Flickr Gallery', 'Saved Galleries', 'moderate_comments', 'afg_view_edit_galleries_page', 'afg_view_delete_galleries');
-    $afg_edit_page = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'moderate_comments', 'afg_edit_galleries_page', 'afg_edit_galleries');
-    $afg_advanced_page = add_submenu_page('afg_plugin_page', 'Advanced Settings | Awesome Flickr Gallery', 'Advanced Settings', 'create_users', 'afg_advanced_page', 'afg_advanced_settings_page');
-   
+    add_menu_page('Awesome Flickr Gallery', 'Awesome Flickr Gallery', 'publish_pages', 'afg_plugin_page', 'afg_admin_html_page', BASE_URL . "/images/afg_logo.png", 898);
+    $afg_main_page = add_submenu_page('afg_plugin_page', 'Default Settings | Awesome Flickr Gallery', 'Default Settings', 'publish_pages', 'afg_plugin_page', 'afg_admin_html_page');
+    $afg_add_page = add_submenu_page('afg_plugin_page', 'Add Gallery | Awesome Flickr Gallery', 'Add Gallery', 'edit_posts', 'afg_add_gallery_page', 'afg_add_gallery');
+    $afg_saved_page = add_submenu_page('afg_plugin_page', 'Saved Galleries | Awesome Flickr Gallery', 'Saved Galleries', 'edit_posts', 'afg_view_edit_galleries_page', 'afg_view_delete_galleries');
+    $afg_edit_page = add_submenu_page('afg_plugin_page', 'Edit Galleries | Awesome Flickr Gallery', 'Edit Galleries', 'edit_posts', 'afg_edit_galleries_page', 'afg_edit_galleries');
+    $afg_advanced_page = add_submenu_page('afg_plugin_page', 'Advanced Settings | Awesome Flickr Gallery', 'Advanced Settings', 'edit_pages', 'afg_advanced_page', 'afg_advanced_settings_page');
+
     add_action('admin_print_styles-' . $afg_edit_page, 'afg_edit_galleries_header');
     add_action('admin_print_styles-' . $afg_add_page, 'afg_edit_galleries_header');
     add_action('admin_print_styles-' . $afg_saved_page, 'afg_view_delete_galleries_header');
     add_action('admin_print_styles-' . $afg_main_page, 'afg_admin_settings_header');
-    
+
     // adds "Settings" link to the plugin action page
     add_filter( 'plugin_action_links', 'afg_add_settings_links', 10, 2);
 
@@ -78,42 +77,6 @@ function afg_setup_options() {
     update_option('afg_version', VERSION);
 }
 
-/* Keep afg_admin_init() and afg_get_all_options() in sync all the time
- */
-
-function afg_admin_init() {
-    register_setting('afg_settings_group', 'afg_api_key');
-    register_setting('afg_settings_group', 'afg_user_id');
-    register_setting('afg_settings_group', 'afg_per_page');
-    register_setting('afg_settings_group', 'afg_photo_size');
-    register_setting('afg_settings_group', 'afg_captions');
-    register_setting('afg_settings_group', 'afg_descr');
-    register_setting('afg_settings_group', 'afg_columns');
-    register_setting('afg_settings_group', 'afg_credit_note');
-    register_setting('afg_settings_group', 'afg_bg_color');
-    register_setting('afg_settings_group', 'afg_version');
-    register_setting('afg_settings_group', 'afg_galleries');
-    register_setting('afg_settings_group', 'afg_width');
-    register_setting('afg_settings_group', 'afg_pagination');
-    register_setting('afg_settings_group', 'afg_users');
-    register_setting('afg_settings_group', 'afg_include_private');
-    register_setting('afg_settings_group', 'afg_auth_token');
-    register_setting('afg_settings_group', 'afg_disable_slideshow');
-    register_setting('afg_settings_group', 'afg_slideshow_option');
-    register_setting('afg_settings_group', 'afg_dismis_ss_msg');
-    register_setting('afg_settings_group', 'afg_api_secret');
-    register_setting('afg_settings_group', 'afg_flickr_token');
-    register_setting('afg_settings_group', 'afg_custom_size');
-    register_setting('afg_settings_group', 'afg_custom_size_square');
-    register_setting('afg_settings_group', 'afg_custom_css');
-    register_setting('afg_settings_group', 'afg_sort_order');
-
-    // Register javascripts
-    wp_register_script('edit-galleries-script', BASE_URL . '/js/afg_edit_galleries.js');
-    wp_register_script('admin-settings-script', BASE_URL . '/js/afg_admin_settings.js');
-    wp_register_script('view-delete-galleries-script', BASE_URL . '/js/afg_saved_galleries.js');
-}
-
 function afg_get_all_options() {
     return array(
         'afg_api_key' => get_option('afg_api_key'),
@@ -163,33 +126,72 @@ function afg_auth_read() {
     }
 }
 
+/* Keep afg_admin_init() and afg_get_all_options() in sync all the time
+ */
+function afg_admin_init() {
+    // Register all the afg options
+    register_setting('afg_settings_group', 'afg_api_key');
+    register_setting('afg_settings_group', 'afg_user_id');
+    register_setting('afg_settings_group', 'afg_per_page');
+    register_setting('afg_settings_group', 'afg_photo_size');
+    register_setting('afg_settings_group', 'afg_captions');
+    register_setting('afg_settings_group', 'afg_descr');
+    register_setting('afg_settings_group', 'afg_columns');
+    register_setting('afg_settings_group', 'afg_credit_note');
+    register_setting('afg_settings_group', 'afg_bg_color');
+    register_setting('afg_settings_group', 'afg_version');
+    register_setting('afg_settings_group', 'afg_galleries');
+    register_setting('afg_settings_group', 'afg_width');
+    register_setting('afg_settings_group', 'afg_pagination');
+    register_setting('afg_settings_group', 'afg_users');
+    register_setting('afg_settings_group', 'afg_include_private');
+    register_setting('afg_settings_group', 'afg_auth_token');
+    register_setting('afg_settings_group', 'afg_disable_slideshow');
+    register_setting('afg_settings_group', 'afg_slideshow_option');
+    register_setting('afg_settings_group', 'afg_dismis_ss_msg');
+    register_setting('afg_settings_group', 'afg_api_secret');
+    register_setting('afg_settings_group', 'afg_flickr_token');
+    register_setting('afg_settings_group', 'afg_custom_size');
+    register_setting('afg_settings_group', 'afg_custom_size_square');
+    register_setting('afg_settings_group', 'afg_custom_css');
+    register_setting('afg_settings_group', 'afg_sort_order');
+
+    // Register javascripts
+    wp_register_script('edit-galleries-script', BASE_URL . '/js/afg_edit_galleries.js');
+    wp_register_script('admin-settings-script', BASE_URL . '/js/afg_admin_settings.js');
+    wp_register_script('view-delete-galleries-script', BASE_URL . '/js/afg_saved_galleries.js');
+
+    // Get afgFlickr auth token
+    afg_auth_read();
+}
+
+
 create_afgFlickr_obj();
 
 function afg_admin_html_page() {
-    global $afg_photo_size_map, $afg_on_off_map, $afg_descr_map, 
+    global $afg_photo_size_map, $afg_on_off_map, $afg_descr_map,
         $afg_columns_map, $afg_bg_color_map, $afg_width_map, $pf,
         $afg_sort_order_map, $afg_slideshow_map;
 ?>
-   <div class='wrap'>
-   <h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
-    echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Awesome Flickr Gallery Settings</h2>
-
 <?php
 function upgrade_handler() {
     $galleries = get_option('afg_galleries');
-    foreach ($galleries as &$gallery) {
-        if (!isset($gallery['slideshow_option']))
-            $gallery['slideshow_option'] = 'colorbox';
+    if ($galleries) {
+        foreach ($galleries as &$gallery) {
+            if (!isset($gallery['slideshow_option']))
+                $gallery['slideshow_option'] = 'colorbox';
+        }
+        update_option('afg_galleries', $galleries);
     }
-    update_option('afg_galleries', $galleries);
     unset($gallery);
 
 }
 
 upgrade_handler();
 
-    if ($_POST) {
-        global $pf, $custom_size_err_msg;
+if ($_POST)
+{
+    global $pf, $custom_size_err_msg;
 
         if (isset($_POST['submit']) && $_POST['submit'] == 'Delete Cached Galleries') {
             delete_afg_caches();
@@ -244,170 +246,173 @@ upgrade_handler();
             }
         }
         create_afgFlickr_obj();
-
     }
     $url=$_SERVER['REQUEST_URI'];
 ?>
+
     <form method='post' action='<?php echo $url ?>'>
+   <div id='afg-wrap'>
+        <h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
+        echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Awesome Flickr Gallery Settings</h2>
+
         <?php echo afg_generate_version_line() ?>
-               <div class="postbox-container" style="width:69%; margin-right:1%">
-                  <div id="poststuff">
-                     <div class="postbox" style='box-shadow:0 0 2px'>
-                        <h3>Flickr Settings</h3>
-                        <table class='form-table'>
-                           <tr valign='top'>
-                              <th scope='row'>Flickr API Key</th>
-                              <td style='width:28%'><input type='text' name='afg_api_key' size='30' value="<?php echo get_option('afg_api_key'); ?>" ><font style='color:red; font-weight:bold'>*</font></input> </td>
-                              <td><font size='2'>Don't have a Flickr API Key?  Get it from <a href="http://www.flickr.com/services/api/keys/" target='blank'>here.</a> Go through the <a href='http://www.flickr.com/services/api/tos/'>Flickr API Terms of Service.</a></font></td>
-                           </tr>
-                                <th scope='row'>Flickr API Secret</th>
-                           <td style="vertical-align:top"><input type='text' name='afg_api_secret' id='afg_api_secret' value="<?php echo get_option('afg_api_secret'); ?>"/>
-                            <br /><br />
-<?php if (get_option('afg_api_secret')) { 
-    if (get_option('afg_flickr_token')) { echo "<input type='button' class='button-secondary' value='Access Granted' disabled=''"; } else {
-        ?>
-    <input type="button" class="button-primary" value="Grant Access" onClick="document.location.href='<?php echo get_admin_url() .  'admin-ajax.php?action=afg_gallery_auth'; ?>';"/>
-                        <?php }}
-    else {
-    echo "<input type='button' class='button-secondary' value='Grant Access' disabled=''";    
-} ?>
-                           </td>
-                           <td style="vertical-align:top"><font size='2'><b>ONLY</b> If you want to include your <b>Private Photos</b> in your galleries, enter your Flickr API Secret here
-                            and click Save Changes.</font>
-                        </td>
-                    </tr>
-
-                           <tr valign='top'>
-                              <th scope='row'>Flickr User ID</th>
-                              <td><input type='text' name='afg_user_id' size='30' value="<?php echo get_option('afg_user_id'); ?>" /><font style='color:red; font-weight:bold'>*</font> </td>
-                              <td><font size='2'>Don't know your Flickr User ID?  Get it from <a href="http://idgettr.com/" target='blank'>here.</a></font></td>
-                           </tr>
-                        </table>
-                     </div>
-                  </div>
-
-                  <div id="poststuff">
-                     <div class="postbox" style='box-shadow:0 0 2px'>
+            <div id="afg-main-box">
+                        <h3>Flickr User Settings</h3>
+                            <table class='widefat afg-settings-box'>
+                                <tr>
+                                    <th class="afg-label"></th>
+                                    <th class="afg-input"></th>
+                                    <th class="afg-help-bubble"></th>
+                                </tr>
+                                <tr>
+                                  <td>Flickr User ID</td>
+                                  <td><input class='afg-input' type='text' name='afg_user_id' value="<?php echo get_option('afg_user_id'); ?>" /><b>*</b></td>
+                                  <td><div class="afg-help">Don't know your Flickr User ID?  Get it from <a href="http://idgettr.com/" target='blank'>here.</a></div></td>
+                               </tr>
+                                <tr>
+                                  <td>Flickr API Key</td>
+                                  <td><input class='afg-input' type='text' name='afg_api_key' value="<?php echo get_option('afg_api_key'); ?>" ><b>*</b></input> </td>
+                                  <td> <div class='afg-help'>Don't have a Flickr API Key?  Get it from <a href="http://www.flickr.com/services/api/keys/" target='blank'>here.</a> Go through the <a href='http://www.flickr.com/services/api/tos/'>Flickr API Terms of Service.</a></div></td>
+                                   </tr>
+                                    <tr>
+                                        <td>Flickr API Secret</td>
+                               <td><input class='afg-input' type='text' name='afg_api_secret' id='afg_api_secret' value="<?php echo get_option('afg_api_secret'); ?>"/>
+                                <br /><br />
+    <?php if (get_option('afg_api_secret')) {
+        if (get_option('afg_flickr_token')) { echo "<input type='button' class='button-secondary' value='Access Granted' disabled=''"; } else {
+            ?>
+        <input type="button" class="button-primary" value="Grant Access" onClick="document.location.href='<?php echo get_admin_url() .  'admin-ajax.php?action=afg_gallery_auth'; ?>';"/>
+                            <?php }}
+        else {
+        echo "<input type='button' class='button-secondary' value='Grant Access' disabled=''";
+    } ?>
+                               </td>
+                               <td> <div class="afg-help"><b>ONLY</b> If you want to include your <b>Private Photos</b> in your galleries, enter your Flickr API Secret here and click Save Changes.
+                            </div></td>
+                        </tr>
+        </table>
+                        <table class='widefat afg-settings-box'>
                         <h3>Gallery Settings</h3>
-                        <table class='form-table'>
-
-                           <tr valign='top'>
-                              <th scope='row'>Max Photos Per Page</th>
-                              <td style="width:28%"><input type='text' name='afg_per_page' id='afg_per_page' onblur='verifyPerPageBlank()' size='3' maxlength='3' value="<?php
+                           <tr>
+                               <th class="afg-label"></th>
+                               <th class="afg-input"></th>
+                               <th class="afg-help-bubble"></th>
+                            </tr>
+                            <tr>
+                              <td>Max Photos Per Page</td>
+                              <td><input type='text' name='afg_per_page' id='afg_per_page' onblur='verifyPerPageBlank()' maxlength='3' value="<?php
     echo get_option('afg_per_page')?get_option('afg_per_page'):10;
-?>" /><font style='color:red; font-weight:bold'>*</font></td>
+?>" /><b>*</b></td>
                            </tr>
 
-                            <tr valign='top'>
-                              <th scope='row'>Sort order of Photos</th>
+                            <tr>
+                              <td>Sort order of Photos</td>
                               <td><select type='text' name='afg_sort_order' id='afg_sort_order'>
                                     <?php echo afg_generate_options($afg_sort_order_map, get_option('afg_sort_order', 'flickr')); ?>
                               </select>
-                              <td><font size='2'>Set the sort order of the photos as per your liking and forget about how photos are arranged on Flickr.</font></td>
+                              <td class="afg-help">Set the sort order of the photos as per your liking and forget about how photos are arranged on Flickr.</td>
                               </td>
                            </tr>
 
-                           <tr valign='top'>
-                              <th scope='row'>Size of the Photos</th>
+                           <tr>
+                              <td>Size of the Photos</td>
                               <td><select name='afg_photo_size' id='afg_photo_size' onchange='customPhotoSize()'>
                                     <?php echo afg_generate_options($afg_photo_size_map, get_option('afg_photo_size', '_m')); ?>
                               </select></td>
                            </tr>
 
                            <tr valign='top' id='afg_custom_size_block' style='display:none'>
-                             <th>Custom Width</th>
-                             <td><input type='text' size='3' maxlength='3' name='afg_custom_size' id='afg_custom_size' onblur='verifyCustomSizeBlank()' value="<?php echo get_option('afg_custom_size')?get_option('afg_custom_size'):100; ?>"><font color='red'>*</font> (in px)
+                             <td>Custom Width</td>
+                             <td><input type='text' size='3' maxlength='3' name='afg_custom_size' id='afg_custom_size' onblur='verifyCustomSizeBlank()' value="<?php echo get_option('afg_custom_size')?get_option('afg_custom_size'):100; ?>">* (in px)
                              &nbsp;Square? <input type='checkbox' name='afg_custom_size_square' value='true' <?php if (get_option('afg_custom_size_square') == 'true') echo "checked=''"; ?>>
                              </td>
-                             <td><font size='2'>Fill in the exact width for the photos (min 50, max 500).  Height of the photos will be adjusted
+                             <td class="afg-help">Fill in the exact width for the photos (min 50, max 500).  Height of the photos will be adjusted
                                                 accordingly to maintain aspect ratio of the photo. Enable <b>Square</b> to crop
-                                                the photo to a square aspect ratio.</td>
+                                                the photo to a square aspect ratio.<br />Warning: Custom photo sizes may not work with your webhost, please use built-in sizes, it's more reliable and faster too.</td>
                            </tr>
 
-                           <tr valign='top'>
-                              <th scope='row'>Photo Titles</th>
+                           <tr>
+                              <td>Photo Titles</td>
                               <td><select name='afg_captions'>
                                     <?php echo afg_generate_options($afg_on_off_map, get_option('afg_captions', 'on')); ?>
                               </select></td>
-                              <td><font size='2'>Photo Title setting applies only to Thumbnail (and above) size photos.</font></td>
+                              <td class="afg-help">Photo Title setting applies only to Thumbnail (and above) size photos.</td>
                            </tr>
 
-                           <tr valign='top'>
-                              <th scope='row'>Photo Descriptions</th>
+                           <tr>
+                              <td>Photo Descriptions</td>
                               <td><select name='afg_descr'>
                                     <?php echo afg_generate_options($afg_descr_map, get_option('afg_descr', 'off')); ?>
                               </select></td>
-                              <td><font size='2'>Photo Description setting applies only to Small and Medium size photos.</td>
+                              <td class="afg-help">Photo Description setting applies only to Small and Medium size photos.</td>
                               </tr>
 
-                              <tr valign='top'>
-                                 <th scope='row'>Number of Columns</th>
+                              <tr>
+                                 <td>Number of Columns</td>
                                  <td><select name='afg_columns'>
                                        <?php echo afg_generate_options($afg_columns_map, get_option('afg_columns', '2')); ?>
                                  </select></td>
                               </tr>
 
-                              <tr valign='top'>
-                                 <th scope='row'>Slideshow Behavior</th>
+                              <tr>
+                                 <td>Slideshow Behavior</td>
                                  <td><select name='afg_slideshow_option'>
                                        <?php echo afg_generate_options($afg_slideshow_map, get_option('afg_slideshow_option', 'colorbox')); ?>
                                  </select></td>
-                                 <td><font size='2'><b>HighSlide is NOT FREE for Commercial websites</b>.  If you are using
+                                 <td class="afg-help"><b>HighSlide is NOT FREE for Commercial websites</b>.  If you are using
                                  <i>Awesome Flickr Gallery</i> on a commercial website, you need to purchase a license from their website
                                  <a href='http://highslide.com/#licence' target='_blank'>here</a>.  If you want a free slideshow,
-                                 use ColorBox instead.</font></td>
+                                 use ColorBox instead.</td>
                               </tr>
 
 
-                              <tr valign='top'>
-                                 <th scope='row'>Background Color</th>
+                              <tr>
+                                 <td>Background Color</td>
                                  <td><select name='afg_bg_color'>
                                        <?php echo afg_generate_options($afg_bg_color_map, get_option('afg_bg_color', 'Transparent')); ?>
                                  </select></td>
                               </tr>
 
-                              <tr valign='top'>
-                                 <th scope='row'>Gallery Width</th>
+                              <tr>
+                                 <td>Gallery Width</td>
                                  <td><select name='afg_width'>
                                        <?php echo afg_generate_options($afg_width_map, get_option('afg_width', 'auto')); ?>
                                  </select></td>
-                                 <td><font size='2'>Width of the Gallery is relative to the width of the page where Gallery is being generated.  <i>Automatic</i> is 100% of page width.</font></td>
+                                 <td class="afg-help">Width of the Gallery is relative to the width of the page where Gallery is being generated.  <i>Automatic</i> is 100% of page width.</td>
                               </tr>
 
-                              <tr valign='top'>
-                                 <th scope='row'>Disable Pagination?</th>
+                              <tr>
+                                 <td>Disable Pagination?</td>
                                  <td><input type='checkbox' name='afg_pagination' value='off'
 <?php
     if (get_option('afg_pagination', 'off') == 'off') {
         echo 'checked=\'\'';
     }
 ?>/></td>
-                                 <td><font size='2'>Useful when displaying gallery in a sidebar widget where you want only few recent photos.</td>
+                                 <td class="afg-help">Useful when displaying gallery in a sidebar widget where you want only few recent photos.</td>
                                  </tr>
 
-                                 <tr valign='top'>
-                                    <th scope='row'>Add a Small Credit Note?</th>
+                                 <tr>
+                                    <td>Add a Small Credit Note?</td>
                                     <td><input type='checkbox' name='afg_credit_note' value='Yes'
 <?php
     if (get_option('afg_credit_note', 'on') == 'on') {
         echo "checked=''";
     }
 ?>/></td>
-                                    <td><font size='2'>Credit Note will appear at the bottom of the gallery as - </font>
+                                    <td class="afg-help">Credit Note will appear at the bottom of the gallery as -
                                        Powered by
                                        <a href="http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin" title="Awesome Flickr Gallery by Ronak Gandhi"/>
                                           AFG</a></td>
                                  </tr>
                               </table>
-                        </div></div>
+                        <br />
                         <input type="submit" name="submit" id="afg_save_changes" class="button-primary" value="Save Changes" />
                         <br /><br />
-                        <div id="poststuff">
-                           <div class="postbox" style='box-shadow:0 0 2px'>
                               <h3>Your Photostream Preview</h3>
-                              <table class='form-table'>
+                              <table class='widefat afg-settings-box'>
                                  <tr><th>If your Flickr Settings are correct, 5 of your recent photos from your Flickr photostream should appear here.</th></tr>
-                                 <td>
+                                 <td><div style="margin-top:15px">
 <?php
     global $pf;
     if (get_option('afg_flickr_token')) $rsp_obj = $pf->people_getPhotos(get_option('afg_user_id'), array('per_page' => 5, 'page' => 1));
@@ -419,29 +424,29 @@ upgrade_handler();
             echo "<img src=\"$photo_url\"/>&nbsp;&nbsp;&nbsp;";
         }
     }
-?>
-                                    <br />
-                                    Note:  This preview is based on the Flickr Settings only.  Gallery Settings 
-                                    have no effect on this preview.  You will need to insert gallery code to a post 
-                                    or page to actually see the Gallery.
+?></div>
+                                    <br /> <span style="margin-top:15px">
+                                    Note:  This preview is based on the Flickr Settings only.  Gallery Settings
+                                    have no effect on this preview.  You will need to insert gallery code to a post
+                                    or page to actually see the Gallery.</span>
                                  </td>
-                           </table></div>
+                           </table>
+                            <br />
                            <input type="submit" name="submit" class="button-secondary" value="Delete Cached Galleries"/>
-                        </div>
+</div>
 <?php
     if (DEBUG) {
         print_all_options();
     }
 ?>
-                     </div>
-                     <div class="postbox-container" style="width: 29%;">
+<div id="afg-side-box">
 <?php
-    $message = "<b>What are Default Settings?</b> - Default Settings serve as a 
-        template for the galleries.  When you create a new gallery, you can assign 
-        <i>Use Default</i> to a setting.  Such a setting will reference the <b>Default 
-        Settings</b> instead of a specific setting defined for that particular 
+    $message = "<b>What are Default Settings?</b> - Default Settings serve as a
+        template for the galleries.  When you create a new gallery, you can assign
+        <i>Use Default</i> to a setting.  Such a setting will reference the <b>Default
+        Settings</b> instead of a specific setting defined for that particular
         gallery. <br /> <br />
-        When you change any of <b>Default Settings</b>, all the settings in a gallery 
+        When you change any of <b>Default Settings</b>, all the settings in a gallery
         referencing the <b>Default Settings</b> will inherit the new value.<br /><br />
         <font color='red'><b>Important Note about Private Photos:</b></font><br/>To access
         your private photos from Flickr, make sure that your App's authentication
@@ -454,10 +459,11 @@ upgrade_handler();
         <br /><p style='text-align:center'><i>-- OR --</i></p>You can create a new Awesome Flickr Gallery with different settings on page <a href='{$_SERVER['PHP_SELF']}?page=afg_add_gallery_page'>Add Galleries.";
     echo afg_box('Usage Instructions', $message);
 
-    echo afg_donate_box(); 
+    echo afg_donate_box();
     echo afg_share_box();
 ?>
-        </div>
+</div>
+</div>
             </form>
 <?php
 

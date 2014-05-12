@@ -156,28 +156,29 @@ function afg_edit_galleries() {
 ?>
 
          <form method='post' action='<?php echo $url ?>'>
-            <div class="postbox-container" style="width:69%; margin-right:1%">
-
-               <div id="poststuff">
-                  <div class="postbox" style='box-shadow:0 0 2px'>
+            <div id="afg-wrap">
+                  <div id="afg-main-box">
                      <h3>Saved Galleries</h3>
-                     <table class='form-table'>
-                        <tr valign='top'>
-                           <th scope='row'>Select Gallery to Edit</th>
+                     <table class='widefat fixed afg-settings-box'>
+                        <tr>
+                            <th class="afg-label"></th>
+                            <th class="afg-input"></th>
+                            <th class="afg-help-bubble"></th>
+                        </tr>
+                         <tr>
+                           <td>Select Gallery to Edit</td>
                            <td><select id='afg_photo_gallery' name='afg_photo_gallery' onchange='loadGallerySettings()'>
                                  <?php echo afg_get_galleries($default_gallery_id) ?>
                            </select></td>
-                           <tr valign='top'>
-                              <th scope='row'>Gallery Name</th>
-                              <td><input maxlength='30' type='text' id='afg_edit_gallery_name' name='afg_edit_gallery_name' onblur='verifyEditBlank()' value="" /><font size='3' color='red'>*</font></td>
+                           <tr>
+                              <td>Gallery Name</td>
+                              <td><input class='afg-input' maxlength='30' type='text' id='afg_edit_gallery_name' name='afg_edit_gallery_name' onblur='verifyEditBlank()' value="" />*</td>
                            </tr>
-                           <tr valign='top'>
-                              <th scope='row'>Gallery Description</th>
-                              <td><input maxlength='100' size='70%' type='text' id='afg_edit_gallery_descr' name='afg_edit_gallery_descr' value="" /></td>
+                           <tr>
+                              <td>Gallery Description</td>
+                              <td><input class='afg-input' maxlength='100' type='text' id='afg_edit_gallery_descr' name='afg_edit_gallery_descr' value="" /></td>
                            </tr>
                         </table>
-                  </div></div>
-
 <?php
     echo afg_generate_flickr_settings_table($photosets_map, $galleries_map, $groups_map);
     echo afg_generate_gallery_settings_table();
@@ -188,27 +189,25 @@ function afg_edit_galleries() {
 
                   <input type="submit" id="afg_save_changes" class="button-primary"
                   <?php if ($disable_submit) echo "disabled='yes'"; ?>
-                  value="Save Changes" />
+                  value="Save Changes" style="margin-top: 15px"/>
                   <br /><br />
-                  <div id="poststuff">
-                     <div class="postbox" style='box-shadow:0 0 2px'>
-                        <h3>Gallery Code</h3>
-                        <table class='form-table'>
+                </div>
+               <div id="afg-side-box">
+                   <h3>Gallery Code</h3>
+                        <table class='widefat fixed afg-side-box'>
                            <tr valign='top'>
                               <td>
                                  <p id='afg_flickr_gallery_code'>[AFG_gallery]</p>
                               </td>
                            </tr>
                         </table>
-                  </div></div>
-               </div>
-               <div class="postbox-container" style="width: 29%;">
 <?php
-    echo afg_box('Usage Instructions', 'Insert the Gallery Code in any of your posts of pages to display your Flickr Gallery.');
+    echo afg_box('Usage Instructions', 'Insert the Gallery Code in any of your posts or pages to display your Flickr Gallery.');
     echo afg_donate_box();
     echo afg_share_box();
 ?>
                </div>
+              </div>
             </form>
 <?php
 }

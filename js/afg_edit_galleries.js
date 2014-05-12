@@ -185,6 +185,7 @@ function loadGallerySettings() {
 
     gallery_name.value = active_gallery.name;
     gallery_descr.value = active_gallery.gallery_descr;
+
     if (active_gallery.per_page) {
         per_page_check.checked = false;
         per_page.disabled = false;
@@ -193,6 +194,7 @@ function loadGallerySettings() {
         per_page_check.checked = true;
         per_page.disabled = true;
     }
+
     per_page.value = active_gallery.per_page || genparams.default_per_page;
     sort_order.value = active_gallery.sort_order || 'default';
     photo_size.value = active_gallery.photo_size || 'default';
@@ -221,26 +223,26 @@ function loadGallerySettings() {
 
     if (source_element.value == 'photoset') {
         photosets_box.value = active_gallery.photoset_id;
-        galleries_box.value = '';
-        groups_box.value = '';
-        tags_box.value = '';
+        /*galleries_box.value = '';*/
+        /*groups_box.value = '';*/
+        /*tags_box.value = '';*/
     }
     else if (source_element.value == 'gallery') {
         galleries_box.value = active_gallery.gallery_id;
-        photosets_box.value = '';
-        groups_box.value = '';
-        tags_box.value = '';
+        /*photosets_box.value = '';*/
+        /*groups_box.value = '';*/
+        /*tags_box.value = '';*/
     }
     else if (source_element.value == 'group') {
         groups_box.value = active_gallery.group_id;
-        photosets_box.value = '';
-        galleries_box.value = '';
-        tags_box.value = '';
+        /*photosets_box.value = '';*/
+        /*galleries_box.value = '';*/
+        /*tags_box.value = '';*/
     }
     else if (source_element.value == 'tags') {
         tags_box.value = active_gallery.tags;
-        photosets_box.value = '';
-        galleries_box.value = '';
-        groups_box.value = '';
+        /*photosets_box.value = '';*/
+        /*galleries_box.value = '';*/
+        /*groups_box.value = '';*/
     }
 }

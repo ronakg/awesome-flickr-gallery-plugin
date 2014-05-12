@@ -34,52 +34,58 @@ function afg_view_delete_galleries() {
 ?>
 
       <form onsubmit="return verifySelectedGalleries()" method='post' action='<?php echo $url ?>'>
-         <div class="postbox-container" style="width:69%; margin-right:1%">
-            <div id="poststuff">
-               <div class="postbox" style='box-shadow:0 0 2px'>
+         <div id="afg-wrap">
+            <div id="afg-main-box">
                   <h3>Saved Galleries</h3>
-                  <table class='form-table' style='margin-top:0'>
-                     <tr style='border:1px solid Gainsboro' valign='top'>
-                        <th cope='row'><input type='checkbox' name='delete_all_galleries' id='delete_all_galleries'
+                  <table class='wp-list-table widefat fixed pages afg-settings-box'>
+                     <tr style="border:1px solid gray">
+                        <th style='width:5%'><input type='checkbox' name='delete_all_galleries' id='delete_all_galleries'
                            onclick="CheckAllDeleteGalleries()"/></th>
-                        <th scope='row'><strong>ID</strong></th>
-                        <th scope='row'><strong>Name</strong></th>
-                        <th scope='row'><strong>Gallery Code</strong></th>
-                        <th scope='row'><strong>Description</strong></th>
+                        <th style='width:12%'><strong>Gallery ID</strong></th>
+                        <th style='width:20%'><strong>Gallery Name</strong></th>
+                        <th style='width:20%'><strong>Gallery Code</strong></th>
+                        <th style='width:43%'><strong>Description</strong></th>
                      </tr>
 <?php
+    $row_count = 0;    
     $galleries = get_option('afg_galleries');
     foreach($galleries as $id => $ginfo) {
-        echo "<tr style='border:1px solid Gainsboro' valign='top'>";
-        if ($id)
-            echo "<td style='width:4%'><input type='checkbox' name='delete_gallery_$id' id='delete_gallery_$id' /></td>";
-        else
-            echo "<td style='width:4%'></td>";
-        echo "<td style='width:12%'>{$id}</td>";
-        if ($id) {
-            echo "<th style='width:22%'>
-                <a href=\"{$_SERVER['PHP_SELF']}?page=afg_edit_galleries_page&gallery_id=$id\" title='Edit this gallery'>
-        {$ginfo['name']}</a></th>";
-            echo "<td style='width:22%; color:steelblue; font-size:110%;' onfocus='this.select()'>[AFG_gallery id='$id']</td>";
+        if ($row_count % 2 == 0) {
+            echo "<tr class='afg-saved-alternate'>";
         }
         else {
-            echo "<th style='width:22%'>{$ginfo['name']}</th>";
-            echo "<td style='width:22%; color:steelblue; font-size:110%;' onfocus='this.select()'>[AFG_gallery]</td>";
+            echo "<tr>";
+        }
+        $row_count++;
+        if ($id)
+            echo "<td><input type='checkbox' name='delete_gallery_$id' id='delete_gallery_$id' /></td>";
+        else
+            echo "<td></td>";
+        echo "<td>{$id}</td>";
+        if ($id) {
+            echo "<td>
+                <a href=\"{$_SERVER['PHP_SELF']}?page=afg_edit_galleries_page&gallery_id=$id\" title='Edit this gallery'>
+        {$ginfo['name']}</a></td>";
+            echo "<td style='color:steelblue;' onfocus='this.select()'>[AFG_gallery id='$id']</td>";
+        }
+        else {
+            echo "<td>{$ginfo['name']}</td>";
+            echo "<td style='color:steelblue;' onfocus='this.select()'>[AFG_gallery]</td>";
         }
         echo "<td>{$ginfo['gallery_descr']}</td>";
         echo "</tr>";
     }
 ?>
                   </table>
-            </div></div>
-            <input type="submit" name="submit" class="button" value="Delete Selected Galleries" />
+            <input style='margin-top:15px' type="submit" name="submit" class="button" value="Delete Selected Galleries" />
          </div>
-         <div class="postbox-container" style="width: 29%;">
+             <div id="afg-side-box">
             <?php echo afg_usage_box('the Gallery Code');
     echo afg_donate_box();
     echo afg_share_box();
  ?>
          </div>
+             </div>
       </form>
 <?php
 }

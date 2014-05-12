@@ -41,6 +41,10 @@ function afg_add_gallery() {
             }
         }
     }
+
+    asort($photosets_map);
+    asort($groups_map);
+    asort($galleries_map);
     ?>
 
    <div class='wrap'>
@@ -112,34 +116,40 @@ function afg_add_gallery() {
 <?php
         }
 
-    echo afg_generate_version_line();
     $url=$_SERVER['REQUEST_URI'];
 ?>
 
             <form method='post' action='<?php echo $url ?>'>
-               <div class="postbox-container" style="width:69%; margin-right:1%">
-                  <div id="poststuff">
-                     <div class="postbox" style='box-shadow:0 0 2px'>
+               <div id="afg-wrap">
+                   <?php echo afg_generate_version_line() ?>
+                     <div id="afg-main-box">
                         <h3>Gallery Parameters</h3>
-                        <table class='form-table'>
-                           <tr valign='top'>
-                              <th scope='row'>Gallery Name</th>
-                              <td><input maxlength='30' type='text' id='afg_add_gallery_name' name='afg_add_gallery_name' onblur='verifyBlank()' value='' /><font size='3' color='red'>*</font></td>
+                        <table class='widefat afg-settings-box'>
+                            <tr>
+                                <th class="afg-label"></th>
+                                <th class="afg-input"></th>
+                                <th class="afg-help-bubble"></th>
+                            </tr>
+                           <tr>
+                              <td>Gallery Name</td>
+                              <td><input class='afg-input' maxlength='30' type='text' id='afg_add_gallery_name' name='afg_add_gallery_name' onblur='verifyBlank()' value='' />*</td>
                            </tr>
-                           <tr valign='top'>
-                              <th scope='row'>Gallery Description</th>
-                              <td><input maxlength='100' size='70%' type='text' id='afg_add_gallery_descr' name='afg_add_gallery_descr'" value="" /></td>
+                           <tr>
+                              <td>Gallery Description</td>
+                              <td><input class='afg-input' maxlength='100' type='text' id='afg_add_gallery_descr' name='afg_add_gallery_descr' value="" /></td>
                            </tr>
                         </table>
-                  </div></div>
 <?php
     echo afg_generate_flickr_settings_table($photosets_map, $galleries_map, $groups_map);
     echo afg_generate_gallery_settings_table();
 ?>
+                  <br />
                   <input type="submit" disabled='true' id="afg_save_changes" class="button-primary"
                   value="Add Gallery" />
-               </div>
-               <div class="postbox-container" style="width: 29%;">
+              </div>
+
+
+               <div id='afg-side-box'>
 <?php
     $message = "<b>Gallery Description</b> - Provide a meaningful description of" .
         " your gallery for you to recognize it easily.<br /><br />" .
