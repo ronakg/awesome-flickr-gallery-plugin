@@ -3,7 +3,7 @@
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', site_url());
 define('DEBUG', false);
-define('VERSION', '3.5.0');
+define('VERSION', '3.3.4');
 
 $afg_sort_order_map = array(
     'default' => 'Default',
@@ -18,7 +18,6 @@ $afg_sort_order_map = array(
 $afg_slideshow_map = array(
     'default' => 'Default',
     'colorbox' => 'Colorbox',
-    'highslide' => 'Highslide',
     'disable' => 'No Slideshow',
     'flickr' => 'Link to Flickr Photo page',
     'none' => 'No Slideshow and No Link',
@@ -280,12 +279,12 @@ function afg_generate_gallery_settings_table() {
 
         <tr id='afg_custom_size_block' style='display:none'>
         <td>Custom Width</td>
-        <td><input type='text' maxlength='3' name='afg_custom_size' id='afg_custom_size' onblur='verifyCustomSizeBlank()' value='100'>* (in px)
+        <td><input type='text' maxlength='3' name='afg_custom_size' id='afg_custom_size' onblur='verifyCustomSizeBlank()' value='100'><font color='red'>*</font> (in px)
         &nbsp;Square? <input type='checkbox' id='afg_custom_size_square' name='afg_custom_size_square' value='true'>
         </td>
         <td class='afg-help'>Fill in the exact width for the photos (min 50, max 500).  Height of the photos will be adjusted
         accordingly to maintain aspect ratio of the photo. Enable <b>Square</b> to crop
-        the photo to a square aspect ratio.<br />Warning: Custom photo sizes may not work with your webhost, please use built-in sizes, it's more reliable and faster too.</td>
+        the photo to a square aspect ratio.</td>
         </tr>
 
         <tr>
@@ -316,10 +315,6 @@ function afg_generate_gallery_settings_table() {
         <td><select name='afg_slideshow_option' id='afg_slideshow_option'>
         " . afg_generate_options($afg_slideshow_map, 'default', True, $afg_slideshow_map[get_option('afg_slideshow_option')]) . "
     </select></td>
-            <td class='afg-help'><b>HighSlide is NOT FREE for Commercial websites</b>.  If you are using
-            <i>Awesome Flickr Gallery</i> on a commercial website, you need to purchase a license from their website
-            <a href='http://highslide.com/#licence' target='_blank'>here</a>.  If you want a free slideshow,
-            use ColorBox instead.</td>
             </tr>
 
         <tr>

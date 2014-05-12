@@ -57,7 +57,7 @@ function afg_setup_options() {
     if (get_option('afg_credit_note') == '1' || get_option('afg_credit_note') == 'Yes') update_option('afg_credit_note', 'on');
     if (get_option('afg_credit_note') == '0') update_option('afg_credit_note', 'off');
     if (!get_option('afg_pagination')) update_option('afg_pagination', 'on');
-    if (get_option('afg_slideshow_option') == '') update_option('afg_slideshow_option', 'colorbox');
+    if (get_option('afg_slideshow_option') == '' || get_option('afg_slideshow_option') == 'highslide') update_option('afg_slideshow_option', 'colorbox');
     if (get_option('afg_custom_css') == '') update_option('afg_custom_css', '/* Start writing your custom CSS here */');
     if (get_option('afg_disable_slideshow')) update_option('afg_slideshow_option', 'disable');
 
@@ -173,6 +173,10 @@ function afg_admin_html_page() {
         $afg_columns_map, $afg_bg_color_map, $afg_width_map, $pf,
         $afg_sort_order_map, $afg_slideshow_map;
 ?>
+   <div class='wrap'>
+   <h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
+    echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Awesome Flickr Gallery Settings</h2>
+
 <?php
 function upgrade_handler() {
     $galleries = get_option('afg_galleries');
@@ -249,12 +253,8 @@ if ($_POST)
     }
     $url=$_SERVER['REQUEST_URI'];
 ?>
-
     <form method='post' action='<?php echo $url ?>'>
-   <div id='afg-wrap'>
-        <h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
-        echo (BASE_URL . '/images/logo_big.png'); ?>" align='center'/></a>Awesome Flickr Gallery Settings</h2>
-
+        <div id='afg-wrap'>
         <?php echo afg_generate_version_line() ?>
             <div id="afg-main-box">
                         <h3>Flickr User Settings</h3>
@@ -323,12 +323,12 @@ if ($_POST)
 
                            <tr valign='top' id='afg_custom_size_block' style='display:none'>
                              <td>Custom Width</td>
-                             <td><input type='text' size='3' maxlength='3' name='afg_custom_size' id='afg_custom_size' onblur='verifyCustomSizeBlank()' value="<?php echo get_option('afg_custom_size')?get_option('afg_custom_size'):100; ?>">* (in px)
+                             <td><input type='text' size='3' maxlength='3' name='afg_custom_size' id='afg_custom_size' onblur='verifyCustomSizeBlank()' value="<?php echo get_option('afg_custom_size')?get_option('afg_custom_size'):100; ?>"><font color='red'>*</font> (in px)
                              &nbsp;Square? <input type='checkbox' name='afg_custom_size_square' value='true' <?php if (get_option('afg_custom_size_square') == 'true') echo "checked=''"; ?>>
                              </td>
                              <td class="afg-help">Fill in the exact width for the photos (min 50, max 500).  Height of the photos will be adjusted
                                                 accordingly to maintain aspect ratio of the photo. Enable <b>Square</b> to crop
-                                                the photo to a square aspect ratio.<br />Warning: Custom photo sizes may not work with your webhost, please use built-in sizes, it's more reliable and faster too.</td>
+                                                the photo to a square aspect ratio.</td>
                            </tr>
 
                            <tr>
@@ -359,10 +359,6 @@ if ($_POST)
                                  <td><select name='afg_slideshow_option'>
                                        <?php echo afg_generate_options($afg_slideshow_map, get_option('afg_slideshow_option', 'colorbox')); ?>
                                  </select></td>
-                                 <td class="afg-help"><b>HighSlide is NOT FREE for Commercial websites</b>.  If you are using
-                                 <i>Awesome Flickr Gallery</i> on a commercial website, you need to purchase a license from their website
-                                 <a href='http://highslide.com/#licence' target='_blank'>here</a>.  If you want a free slideshow,
-                                 use ColorBox instead.</td>
                               </tr>
 
 
@@ -415,6 +411,7 @@ if ($_POST)
                                  <td><div style="margin-top:15px">
 <?php
     global $pf;
+    global $pf;
     if (get_option('afg_flickr_token')) $rsp_obj = $pf->people_getPhotos(get_option('afg_user_id'), array('per_page' => 5, 'page' => 1));
     else $rsp_obj = $pf->people_getPublicPhotos(get_option('afg_user_id'), NULL, NULL, 5, 1);
     if (!$rsp_obj) echo afg_error();
@@ -433,6 +430,7 @@ if ($_POST)
                            </table>
                             <br />
                            <input type="submit" name="submit" class="button-secondary" value="Delete Cached Galleries"/>
+</div>
 </div>
 <?php
     if (DEBUG) {
@@ -462,7 +460,6 @@ if ($_POST)
     echo afg_donate_box();
     echo afg_share_box();
 ?>
-</div>
 </div>
             </form>
 <?php

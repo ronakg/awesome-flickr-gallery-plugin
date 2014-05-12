@@ -41,10 +41,6 @@ function afg_add_gallery() {
             }
         }
     }
-
-    asort($photosets_map);
-    asort($groups_map);
-    asort($galleries_map);
     ?>
 
    <div class='wrap'>
