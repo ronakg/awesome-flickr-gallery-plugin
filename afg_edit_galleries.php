@@ -15,7 +15,6 @@ if (isset($_POST['afg_edit_gallery_name']) && $_POST['afg_edit_gallery_name']) {
         }
     }
 
-
     $gallery = array(
         'name' => stripslashes($_POST['afg_edit_gallery_name']),
         'gallery_descr' => stripslashes($_POST['afg_edit_gallery_descr']),
@@ -104,39 +103,10 @@ function afg_edit_galleries() {
     }
 
     $photosets_map = array();
-    $rsp_obj = $pf->photosets_getList($user_id);
-    if (!$pf->error_code) {
-        foreach($rsp_obj['photoset'] as $photoset) {
-            $photosets_map[$photoset['id']] = $photoset['title']['_content'];
-        }
-    }
-
-    $galleries_map = array();
-    $rsp_obj = $pf->galleries_getList($user_id);
-    if (!$pf->error_code) {
-        foreach($rsp_obj['galleries']['gallery'] as $gallery) {
-            $galleries_map[$gallery['id']] = $gallery['title']['_content'];
-        }
-    }
-
     $groups_map = array();
-    if (get_option('afg_flickr_token')) {
-        $rsp_obj = $pf->groups_pools_getGroups();
-        if (!$pf->error_code) {
-            foreach($rsp_obj['group'] as $group) {
-                $groups_map[$group['nsid']] = $group['name'];
-            }
-        }
-    }
-    else {
-        $rsp_obj = $pf->people_getPublicGroups($user_id, true);
-        if (!$pf->error_code) {
-            foreach($rsp_obj as $group) {
-                $groups_map[$group['nsid']] = $group['name'];
-            }
-        }
-    }
+    $galleries_map = array();
 
+    afg_get_sets_groups_galleries($photosets_map, $groups_map, $galleries_map, $user_id);
 ?>
    <div class='wrap'>
    <h2><a href='http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/'><img src="<?php
