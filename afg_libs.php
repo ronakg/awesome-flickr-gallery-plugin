@@ -164,9 +164,8 @@ function create_afgFlickr_obj() {
     $pf->setToken(get_option('afg_flickr_token'));
 }
 
-function afg_error() {
-    global $pf;
-    return "<h3>Awesome Flickr Gallery Error - $pf->error_msg</h3>";
+function afg_error($error_msg) {
+    return "<h3>Awesome Flickr Gallery Error - $error_msg</h3>";
 }
 
 function date_taken_cmp_newest($a, $b) {
