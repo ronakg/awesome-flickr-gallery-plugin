@@ -1,5 +1,5 @@
 <?php
-
+define('PLUGIN_SLUG', 'awesome-flickr-gallery-plugin');
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', site_url());
 define('DEBUG', false);
