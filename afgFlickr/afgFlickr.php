@@ -227,9 +227,7 @@ if ( !class_exists('afgFlickr') ) {
                 }
                 $data = implode('&', $data);
 
-		//FIXME Even with fixing the port, the service doesn't connect correctly
-		//BUG reported upstream to phpflickr GIT repository
-                $fp = @pfsockopen($matches[1], 443);
+                $fp = @pfsockopen('ssl://'.$matches[1], 443);
                 if (!$fp) {
                     die('Could not connect to the web service');
                 }
