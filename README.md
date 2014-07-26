@@ -38,13 +38,13 @@ Can't get the plugin working?  Head to the discussion forum for solution - [Disc
 
 ##Screenshots:
 
-![Awesome Flickr Gallery with Thumbnail size photos with white background](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-1.png "Awesome Flickr Gallery with Thumbnail size photos with white background")
-![Awesome Flickr Gallery with photos of size Square with Title and Description OFF](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-2.png "Awesome Flickr Gallery with photos of size Square with Title and Description OFF")
-![Awesome Flickr Gallery with photos of size Small with Title and Description ON](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-3.png "Awesome Flickr Gallery with photos of size Small with Title and Description ON")
-![Default Settings Page](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-4.png "Default Settings Page")
-![Add Gallery Page](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-5.png "Add Gallery Page")
-![Saved Galleries Page](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-7.png "Saved Galleries Page")
-![Advanced Settings Page](http://s.wordpress.org/extend/plugins/awesome-flickr-gallery-plugin/screenshot-8.png "Advanced Settings Page")
+![Default Settings Page](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-4.jpeg "Default Settings Page")
+![Add Gallery Page](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-5.jpeg "Add Gallery Page")
+![Saved Galleries Page](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-7.jpeg "Saved Galleries Page")
+![Advanced Settings Page](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-8.jpeg "Advanced Settings Page")
+![Awesome Flickr Gallery with Thumbnail size photos with white background](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-1.png "Awesome Flickr Gallery with Thumbnail size photos with white background")
+![Awesome Flickr Gallery with photos of size Square with Title and Description OFF](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-2.png "Awesome Flickr Gallery with photos of size Square with Title and Description OFF")
+![Awesome Flickr Gallery with photos of size Small with Title and Description ON](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-3.png "Awesome Flickr Gallery with photos of size Small with Title and Description ON")
 
 ##Frequently Asked Questions:
 

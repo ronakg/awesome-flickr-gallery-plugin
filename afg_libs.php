@@ -220,11 +220,11 @@ function afg_get_photo_url($farm, $server, $pid, $secret, $size) {
     if ($size == 'NULL') {
         $size = '';
     }
-    return "http://farm$farm.static.flickr.com/$server/{$pid}_$secret$size.jpg";
+    return "https://farm$farm.static.flickr.com/$server/{$pid}_$secret$size.jpg";
 }
 
 function afg_get_photo_page_url($pid, $uid) {
-    return "http://www.flickr.com/photos/$uid/$pid";
+    return "https://www.flickr.com/photos/$uid/$pid";
 }
 
 function afg_generate_version_line() {
