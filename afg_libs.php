@@ -1,9 +1,9 @@
 <?php
-
+define('PLUGIN_SLUG', 'awesome-flickr-gallery-plugin');
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', site_url());
 define('DEBUG', false);
-define('VERSION', '3.5.0');
+define('VERSION', '3.5.1');
 
 $afg_sort_order_map = array(
     'default' => 'Default',
@@ -110,6 +110,33 @@ $afg_text_color_map = array(
     'White' => 'Black',
 );
 
+$afg_cache_refresh_interval_map = array(
+	'6h' => '6 Hours',
+	'12h' => '12 Hours',
+	'1d' => '1 Day',
+	'3d' => '3 Days',
+	'1w' => '1 Week',
+);
+
+function afg_get_cache_refresh_interval_secs ($interval)
+{
+	if ($interval == '6h') {
+		return 6 * 60 * 60;
+	}
+	else if ($interval == '12h') {
+		return 12 * 60 * 60;
+	}
+	else if ($interval == '1d') {
+		return 24 * 60 * 60;
+	}
+	else if ($interval == '3d') {
+		return 3 * 24 * 60 * 60;
+	}
+	else if ($interval == '1w') {
+		return 7 * 24 * 60 * 60;
+	}
+}
+
 function afg_get_sets_groups_galleries (&$photosets_map, &$groups_map, &$galleries_map, $user_id) {
     global $pf;
 
@@ -164,9 +191,8 @@ function create_afgFlickr_obj() {
     $pf->setToken(get_option('afg_flickr_token'));
 }
 
-function afg_error() {
-    global $pf;
-    return "<h3>Awesome Flickr Gallery Error - $pf->error_msg</h3>";
+function afg_error($error_msg) {
+    return "<h3>Awesome Flickr Gallery Error - $error_msg</h3>";
 }
 
 function date_taken_cmp_newest($a, $b) {
