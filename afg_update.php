@@ -36,10 +36,10 @@ function afg_ssl_verify($args, $url) {
  * @wp-hook plugins_loaded
  * @return  object of this class
  */
-add_filter( 'upgrader_source_selection', 'afg_rename_update_zip', 1, 3);
+add_filter( 'upgrader_source_selection', 'afg_rename_github_zip', 1, 3);
 
 /**
- * Removes the suffix -<tagname> when updating from GitHub zip files
+ * Removes the prefix "-master" when updating from GitHub zip files
  * 
  * See: https://github.com/YahnisElsts/plugin-update-checker/issues/1
  * 
@@ -48,13 +48,13 @@ add_filter( 'upgrader_source_selection', 'afg_rename_update_zip', 1, 3);
  * @param object $thiz
  * @return string
  */
-function afg_rename_update_zip( $source, $remote_source, $thiz )
+function afg_rename_github_zip( $source, $remote_source, $thiz )
 {
-    if(  strpos( $source, PLUGIN_SLUG) === false )
+    if(  strpos( $source, 'awesome-flickr-gallery-plugin') === false )
         return $source;
 
     $path_parts = pathinfo( $source );
-    $newsource = trailingslashit( $path_parts['dirname'] ) . trailingslashit( PLUGIN_SLUG );
+    $newsource = trailingslashit( $path_parts['dirname'] ) . trailingslashit( 'awesome-flickr-gallery-plugin' );
     rename( $source, $newsource );
     return $newsource;
 }
