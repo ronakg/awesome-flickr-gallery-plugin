@@ -38,13 +38,13 @@ Can't get the plugin working?  Head to the discussion forum for solution - [Disc
 
 ##Screenshots:
 
-![Default Settings Page](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-4.jpeg "Default Settings Page")
-![Add Gallery Page](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-5.jpeg "Add Gallery Page")
-![Saved Galleries Page](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-7.jpeg "Saved Galleries Page")
-![Advanced Settings Page](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-8.jpeg "Advanced Settings Page")
-![Awesome Flickr Gallery with Thumbnail size photos with white background](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-1.png "Awesome Flickr Gallery with Thumbnail size photos with white background")
-![Awesome Flickr Gallery with photos of size Square with Title and Description OFF](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-2.png "Awesome Flickr Gallery with photos of size Square with Title and Description OFF")
-![Awesome Flickr Gallery with photos of size Small with Title and Description ON](http://ps.w.org/awesome-flickr-gallery-plugin/assets/screenshot-3.png "Awesome Flickr Gallery with photos of size Small with Title and Description ON")
+![Default Settings Page](http://www.ronakg.com/uploads/screenshot-4.jpeg "Default Settings Page")
+![Add Gallery Page](http://www.ronakg.com/uploads/screenshot-5.jpeg "Add Gallery Page")
+![Saved Galleries Page](http://www.ronakg.com/uploads/screenshot-7.jpeg "Saved Galleries Page")
+![Advanced Settings Page](http://www.ronakg.com/uploads/screenshot-8.jpeg "Advanced Settings Page")
+![Awesome Flickr Gallery with Thumbnail size photos with white background](http://www.ronakg.com/uploads/screenshot-1.png "Awesome Flickr Gallery with Thumbnail size photos with white background")
+![Awesome Flickr Gallery with photos of size Square with Title and Description OFF](http://www.ronakg.com/uploads/screenshot-2.png "Awesome Flickr Gallery with photos of size Square with Title and Description OFF")
+![Awesome Flickr Gallery with photos of size Small with Title and Description ON](http://www.ronakg.com/uploads/screenshot-3.png "Awesome Flickr Gallery with photos of size Small with Title and Description ON")
 
 ##Frequently Asked Questions:
 
