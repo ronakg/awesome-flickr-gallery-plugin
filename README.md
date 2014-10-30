@@ -1,4 +1,5 @@
 # Awesome Flickr Gallery #
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/ronakg/awesome-flickr-gallery-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 _Awesome Flickr Gallery_ is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create clean and professional looking Flickr galleries.
 
