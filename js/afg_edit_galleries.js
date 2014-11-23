@@ -1,3 +1,4 @@
+
 mjson = jQuery.noConflict();
 
 mjson(document).ready(function(){
@@ -70,6 +71,7 @@ function getPhotoSourceType() {
     var galleries_box = document.getElementById('afg_galleries_box');
     var groups_box = document.getElementById('afg_groups_box');
     var tags_box = document.getElementById('afg_tags');
+    var tag_mode_box = document.getElementById('afg_tag_mode');
     var source_label = document.getElementById('afg_photo_source_label');
     var help_text = document.getElementById('afg_source_help');
 
@@ -79,6 +81,7 @@ function getPhotoSourceType() {
         galleries_box.style.display = 'none';
         groups_box.style.display = 'none';
         tags_box.style.display = 'none';
+        tag_mode_box.style.display = 'none';
         help_text.style.display = 'none';
     }
     else if (source_element.value == 'gallery') {
@@ -93,6 +96,7 @@ function getPhotoSourceType() {
             photosets_box.style.display = 'none';
             groups_box.style.display = 'none';
             tags_box.style.display = 'none';
+            tag_mode_box.style.display = 'none';
             help_text.style.display = 'none';
             source_label.innerHTML = 'Select Gallery';
         }
@@ -109,6 +113,7 @@ function getPhotoSourceType() {
             galleries_box.style.display = 'none';
             groups_box.style.display = 'none';
             tags_box.style.display = 'none';
+            tag_mode_box.style.display = 'none';
             help_text.style.display = 'none';
             source_label.innerHTML = "Select Photoset";
         }
@@ -125,6 +130,7 @@ function getPhotoSourceType() {
             galleries_box.style.display = 'none';
             groups_box.style.display = 'block';
             tags_box.style.display = 'none';
+            tag_mode_box.style.display = 'none';
             help_text.style.display = 'none';
             source_label.innerHTML = "Select Group";
         }
@@ -135,6 +141,7 @@ function getPhotoSourceType() {
         galleries_box.style.display = 'none';
         groups_box.style.display = 'none';
         tags_box.style.display = 'block';
+        tag_mode_box.style.display = 'block';
         help_text.style.display = 'block';
         source_label.innerHTML = "Tags";
     }
@@ -158,6 +165,7 @@ function loadGallerySettings() {
     var galleries_box = document.getElementById('afg_galleries_box');
     var groups_box = document.getElementById('afg_groups_box');
     var tags_box = document.getElementById('afg_tags');
+    var tag_mode_box = document.getElementById('afg_tag_mode');
     var source_label = document.getElementById('afg_source_label');
     var per_page = document.getElementById('afg_per_page');
     var sort_order = document.getElementById('afg_sort_order');
@@ -226,21 +234,25 @@ function loadGallerySettings() {
         /*galleries_box.value = '';*/
         /*groups_box.value = '';*/
         /*tags_box.value = '';*/
+        /*tag_mod_box.value = '';*/
     }
     else if (source_element.value == 'gallery') {
         galleries_box.value = active_gallery.gallery_id;
         /*photosets_box.value = '';*/
         /*groups_box.value = '';*/
         /*tags_box.value = '';*/
+        /*tag_mod_box.value = '';*/
     }
     else if (source_element.value == 'group') {
         groups_box.value = active_gallery.group_id;
         /*photosets_box.value = '';*/
         /*galleries_box.value = '';*/
         /*tags_box.value = '';*/
+        /*tag_mod_box.value = '';*/
     }
     else if (source_element.value == 'tags') {
         tags_box.value = active_gallery.tags;
+        tag_mode_box.value = active_gallery.tag_mode;
         /*photosets_box.value = '';*/
         /*galleries_box.value = '';*/
         /*groups_box.value = '';*/

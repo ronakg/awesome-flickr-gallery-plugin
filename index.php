@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.5.1
+   Version: 3.5.2
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -200,6 +200,7 @@ function afg_display_gallery($atts) {
     $gallery_id = NULL;
     $group_id = NULL;
     $tags = NULL;
+    $tag_mode = NULL;
     $popular = false;
 
     if (!isset($gallery['photo_source'])) $gallery['photo_source'] = 'photostream';
@@ -207,7 +208,7 @@ function afg_display_gallery($atts) {
     if ($gallery['photo_source'] == 'photoset') $photoset_id = $gallery['photoset_id'];
     else if ($gallery['photo_source'] == 'gallery') $gallery_id = $gallery['gallery_id'];
     else if ($gallery['photo_source'] == 'group') $group_id = $gallery['group_id'];
-    else if ($gallery['photo_source'] == 'tags') $tags = $gallery['tags'];
+    else if ($gallery['photo_source'] == 'tags') { $tags = $gallery['tags']; $tag_mode = $gallery['tag_mode']; }
     else if ($gallery['photo_source'] == 'popular') $popular = true;
 
     $disp_gallery = "<!-- Awesome Flickr Gallery Start -->";
@@ -218,6 +219,7 @@ function afg_display_gallery($atts) {
         " - Gallery ID - " . (isset($gallery_id)? $gallery_id: '') .
         " - Group ID - " . (isset($group_id)? $group_id: '') .
         " - Tags - " . (isset($tags)? $tags: '') .
+        " - Tag mode - " . (isset($tag_mode)? $tag_mode: '') .
         " - Popular - " . (isset($popular)? $popular: '') .
         " - Per Page - " . $per_page .
         " - Sort Order - " . $sort_order .
@@ -261,7 +263,7 @@ function afg_display_gallery($atts) {
             if ($total_photos > 500) $total_photos = 500;
             }
         else if (isset($tags) && $tags) {
-            $rsp_obj = $pf->photos_search(array('user_id'=>$user_id, 'tags'=>$tags, 'extras'=>$extras, 'per_page'=>1));
+            $rsp_obj = $pf->photos_search(array('user_id'=>$user_id, 'tags'=>$tags, 'tag_mode'=>$tag_mode,'extras'=>$extras, 'per_page'=>1));
             if ($pf->error_code) return afg_error($pf->error_msg);
             $total_photos = $rsp_obj['photos']['total'];
         }
@@ -294,7 +296,7 @@ function afg_display_gallery($atts) {
             }
             else if ($tags) {
                 $flickr_api = 'photos';
-                $rsp_obj_total = $pf->photos_search(array('user_id'=>$user_id, 'tags'=>$tags, 'extras'=>$extras, 'per_page'=>500, 'page'=>$i));
+                $rsp_obj_total = $pf->photos_search(array('user_id'=>$user_id, 'tags'=>$tags, 'tag_mode'=>$tag_mode, 'extras'=>$extras, 'per_page'=>500, 'page'=>$i));
                 if ($pf->error_code) return afg_error($pf->error_msg);
             }
             else if ($popular) {
@@ -330,10 +332,36 @@ function afg_display_gallery($atts) {
 
     if ($slideshow_option == 'highslide')
         $disp_gallery .= "<div class='highslide-gallery'>";
-    $disp_gallery .= "<div class='afg-table' style='width:100%'>";
+        
+    if ($columns != "dynamic")
+        $disp_gallery .= "<div class='afg-table' style='width:100%'>";
 
     $photo_count = 1;
-    $column_width = (int)($gallery_width/$columns);
+    if ($columns != "dynamic") {
+        $column_width = (int)($gallery_width/$columns);
+    } else {
+        if ($custom_size) {
+            $column_width = (int)($custom_size);
+        } else {
+            switch ($photo_size) {
+                case '_s':
+                    $column_width = 75;
+                    break;
+                case '_t':
+                    $column_width = 100;
+                    break;
+                case '_m':
+                    $column_width = 240;
+                    break;
+                case 'NULL':
+                    $column_width = 500;
+                    break;
+                default:
+                    $column_width = 100;
+                    break;
+            }
+        }
+    }
 
     if (!$popular && $sort_order != 'flickr') {
         if ($sort_order == 'random')
@@ -409,10 +437,15 @@ function afg_display_gallery($atts) {
             }
         }
 
-        if ($cur_col % $columns == 0) $disp_gallery .= "<div class='afg-row'>";
+        if ($columns != "dynamic")
+            if ($cur_col % $columns == 0) $disp_gallery .= "<div class='afg-row'>";
 
         if ( ($photo_count <= $per_page * $cur_page) && ($photo_count > $per_page * ($cur_page - 1)) ) {
-            $disp_gallery .= "<div class='afg-cell' style='width:${column_width}%;'>";
+
+            if ($columns != "dynamic")
+                $disp_gallery .= "<div class='afg-cell' style='width:${column_width}%;'>";
+            else 
+                $disp_gallery .= "<div class='afg-item' style='width:${column_width}px;'>";
 
             $pid_len = strlen($photo['id']);
 
@@ -477,12 +510,18 @@ function afg_display_gallery($atts) {
                     " <img class='afg-img' alt='{$photo_title_text}' $photo_src_text width='75' height='75'></a> ";
             }
         }
-        if ($cur_col % $columns == 0) $disp_gallery .= '</div>';
+
+        if ($columns != "dynamic")
+            if ($cur_col % $columns == 0) $disp_gallery .= '</div>';
+
         $photo_count += 1;
     }
 
-    if ($cur_col % $columns != 0) $disp_gallery .= '</div>';
-    $disp_gallery .= '</div>';
+    if ($columns != "dynamic") {
+        if ($cur_col % $columns != 0) $disp_gallery .= '</div>';
+        $disp_gallery .= '</div>';
+    }
+    
     if ($slideshow_option == 'highslide') $disp_gallery .= "</div>";
 
     // Pagination
