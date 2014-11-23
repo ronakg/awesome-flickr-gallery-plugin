@@ -3,7 +3,12 @@ define('PLUGIN_SLUG', 'awesome-flickr-gallery-plugin');
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', site_url());
 define('DEBUG', false);
-define('VERSION', '3.5.1');
+define('VERSION', '3.5.2');
+
+$afg_tag_mode_map = array(
+    'any' => 'Any tag matches',
+    'all' => 'All tags must match',
+);
 
 $afg_sort_order_map = array(
     'default' => 'Default',
@@ -273,6 +278,7 @@ function afg_generate_version_line() {
 
 function afg_generate_flickr_settings_table($photosets, $galleries, $groups) {
     global $afg_photo_source_map;
+    global $afg_tag_mode_map;
     $photosets = afg_generate_options($photosets, '', False);
     $galleries = afg_generate_options($galleries, '', False);
     $groups = afg_generate_options($groups, '', False);
@@ -298,8 +304,11 @@ function afg_generate_flickr_settings_table($photosets, $galleries, $groups) {
         <select style='display:none' name='afg_groups_box' id='afg_groups_box'>$groups
         </select>
         <textarea rows='3' cols='30' name='afg_tags' id='afg_tags' style='display:none'></textarea>
+        <p><select style='display:none' name='afg_tag_mode' id='afg_tag_mode'>" . afg_generate_options($afg_tag_mode_map, 'any', False) . "
+        </select>
         </td>
-        <td id='afg_source_help' class='afg-help-bubble' style='display:none'>Enter tags separated by comma. For example: <b>tag1, tag2, tag3, tag4</b><br />Photos matching any of the given tags will be displayed.</td>
+        <td id='afg_source_help' class='afg-help-bubble' style='display:none'>Enter tags separated by comma. For example: <b>tag1, tag2, tag3, tag4</b>
+        <p><br />Choose whether photos matching <i>any</i> of the given tags will be displayed, or whether they must match <i>all</i> the given tags.</td>
         </tr>
     </table>";
 }

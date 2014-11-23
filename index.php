@@ -3,7 +3,7 @@
    Plugin Name: Awesome Flickr Gallery
    Plugin URI: http://www.ronakg.com/projects/awesome-flickr-gallery-wordpress-plugin/
    Description: Awesome Flickr Gallery is a simple, fast and light plugin to create a gallery of your Flickr photos on your WordPress enabled website.  This plugin aims at providing a simple yet customizable way to create stunning Flickr gallery.
-   Version: 3.5.1
+   Version: 3.5.2
    Author: Ronak Gandhi
    Author URI: http://www.ronakg.com
    License: GPL2
@@ -200,6 +200,7 @@ function afg_display_gallery($atts) {
     $gallery_id = NULL;
     $group_id = NULL;
     $tags = NULL;
+    $tag_mode = NULL;
     $popular = false;
 
     if (!isset($gallery['photo_source'])) $gallery['photo_source'] = 'photostream';
@@ -207,7 +208,7 @@ function afg_display_gallery($atts) {
     if ($gallery['photo_source'] == 'photoset') $photoset_id = $gallery['photoset_id'];
     else if ($gallery['photo_source'] == 'gallery') $gallery_id = $gallery['gallery_id'];
     else if ($gallery['photo_source'] == 'group') $group_id = $gallery['group_id'];
-    else if ($gallery['photo_source'] == 'tags') $tags = $gallery['tags'];
+    else if ($gallery['photo_source'] == 'tags') { $tags = $gallery['tags']; $tag_mode = $gallery['tag_mode']; }
     else if ($gallery['photo_source'] == 'popular') $popular = true;
 
     $disp_gallery = "<!-- Awesome Flickr Gallery Start -->";
@@ -218,6 +219,7 @@ function afg_display_gallery($atts) {
         " - Gallery ID - " . (isset($gallery_id)? $gallery_id: '') .
         " - Group ID - " . (isset($group_id)? $group_id: '') .
         " - Tags - " . (isset($tags)? $tags: '') .
+        " - Tag mode - " . (isset($tag_mode)? $tag_mode: '') .
         " - Popular - " . (isset($popular)? $popular: '') .
         " - Per Page - " . $per_page .
         " - Sort Order - " . $sort_order .
@@ -261,7 +263,7 @@ function afg_display_gallery($atts) {
             if ($total_photos > 500) $total_photos = 500;
             }
         else if (isset($tags) && $tags) {
-            $rsp_obj = $pf->photos_search(array('user_id'=>$user_id, 'tags'=>$tags, 'extras'=>$extras, 'per_page'=>1));
+            $rsp_obj = $pf->photos_search(array('user_id'=>$user_id, 'tags'=>$tags, 'tag_mode'=>$tag_mode,'extras'=>$extras, 'per_page'=>1));
             if ($pf->error_code) return afg_error($pf->error_msg);
             $total_photos = $rsp_obj['photos']['total'];
         }
@@ -294,7 +296,7 @@ function afg_display_gallery($atts) {
             }
             else if ($tags) {
                 $flickr_api = 'photos';
-                $rsp_obj_total = $pf->photos_search(array('user_id'=>$user_id, 'tags'=>$tags, 'extras'=>$extras, 'per_page'=>500, 'page'=>$i));
+                $rsp_obj_total = $pf->photos_search(array('user_id'=>$user_id, 'tags'=>$tags, 'tag_mode'=>$tag_mode, 'extras'=>$extras, 'per_page'=>500, 'page'=>$i));
                 if ($pf->error_code) return afg_error($pf->error_msg);
             }
             else if ($popular) {
