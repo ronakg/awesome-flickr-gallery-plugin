@@ -42,6 +42,18 @@ div.afg-cell {
     margin:auto;
     padding-bottom:10px;
 }
+
+/* Individual image cell in the gallery, when not table based */
+div.afg-item {
+	display: inline-block !important;
+	text-align:center;
+	vertical-align:top;
+	margin:auto;
+	padding-bottom:10px;
+	padding-left:5px;
+	padding-right:5px;
+}
+
 /* Hover effect for pagination links */
 a.afg-page:hover {
     background:royalblue;

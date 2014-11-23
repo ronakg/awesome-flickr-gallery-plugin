@@ -89,6 +89,7 @@ $afg_descr_map = array(
 
 $afg_columns_map = array(
     'default' => 'Default',
+    'dynamic' => 'Dynamic',
     '1' => '1  ',
     '2' => '2  ',
     '3' => '3  ',
@@ -383,6 +384,7 @@ function afg_generate_gallery_settings_table() {
         <td><select name='afg_columns' id='afg_columns'>
             " . afg_generate_options($afg_columns_map, 'default', True, $afg_columns_map[get_option('afg_columns')]) . "
         </select></td>
+        <td class='afg-help'>Set to Dynamic to let the number of columns vary to fill the width of the gallery.</td>
         </tr>
 
         <tr>
