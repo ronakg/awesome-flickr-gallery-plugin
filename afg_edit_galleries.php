@@ -35,7 +35,7 @@ if (isset($_POST['afg_edit_gallery_name']) && $_POST['afg_edit_gallery_name']) {
     if ($_POST['afg_photo_source_type'] == 'photoset') $gallery['photoset_id'] = $_POST['afg_photosets_box'];
     else if ($_POST['afg_photo_source_type'] == 'gallery') $gallery['gallery_id'] = $_POST['afg_galleries_box'];
     else if ($_POST['afg_photo_source_type'] == 'group') $gallery['group_id'] = $_POST['afg_groups_box'];
-    else if ($_POST['afg_photo_source_type'] == 'tags') $gallery['tags'] = $_POST['afg_tags'];
+    else if ($_POST['afg_photo_source_type'] == 'tags') { $gallery['tags'] = $_POST['afg_tags']; $gallery['tag_mode'] = $_POST['afg_tag_mode']; }
 
     if ($gallery['photo_size'] == 'custom') {
         if (ctype_digit($_POST['afg_custom_size']) && (int)$_POST['afg_custom_size'] >= 50 && (int)$_POST['afg_custom_size'] <= 500) {
