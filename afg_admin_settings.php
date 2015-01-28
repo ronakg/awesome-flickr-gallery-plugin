@@ -423,7 +423,7 @@ if ($_POST)
     global $pf;
     if (get_option('afg_flickr_token')) $rsp_obj = $pf->people_getPhotos(get_option('afg_user_id'), array('per_page' => 5, 'page' => 1));
     else $rsp_obj = $pf->people_getPublicPhotos(get_option('afg_user_id'), NULL, NULL, 5, 1);
-    if (!$rsp_obj) echo afg_error();
+    if (!$rsp_obj) echo afg_error($pf->error_msg);
     else {
         foreach($rsp_obj['photos']['photo'] as $photo) {
             $photo_url = "http://farm{$photo['farm']}.static.flickr.com/{$photo['server']}/{$photo['id']}_{$photo['secret']}_s.jpg";
