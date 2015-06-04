@@ -1,9 +1,9 @@
 <?php
-define('PLUGIN_SLUG', 'awesome-flickr-gallery-plugin');
+
 define('BASE_URL', plugins_url() . '/' . basename(dirname(__FILE__)));
 define('SITE_URL', site_url());
 define('DEBUG', false);
-define('VERSION', '3.5.1');
+define('VERSION', '3.5.2');
 
 $afg_sort_order_map = array(
     'default' => 'Default',
@@ -18,7 +18,7 @@ $afg_sort_order_map = array(
 $afg_slideshow_map = array(
     'default' => 'Default',
     'colorbox' => 'Colorbox',
-    'highslide' => 'Highslide',
+    'swipebox' => 'Swipebox (Touch Enabled)',
     'disable' => 'No Slideshow',
     'flickr' => 'Link to Flickr Photo page',
     'none' => 'No Slideshow and No Link',
@@ -381,10 +381,6 @@ function afg_generate_gallery_settings_table() {
         <td><select name='afg_slideshow_option' id='afg_slideshow_option'>
         " . afg_generate_options($afg_slideshow_map, 'default', True, $afg_slideshow_map[get_option('afg_slideshow_option')]) . "
     </select></td>
-            <td class='afg-help'><b>HighSlide is NOT FREE for Commercial websites</b>.  If you are using
-            <i>Awesome Flickr Gallery</i> on a commercial website, you need to purchase a license from their website
-            <a href='http://highslide.com/#licence' target='_blank'>here</a>.  If you want a free slideshow,
-            use ColorBox instead.</td>
             </tr>
 
         <tr>
