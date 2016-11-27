@@ -458,7 +458,7 @@ if ($_POST)
     echo afg_box('Help', $message);
 
     $message = "Just insert the code <strong><font color='steelblue'>[AFG_gallery]</font></strong> in any of your posts or pages to display the Awesome Flickr Gallery.
-        <br /><p style='text-align:center'><i>-- OR --</i></p>You can create a new Awesome Flickr Gallery with different settings on page <a href='{$_SERVER['PHP_SELF']}?page=afg_add_gallery_page'>Add Galleries.";
+        <br /><p style='text-align:center'><i>-- OR --</i></p>You can create a new Awesome Flickr Gallery with different settings on page <a href='" . get_admin_url() . "admin.php?page=afg_add_gallery_page'?page=afg_add_gallery_page'>Add Galleries.";
     echo afg_box('Usage Instructions', $message);
 
     echo afg_donate_box();
