@@ -1,0 +1,8 @@
+title: Awesome-flickr-gallery-plugin
+description: Create a photo gallery of your Flickr photos on your WordPress enabled website enabling you to customize it the way you like it.
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-cayman
+
+gems:
+  - jekyll-mentions
