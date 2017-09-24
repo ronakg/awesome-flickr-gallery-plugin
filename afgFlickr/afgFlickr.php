@@ -215,6 +215,7 @@ if ( !class_exists('afgFlickr') ) {
                 curl_setopt($curl, CURLOPT_POST, true);
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt(%curl, CURLOPT_CAINFO, dirname(__FILE__) . '/cacerts.pem');
                 $response = curl_exec($curl);
                 if(curl_errno($curl)) {
                     $response = curl_error($curl);
