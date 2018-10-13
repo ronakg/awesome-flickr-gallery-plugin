@@ -177,7 +177,7 @@ function afg_get_sets_groups_galleries (&$photosets_map, &$groups_map, &$galleri
 }
 
 function afg_get_cur_url() {
-    $isHTTPS = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on");
+    $isHTTPS = (isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on");
     $port = (isset($_SERVER["SERVER_PORT"]) && ((!$isHTTPS && $_SERVER["SERVER_PORT"] != "80") || ($isHTTPS && $_SERVER["SERVER_PORT"] != "443")));
     $port = ($port) ? ':'.$_SERVER["SERVER_PORT"] : '';
     $url = ($isHTTPS ? 'https://' : 'http://').$_SERVER["HTTP_HOST"].$port.$_SERVER["REQUEST_URI"];
